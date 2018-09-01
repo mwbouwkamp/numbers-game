@@ -23,7 +23,7 @@ public class Attributes {
     public static final Typeface TYPEFACE_CALIBRI = Typeface.createFromAsset(MainActivity.getContext().getAssets(), "fonts/Calibri.ttf");
     public static final Typeface TYPEFACE_NUMBERSGAME = Typeface.createFromAsset(MainActivity.getContext().getAssets(), "fonts/NumbersFont.otf");
 
-    //	Board Attributes
+    //	GamePlayBoard Attributes
     public static final int BG_COLOR = RESOURCES.getColor(R.color.colorBackground);
     public static final int GOAL_COLOR = RESOURCES.getColor(R.color.colorGoal);
     public static final int FOOTER_COLOR = RESOURCES.getColor(R.color.colorFooter);

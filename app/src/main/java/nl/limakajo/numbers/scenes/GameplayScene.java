@@ -13,7 +13,7 @@ import android.view.MotionEvent;
 import nl.limakajo.numbers.gameObjects.Tile;
 import nl.limakajo.numbers.gameObjects.Wave;
 import nl.limakajo.numbers.main.MainActivity;
-import nl.limakajo.numbers.numbersgame.Board;
+import nl.limakajo.numbers.layouts.GamePlayBoard;
 import nl.limakajo.numbers.numbersgame.Level;
 import nl.limakajo.numbers.utils.DatabaseUtils;
 import nl.limakajo.numbers.utils.GameUtils;
@@ -46,7 +46,7 @@ public class GameplayScene implements  Scene {
     private LinkedList<Wave> waves;
     private LinkedList<Tile> tilesOnShelf;
 
-    private Board board;
+    private GamePlayBoard gamePlayBoard;
 
     private SceneManager sceneManager;
 
@@ -84,12 +84,12 @@ public class GameplayScene implements  Scene {
         //Construct a level and update the ScreenLayout goal accordingly
         level = getLevel();
         //TODO: After selecting a level, immediately set the usertime to the TIMEPENALTY, both in the table levels and completedlevels
-        board = new Board();
+        gamePlayBoard = new GamePlayBoard();
         tilesOnShelf = new LinkedList<Tile>();
         for (int i = 0; i < GameUtils.NUMTILES; i++) {
             tilesOnShelf.add(new Tile(level.getHand()[i], i));
         }
-        board.getTextBox("goalText").setText(Integer.toString(level.getGoal()));
+        gamePlayBoard.getTextBox("goalText").setText(Integer.toString(level.getGoal()));
     }
 
     /**
@@ -163,31 +163,31 @@ public class GameplayScene implements  Scene {
      * @return Tile or null depending on outcome. The Tile itself is returns if the Tile is on an operator ScreenArea or null if the Tile is returned to the shelf
      */
     private Tile consequenceTilePosition(Tile tile) {
-        if (tile.inArea(board.getScreenArea("plus"))) {
+        if (tile.inArea(gamePlayBoard.getScreenArea("plus"))) {
             numPlus++;
             numMin = 0;
             numMult = 0;
             numDiv = 0;
             return tile;
-        } else if (tile.inArea(board.getScreenArea("min"))) {
+        } else if (tile.inArea(gamePlayBoard.getScreenArea("min"))) {
             numMin++;
             numPlus = 0;
             numMult = 0;
             numDiv = 0;
             return tile;
-        } else if (tile.inArea(board.getScreenArea("mult"))) {
+        } else if (tile.inArea(gamePlayBoard.getScreenArea("mult"))) {
             numMult++;
             numPlus = 0;
             numMin = 0;
             numDiv = 0;
             return tile;
-        } else if (tile.inArea(board.getScreenArea("div"))) {
+        } else if (tile.inArea(gamePlayBoard.getScreenArea("div"))) {
             numDiv++;
             numPlus = 0;
             numMin = 0;
             numMult = 0;
             return tile;
-        } else if (tile.inArea(board.getScreenArea("header"))) {
+        } else if (tile.inArea(gamePlayBoard.getScreenArea("header"))) {
             tile.crunch(tilesOnShelf);
             numPlus = 0;
             numMin = 0;
@@ -279,22 +279,22 @@ public class GameplayScene implements  Scene {
     @Override
     public void draw(Canvas canvas) {
 
-        board.getScreenAreas().get("fullscreen").draw(canvas);
-        board.getScreenAreas().get("plus").draw(canvas);
-        board.getScreenAreas().get("plus2").draw(canvas);
-        board.getScreenAreas().get("min").draw(canvas);
-        board.getScreenAreas().get("min2").draw(canvas);
-        board.getScreenAreas().get("mult").draw(canvas);
-        board.getScreenAreas().get("mult2").draw(canvas);
-        board.getScreenAreas().get("div").draw(canvas);
-        board.getScreenAreas().get("div2").draw(canvas);
-        board.getTextBoxes().get("goalText").draw(canvas);
-        board.getTextBoxes().get("footerText").draw(canvas);
-        board.getTextBoxes().get("plusText").draw(canvas);
-        board.getTextBoxes().get("minText").draw(canvas);
-        board.getTextBoxes().get("multText").draw(canvas);
-        board.getTextBoxes().get("divText").draw(canvas);
-        board.getTextBoxes().get("numLivesText").draw(canvas);
+        gamePlayBoard.getScreenAreas().get("fullscreen").draw(canvas);
+        gamePlayBoard.getScreenAreas().get("plus").draw(canvas);
+        gamePlayBoard.getScreenAreas().get("plus2").draw(canvas);
+        gamePlayBoard.getScreenAreas().get("min").draw(canvas);
+        gamePlayBoard.getScreenAreas().get("min2").draw(canvas);
+        gamePlayBoard.getScreenAreas().get("mult").draw(canvas);
+        gamePlayBoard.getScreenAreas().get("mult2").draw(canvas);
+        gamePlayBoard.getScreenAreas().get("div").draw(canvas);
+        gamePlayBoard.getScreenAreas().get("div2").draw(canvas);
+        gamePlayBoard.getTextBoxes().get("goalText").draw(canvas);
+        gamePlayBoard.getTextBoxes().get("footerText").draw(canvas);
+        gamePlayBoard.getTextBoxes().get("plusText").draw(canvas);
+        gamePlayBoard.getTextBoxes().get("minText").draw(canvas);
+        gamePlayBoard.getTextBoxes().get("multText").draw(canvas);
+        gamePlayBoard.getTextBoxes().get("divText").draw(canvas);
+        gamePlayBoard.getTextBoxes().get("numLivesText").draw(canvas);
 
 
 
@@ -308,7 +308,7 @@ public class GameplayScene implements  Scene {
         }
 
 //        drawNumLives(canvas);
-        board.getTextBox("footerText").setText(statusBarText);
+        gamePlayBoard.getTextBox("footerText").setText(statusBarText);
 
         for (Wave wave: waves) {
             if (wave != null) {
@@ -356,7 +356,7 @@ public class GameplayScene implements  Scene {
         double timeFraction = (System.currentTimeMillis() - startTime) / (double) GameUtils.TIMER;
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(16);
-        RectF rect = new RectF(board.getScreenArea("timerRound").getArea());
+        RectF rect = new RectF(gamePlayBoard.getScreenArea("timerRound").getArea());
         paint.setColor(Color.rgb(80, 80, 80));
         canvas. drawArc(rect, 0, 360, false, paint);
         paint.setColor(Color.rgb((int) (255 * timeFraction), (int) (255 * (1 - timeFraction)), 0));
@@ -435,7 +435,7 @@ public class GameplayScene implements  Scene {
     private void runningTouchDragged(MotionEvent event) {
         if (tilePressed != null) {
             if (tilePressed != firstTile) {
-                if (onShelf == true && !tilePressed.inArea(board.getScreenArea("shelf"))) {
+                if (onShelf == true && !tilePressed.inArea(gamePlayBoard.getScreenArea("shelf"))) {
                     onShelf = false;
                     for (Tile tile: tilesOnShelf) {
                         tile.stopAnimation();
@@ -498,7 +498,7 @@ public class GameplayScene implements  Scene {
      * @param event
      */
     private void levelCompleteTouchDown(MotionEvent event) {
-        if (board.getScreenArea("levelcomplete").getArea().contains((int) event.getX(), (int) event.getY())) {
+        if (gamePlayBoard.getScreenArea("levelcomplete").getArea().contains((int) event.getX(), (int) event.getY())) {
             state = GAME_STATE;
             init();
         }
@@ -510,7 +510,7 @@ public class GameplayScene implements  Scene {
      * @param event
      */
     private void gameOverTouchDown(MotionEvent event) {
-        if (board.getScreenArea("gameover").getArea().contains((int) event.getX(), (int) event.getY())) {
+        if (gamePlayBoard.getScreenArea("gameover").getArea().contains((int) event.getX(), (int) event.getY())) {
             state = GAME_STATE;
             init();
         }

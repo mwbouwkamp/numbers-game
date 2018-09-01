@@ -1,4 +1,4 @@
-package nl.limakajo.numbers.numbersgame;
+package nl.limakajo.numbers.layouts;
 
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -21,7 +21,7 @@ import java.util.Map;
  * @author M.W.Bouwkamp
  */
 
-public class Board {
+public class GamePlayBoard {
 
 	private Map<String, ScreenArea> screenAreas;
 	private Map<String, TextBox> textBoxes;
@@ -29,7 +29,7 @@ public class Board {
 	/**
 	 * Constructor
 	 */
-	public Board() {
+	public GamePlayBoard() {
 		Paint paint = new Paint();
 		paint.setAntiAlias(true);
 		paint.setDither(true);
