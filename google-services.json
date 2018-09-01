@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "929139467155",
+    "firebase_url": "https://numbers-22e5c.firebaseio.com",
+    "project_id": "numbers-22e5c",
+    "storage_bucket": "numbers-22e5c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:929139467155:android:34af7996f6e36c22",
+        "android_client_info": {
+          "package_name": "nl.limakajo.numbers"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "929139467155-nrgb0emskthqel2s18dv0vvvtjibdve9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5-qWN5C1_ko1E8a7zInWXTeGWLAu5_SI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

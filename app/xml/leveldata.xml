@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dataset>
+	<leveldata 
+		numbers = "001002003004005006010"
+		averagetime = "100000"
+		timesplayed = "1" />
+	<leveldata 
+		numbers = "002004005006010012020"
+		averagetime = "200000"
+		timesplayed = "2" />
+	<leveldata 
+		numbers = "00300600901201518030"
+		averagetime = "300000"
+		timesplayed = "3" />
+	<leveldata 
+		numbers = "004008012016010024040"
+		averagetime = "400000"
+		timesplayed = "4" />
+	<leveldata 
+		numbers = "005010015020025030050"
+		averagetime = "500000"
+		timesplayed = "5" />
+
+</dataset>

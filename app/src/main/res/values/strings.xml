@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Numbers</string>
+
+    <!-- Strings for SyncAdapter -->
+    <string name="sync_account_type">numbers.limakajo.nl</string>
+    <string name="content_authority">nl.limakajo.numbers</string>
+
+    <!-- Strings to be displayed during gameplay -->
+    <string name="empty_text"></string>
+    <string name="plus_sign">+</string>
+    <string name="min_sign">-</string>
+    <string name="mult_sign">*</string>
+    <string name="div_sign">/</string>
+
+
+</resources>
