@@ -11,7 +11,7 @@ import org.json.JSONObject;
 import java.util.LinkedList;
 
 /**
- * Created by mwbou on 22-12-2017.
+ * @author M.W.Bouwkamp
  */
 
 public class JSONUtils {

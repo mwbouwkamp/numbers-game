@@ -9,7 +9,7 @@ import android.view.MotionEvent;
 import static nl.limakajo.numbers.utils.GameUtils.GameState.GAME_STATE;
 
 /**
- * Created by mwbou on 20-1-2018.
+ * @author M.W.Bouwkamp
  */
 
 public class GameOverScene implements Scene {

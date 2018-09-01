@@ -8,7 +8,7 @@ import android.graphics.Rect;
 import nl.limakajo.numbers.utils.Attributes;
 
 /**
- * Created by mwbou on 9-9-2017.
+ * @author M.W.Bouwkamp
  */
 
 public class TextBox implements GameObject {

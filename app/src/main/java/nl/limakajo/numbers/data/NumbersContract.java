@@ -7,7 +7,7 @@ import android.provider.BaseColumns;
  * NumbersContract class
  * Contains the contract for the database structure
  *
- * Created by M.W.Bouwkamp on 26-11-2017.
+ * @author M.W.Bouwkamp
  */
 
 public class NumbersContract {

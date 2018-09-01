@@ -27,7 +27,7 @@ import static nl.limakajo.numbers.utils.GameUtils.GameState.GAME_STATE;
 import static nl.limakajo.numbers.utils.GameUtils.GameState.LEVEL_COMPLETE_STATE;
 
 /**
- * Created by mwbou on 12-9-2017.
+ * @author M.W.Bouwkamp
  */
 
 public class GameplayScene implements  Scene {

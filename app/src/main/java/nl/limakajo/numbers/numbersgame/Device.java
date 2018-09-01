@@ -5,7 +5,7 @@ import android.graphics.Point;
 /**
  * Device represents an immutable representation of the actual device that is running the App
  * 
- * @author mwbou
+ * @author M.W.Bouwkamp
  */
 
 public class Device {

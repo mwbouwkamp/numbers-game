@@ -3,7 +3,7 @@ package nl.limakajo.numbers.utils;
 import nl.limakajo.numbers.main.MainActivity;
 
 /**
- * Created by mwbou on 30-12-2017.
+ * @author M.W.Bouwkamp
  */
 
 public class GameUtils {

@@ -15,7 +15,7 @@ import java.util.LinkedList;
  * Tile GameObject Class
  * Represents a Tile in the game
  *
- * Created by M.W.Bouwkamp on 9-9-2017.
+ * @author M.W.Bouwkamp
  */
 
 public class Tile implements GameObject {

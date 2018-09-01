@@ -10,7 +10,7 @@ import nl.limakajo.numbers.scenes.SceneManager;
 
 
 /**
- * Created by mwbou on 9-9-2017.
+ * @author M.W.Bouwkamp
  */
 
 public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {

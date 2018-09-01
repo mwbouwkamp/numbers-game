@@ -9,6 +9,9 @@ import nl.limakajo.numbers.utils.GameUtils;
 
 import java.util.Date;
 
+/**
+ * @author M.W.Bouwkamp
+ */
 public class NumLivesThread extends Thread {
 
 	private SharedPreferences prefs;

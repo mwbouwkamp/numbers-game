@@ -19,7 +19,7 @@ import java.util.LinkedList;
 import java.util.Scanner;
 
 /**
- * Created by mwbou on 15-12-2017.
+ * @author M.W.Bouwkamp
  */
 
 public class NetworkUtils {

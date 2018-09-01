@@ -13,6 +13,9 @@ import nl.limakajo.numbers.main.GamePanel;
 import nl.limakajo.numbers.main.NumLivesThread;
 import nl.limakajo.numbers.numbersgame.Player;
 
+/**
+ * @author M.W.Bouwkamp
+ */
 public class DevelopersMenu {
 
     private final Context context;

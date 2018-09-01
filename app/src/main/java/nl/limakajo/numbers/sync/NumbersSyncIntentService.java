@@ -4,7 +4,7 @@ import android.app.IntentService;
 import android.content.Intent;
 
 /**
- * Created by mwbou on 12-12-2017.
+ * @author M.W.Bouwkamp
  */
 
 public class NumbersSyncIntentService extends IntentService {

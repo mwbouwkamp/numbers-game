@@ -9,7 +9,7 @@ import java.util.HashMap;
 import static nl.limakajo.numbers.utils.GameUtils.GameState.*;
 
 /**
- * Created by mwbou on 12-9-2017.
+ * @author M.W.Bouwkamp
  */
 
 public class SceneManager {

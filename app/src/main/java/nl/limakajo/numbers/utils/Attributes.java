@@ -7,7 +7,7 @@ import nl.limakajo.numbers.R;
 import nl.limakajo.numbers.main.MainActivity;
 
 /**
- * Created by mwbou on 23-1-2018.
+ * @author M.W.Bouwkamp
  */
 
 public class Attributes {

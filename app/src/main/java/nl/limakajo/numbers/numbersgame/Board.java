@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by mwbou on 9-9-2017.
+ * @author M.W.Bouwkamp
  */
 
 public class Board {

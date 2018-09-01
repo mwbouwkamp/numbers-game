@@ -14,7 +14,7 @@ import android.util.Log;
  * NumbersProvider Class
  * Takes care of all database related activities
  *
- * Created by M.W.Bouwkamp on 26-11-2017.
+ * @author M.W.Bouwkamp
  */
 
 public class NumbersProvider extends ContentProvider {

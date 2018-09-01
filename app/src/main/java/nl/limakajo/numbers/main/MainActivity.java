@@ -23,7 +23,7 @@ import java.util.Date;
 /**
  * Main Activity
  *
- * Created by M.W.Bouwkamp
+ * @author M.W.Bouwkamp
  *
  * Launches the game after setting up the player and the device
  * Starts service for uploading previously completed levels (if there are any)

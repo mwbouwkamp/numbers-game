@@ -8,8 +8,8 @@ import nl.limakajo.numbers.utils.GameUtils;
 
 /**
  * Player represents a mutable representation of the player 
- * 
- * @author mwbou
+ *
+ * @author M.W.Bouwkamp
  */
 public class Player {
 

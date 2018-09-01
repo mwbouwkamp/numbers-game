@@ -6,7 +6,7 @@ import android.graphics.Canvas;
  * GameObject Interface
  * Interface for all objects that need to be displayed on the screen
  *
- * Created by M.W.Bouwkamp on 9-9-2017.
+ * @author M.W.Bouwkamp
  */
 
 public interface GameObject {

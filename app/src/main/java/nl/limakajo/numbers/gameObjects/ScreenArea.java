@@ -8,7 +8,7 @@ import android.graphics.Rect;
  * ScreenArea GameObject Class
  * Creates rectangular screen area
  *
- * Created by M.W.Bouwkamp on 9-9-2017.
+ * @author M.W.Bouwkamp
  */
 
 public class ScreenArea implements GameObject {

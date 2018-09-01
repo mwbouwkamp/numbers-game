@@ -11,7 +11,7 @@ import java.security.InvalidParameterException;
 import java.util.LinkedList;
 
 /**
- * Created by mwbou on 12-12-2017.
+ * @author M.W.Bouwkamp
  */
 
 public class NumbersSyncTasks {

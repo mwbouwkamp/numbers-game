@@ -4,7 +4,7 @@ import android.graphics.Canvas;
 import android.view.MotionEvent;
 
 /**
- * Created by mwbou on 12-9-2017.
+ * @author M.W.Bouwkamp
  */
 
 public interface Scene {
