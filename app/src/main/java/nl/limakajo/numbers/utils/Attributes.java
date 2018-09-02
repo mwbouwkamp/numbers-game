@@ -23,7 +23,7 @@ public class Attributes {
     public static final Typeface TYPEFACE_CALIBRI = Typeface.createFromAsset(MainActivity.getContext().getAssets(), "fonts/Calibri.ttf");
     public static final Typeface TYPEFACE_NUMBERSGAME = Typeface.createFromAsset(MainActivity.getContext().getAssets(), "fonts/NumbersFont.otf");
 
-    //	GamePlayBoard Attributes
+    //	GamePlayLayout Attributes
     public static final int BG_COLOR = RESOURCES.getColor(R.color.colorBackground);
     public static final int GOAL_COLOR = RESOURCES.getColor(R.color.colorGoal);
     public static final int FOOTER_COLOR = RESOURCES.getColor(R.color.colorFooter);
@@ -56,10 +56,10 @@ public class Attributes {
             (int) (3.5 * (TILE_WIDTH) + 5 * MARGE),
             (int) (4.5 * (TILE_WIDTH) + 6 * MARGE),
             (int) (5.5 * (TILE_WIDTH) + 7 * MARGE),
-            (int) (6   * (TILE_WIDTH) + 8 * MARGE)};
+            6   * (TILE_WIDTH) + 8 * MARGE};
     public static final int TILE_YCOORD = 3 * MARGE + GOAL_HEIGHT + TILE_WIDTH /2;
     public static long TILE_ANIMATION_TIME = 500;
-    public static enum TextAllignment {
+    public enum TextAllignment {
         NOTCENTERED,
         XCENTERED,
         YCENTERED,

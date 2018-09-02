@@ -3,7 +3,6 @@ package nl.limakajo.numbers.scenes;
 import android.graphics.Canvas;
 import android.view.MotionEvent;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import static nl.limakajo.numbers.utils.GameUtils.GameState.*;
@@ -13,7 +12,7 @@ import static nl.limakajo.numbers.utils.GameUtils.GameState.*;
  */
 
 public class SceneManager {
-    private HashMap<String, Scene> scenes = new HashMap<String, Scene>();
+    private HashMap<String, SceneInterface> scenes = new HashMap<>();
     private String activeScene;
 
     public SceneManager() {
@@ -24,7 +23,7 @@ public class SceneManager {
         activeScene = MENU_STATE.toString();
     }
 
-    public Scene getScene(String sceneType) {
+    public SceneInterface getScene(String sceneType) {
         return scenes.get(sceneType);
     }
 

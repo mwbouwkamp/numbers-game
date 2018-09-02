@@ -7,8 +7,9 @@ import android.view.MotionEvent;
  * @author M.W.Bouwkamp
  */
 
-public interface Scene {
+public interface SceneInterface {
 
+    void init();
     void update();
     void draw(Canvas canvas);
     void terminate();

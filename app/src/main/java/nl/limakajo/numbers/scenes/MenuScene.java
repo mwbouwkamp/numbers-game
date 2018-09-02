@@ -1,24 +1,29 @@
 package nl.limakajo.numbers.scenes;
 
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Rect;
 import android.view.MotionEvent;
 
+import nl.limakajo.numbers.layouts.MenuLayout;
+
 import static nl.limakajo.numbers.utils.GameUtils.GameState.GAME_STATE;
-import static nl.limakajo.numbers.utils.GameUtils.GameState.MENU_STATE;
 
 /**
  * @author M.W.Bouwkamp
  */
 
-public class MenuScene implements Scene {
+public class MenuScene implements SceneInterface {
 
     private SceneManager sceneManager;
+    private MenuLayout menuLayout;
 
-    public MenuScene(SceneManager sceneManager) {
+    MenuScene(SceneManager sceneManager) {
         this.sceneManager = sceneManager;
+        init();
+    }
+
+    @Override
+    public void init() {
+        menuLayout = new MenuLayout();
     }
 
     @Override
@@ -28,11 +33,11 @@ public class MenuScene implements Scene {
 
     @Override
     public void draw(Canvas canvas) {
-        Rect rect = new Rect(100,100,300,300);
-        Paint paint = new Paint();
-        paint.setStyle(Paint.Style.FILL);
-        paint.setColor(Color.DKGRAY);
-        canvas.drawRect(rect, paint);
+        menuLayout.getScreenAreas().get("blue").draw(canvas);
+        menuLayout.getScreenAreas().get("red").draw(canvas);
+        menuLayout.getScreenAreas().get("green").draw(canvas);
+        menuLayout.getScreenAreas().get("yellow").draw(canvas);
+        menuLayout.getTextBoxes().get("logotext").draw(canvas);
     }
 
     @Override

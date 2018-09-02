@@ -12,12 +12,17 @@ import static nl.limakajo.numbers.utils.GameUtils.GameState.GAME_STATE;
  * @author M.W.Bouwkamp
  */
 
-public class GameOverScene implements Scene {
+public class GameOverScene implements SceneInterface {
 
     private SceneManager sceneManager;
 
-    public GameOverScene(SceneManager sceneManager) {
+    GameOverScene(SceneManager sceneManager) {
         this.sceneManager = sceneManager;
+    }
+
+    @Override
+    public void init() {
+
     }
 
     @Override

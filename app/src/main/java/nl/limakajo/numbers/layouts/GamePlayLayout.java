@@ -15,21 +15,17 @@ import nl.limakajo.numbers.utils.Attributes;
 import nl.limakajo.numbers.utils.GameUtils;
 
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author M.W.Bouwkamp
  */
 
-public class GamePlayBoard {
-
-	private Map<String, ScreenArea> screenAreas;
-	private Map<String, TextBox> textBoxes;
+public class GamePlayLayout extends Layout {
 
 	/**
 	 * Constructor
 	 */
-	public GamePlayBoard() {
+	public GamePlayLayout() {
 		Paint paint = new Paint();
 		paint.setAntiAlias(true);
 		paint.setDither(true);
@@ -98,14 +94,14 @@ public class GamePlayBoard {
 		paint.setTypeface(typeface);
 		paint.setColor(Attributes.GOAL_COLOR);
 		TextBox goalText = new TextBox(
-				MainActivity.getContext().getString(R.string.empty_text),
+				MainActivity.getContext().getString(R.string.gameplay_empty_text),
 				Attributes.TextAllignment.XYCENTERED,
 				headerArea.getArea(),
 				paint);
 		paint.setColor(Attributes.FOOTER_COLOR);
 		paint.setTextSize(32);
 		TextBox footerText = new TextBox(
-				MainActivity.getContext().getString(R.string.empty_text),
+				MainActivity.getContext().getString(R.string.gameplay_empty_text),
 				Attributes.TextAllignment.XYCENTERED,
 				footerArea.getArea(),
 				paint);
@@ -125,7 +121,7 @@ public class GamePlayBoard {
 						playArea.getArea().left,
 						headerArea.getArea().bottom + Attributes.MARGE,
 						playArea.getArea().right,
-						(int) (headerArea.getArea().bottom + 2 * Attributes.MARGE + (playArea.getArea().right - playArea.getArea().left - Attributes.MARGE) / GameUtils.NUMTILES) - Attributes.MARGE),
+						(int) (headerArea.getArea().bottom + 2.0 * Attributes.MARGE + (playArea.getArea().right - playArea.getArea().left - Attributes.MARGE) / GameUtils.NUMTILES) - Attributes.MARGE),
 				paint);
 		ScreenArea operatorsArea = new ScreenArea(
 				new Rect(
@@ -140,7 +136,7 @@ public class GamePlayBoard {
 				new Rect(
 						operatorsArea.getArea().left,
 						operatorsArea.getArea().top,
-						operatorsArea.getArea().width() / 2 + Attributes.MARGE / 2,
+						operatorsArea.getArea().width() / 2 - Attributes.MARGE / 2,
 						operatorsArea.getArea().top + operatorsArea.getArea().height() / 2 - Attributes.MARGE / 2),
 				paint);
 		paint.setColor(Attributes.PLUS_COLOR_2);
@@ -204,22 +200,22 @@ public class GamePlayBoard {
 		paint.setColor(Attributes.BG_COLOR);
 		paint.setStrokeWidth(7);
 		TextBox plusText = new TextBox(
-				MainActivity.getContext().getString(R.string.plus_sign),
+				MainActivity.getContext().getString(R.string.gameplay_plus_sign),
 				Attributes.TextAllignment.XYCENTERED,
 				plusArea.getArea(),
 				paint);
 		TextBox minText = new TextBox(
-				MainActivity.getContext().getString(R.string.min_sign),
+				MainActivity.getContext().getString(R.string.gameplay_min_sign),
 				Attributes.TextAllignment.XYCENTERED,
 				minArea.getArea(),
 				paint);
 		TextBox multText = new TextBox(
-				MainActivity.getContext().getString(R.string.mult_sign),
+				MainActivity.getContext().getString(R.string.gameplay_mult_sign),
 				Attributes.TextAllignment.XYCENTERED,
 				multArea.getArea(),
 				paint);
 		TextBox divText = new TextBox(
-				MainActivity.getContext().getString(R.string.div_sign),
+				MainActivity.getContext().getString(R.string.gameplay_div_sign),
 				Attributes.TextAllignment.XYCENTERED,
 				divArea.getArea(),
 				paint);
@@ -241,7 +237,7 @@ public class GamePlayBoard {
 						(playArea.getArea().top + playArea.getArea().bottom) / 2),
 				paint);
 
-		screenAreas = new HashMap<String, ScreenArea>();
+		screenAreas = new HashMap<>();
 		screenAreas.put("fullscreen", fullscreen);
 		screenAreas.put("play", playArea);
 		screenAreas.put("header", headerArea);
@@ -259,7 +255,7 @@ public class GamePlayBoard {
 		screenAreas.put("gameover", gameover);
 		screenAreas.put("levelcomplete", levelcomplete);
 
-		textBoxes = new HashMap<String, TextBox>();
+		textBoxes = new HashMap<>();
 		textBoxes.put("goalText", goalText);
 		textBoxes.put("footerText", footerText);
 		textBoxes.put("plusText", plusText);
@@ -267,21 +263,5 @@ public class GamePlayBoard {
 		textBoxes.put("multText", multText);
 		textBoxes.put("divText", divText);
 		textBoxes.put("numLivesText", numLivesText);
-	}
-
-	public Map<String, ScreenArea> getScreenAreas() {
-		return screenAreas;
-	}
-
-	public Map<String, TextBox> getTextBoxes() {
-		return textBoxes;
-	}
-
-	public ScreenArea getScreenArea(String key) {
-		return screenAreas.get(key);
-	}
-
-	public TextBox getTextBox(String key) {
-		return textBoxes.get(key);
 	}
 }
