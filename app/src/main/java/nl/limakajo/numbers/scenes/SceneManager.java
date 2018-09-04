@@ -12,7 +12,7 @@ import static nl.limakajo.numbers.utils.GameUtils.GameState.*;
  */
 
 public class SceneManager {
-    private HashMap<String, SceneInterface> scenes = new HashMap<>();
+    private final HashMap<String, SceneInterface> scenes = new HashMap<>();
     private String activeScene;
 
     public SceneManager() {

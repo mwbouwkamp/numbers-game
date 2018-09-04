@@ -16,6 +16,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.LinkedList;
+import java.util.Objects;
 import java.util.Scanner;
 
 /**
@@ -31,7 +32,7 @@ public class NetworkUtils {
     public static final String PASS = "juig448";
     public static final String DB = "u790400871_nmbr";
 
-    private static final String TAG = NetworkUtils.class.getName();;
+    private static final String TAG = NetworkUtils.class.getName();
 
     public static String getLevelsJSONFromServer() {
         HttpURLConnection httpURLConnection = null;
@@ -45,7 +46,7 @@ public class NetworkUtils {
             e.printStackTrace();
         }
         try {
-            httpURLConnection = (HttpURLConnection) url.openConnection();
+            httpURLConnection = (HttpURLConnection) Objects.requireNonNull(url).openConnection();
 //			httpURLConnection.setReadTimeout(READ_TIMEOUT);
 //			httpURLConnection.setConnectTimeout(CONNECTION_TIMEOUT);
             httpURLConnection.setRequestMethod("POST");
@@ -78,7 +79,7 @@ public class NetworkUtils {
 
         //Get result from server
         try {
-            int response_code = httpURLConnection.getResponseCode();
+            int response_code = Objects.requireNonNull(httpURLConnection).getResponseCode();
 
             // Check if successful connection made
             if (response_code == HttpURLConnection.HTTP_OK) {
@@ -96,7 +97,7 @@ public class NetworkUtils {
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            httpURLConnection.disconnect();
+            Objects.requireNonNull(httpURLConnection).disconnect();
             Log.i(TAG, "HttpURLConnection closed successfully");
         }
         Log.i(TAG, "Levels successfully downloaded from server");
@@ -117,7 +118,7 @@ public class NetworkUtils {
     public static String executeHttpPost(String numbers, String userTime) {
 
         HttpURLConnection httpURLConnection = null;
-        URL url = null;
+        URL url;
 
         try {
 
@@ -153,14 +154,12 @@ public class NetworkUtils {
             os.close();
             httpURLConnection.connect();
             Log.i(TAG, "HttpURLConnection connected successfully");
-        } catch (MalformedURLException e) {
+        } catch (IOException e) {
             e.printStackTrace();
-        } catch (IOException e1) {
-            e1.printStackTrace();
         }
 
         try {
-            int response_code = httpURLConnection.getResponseCode();
+            int response_code = Objects.requireNonNull(httpURLConnection).getResponseCode();
 
             // Check if successful connection made
             if (response_code == HttpURLConnection.HTTP_OK) {
@@ -176,7 +175,7 @@ public class NetworkUtils {
             e.printStackTrace();
             return "exception";
         } finally {
-            httpURLConnection.disconnect();
+            Objects.requireNonNull(httpURLConnection).disconnect();
         }
 
 

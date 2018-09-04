@@ -13,7 +13,7 @@ import static nl.limakajo.numbers.utils.GameUtils.GameState.GAME_STATE;
 
 public class MenuScene implements SceneInterface {
 
-    private SceneManager sceneManager;
+    private final SceneManager sceneManager;
     private MenuLayout menuLayout;
 
     MenuScene(SceneManager sceneManager) {

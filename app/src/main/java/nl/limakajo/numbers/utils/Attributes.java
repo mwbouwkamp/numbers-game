@@ -58,7 +58,7 @@ public class Attributes {
             (int) (5.5 * (TILE_WIDTH) + 7 * MARGE),
             6   * (TILE_WIDTH) + 8 * MARGE};
     public static final int TILE_YCOORD = 3 * MARGE + GOAL_HEIGHT + TILE_WIDTH /2;
-    public static long TILE_ANIMATION_TIME = 500;
+    public static final long TILE_ANIMATION_TIME = 500;
     public enum TextAllignment {
         NOTCENTERED,
         XCENTERED,

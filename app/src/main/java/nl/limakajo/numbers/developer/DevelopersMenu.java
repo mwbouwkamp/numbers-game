@@ -18,23 +18,16 @@ import nl.limakajo.numbers.numbersgame.Player;
  */
 public class DevelopersMenu {
 
-    private final Context context;
-    private final Player player;
-    private final NumLivesThread checkNumberOfLivesThread;
-    private Button playButton;
-    private Button addButton;
-    private EditText averageUserTimeText;
-    private EditText numLivesText;
-    private EditText lastCheckNumLivesText;
+    private final EditText numLivesText;
+    private final EditText lastCheckNumLivesText;
 
     public DevelopersMenu(final Context context, final Player player, final NumLivesThread checkNumberOfLivesThread) {
-        this.context = context;
-        this.player = player;
-        this.checkNumberOfLivesThread = checkNumberOfLivesThread;
+        Player player1 = player;
+        NumLivesThread checkNumberOfLivesThread1 = checkNumberOfLivesThread;
         final Activity activity = (Activity)context;
         activity.setContentView(R.layout.menu);
 
-        playButton = (Button) activity.findViewById(R.id.play);
+        Button playButton = (Button) activity.findViewById(R.id.play);
         playButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -43,7 +36,7 @@ public class DevelopersMenu {
             }
         });
 
-        addButton = (Button) activity.findViewById(R.id.add);
+        Button addButton = (Button) activity.findViewById(R.id.add);
         addButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -53,7 +46,7 @@ public class DevelopersMenu {
         });
 
         //EditText
-        averageUserTimeText = (EditText) activity.findViewById(R.id.userAverageTime);
+        EditText averageUserTimeText = (EditText) activity.findViewById(R.id.userAverageTime);
         averageUserTimeText.setText(Integer.toString(Math.round(player.getUserAverageTime() / 1000)));
         numLivesText = (EditText) activity.findViewById(R.id.userNumLives);
         numLivesText.setText(Integer.toString(player.getNumLives()));
@@ -83,6 +76,7 @@ public class DevelopersMenu {
                     }
                 }
                 catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
             }
         };

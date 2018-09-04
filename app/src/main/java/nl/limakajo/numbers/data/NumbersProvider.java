@@ -7,8 +7,12 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
+
+import java.util.Arrays;
+import java.util.Objects;
 
 /**
  * NumbersProvider Class
@@ -49,9 +53,9 @@ public class NumbersProvider extends ContentProvider {
     }
 
     @Override
-    public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
+    public Cursor query(@NonNull Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         SQLiteDatabase db = numbersDBHelper.getReadableDatabase();
-        Cursor cursorToReturn = null;
+        Cursor cursorToReturn;
         switch (sUriMatcher.match(uri)) {
             case CODE_LEVELS: {
                 cursorToReturn = db.query(NumbersContract.TableLevels.TABLE_NAME,
@@ -98,15 +102,15 @@ public class NumbersProvider extends ContentProvider {
             default:
                 throw new UnsupportedOperationException("Unsupported Uri: " + uri);
         }
-        cursorToReturn.setNotificationUri(getContext().getContentResolver(), uri);
+        cursorToReturn.setNotificationUri(Objects.requireNonNull(getContext()).getContentResolver(), uri);
         Log.i(TAG, "Query successfull, resulting in: " + cursorToReturn);
         return cursorToReturn;
     }
 
     @Override
-    public Uri insert(Uri uri, ContentValues values) {
+    public Uri insert(@NonNull Uri uri, ContentValues values) {
         SQLiteDatabase db = numbersDBHelper.getWritableDatabase();
-        Uri uriToReturn = null;
+        Uri uriToReturn;
         switch (sUriMatcher.match(uri)) {
             case CODE_LEVELS: {
                 long id = db.insert(NumbersContract.TableLevels.TABLE_NAME, null, values);
@@ -129,13 +133,13 @@ public class NumbersProvider extends ContentProvider {
             default:
                 throw new UnsupportedOperationException("Unsupported Uri: " + uri);
         }
-        getContext().getContentResolver().notifyChange(uriToReturn, null);
+        Objects.requireNonNull(getContext()).getContentResolver().notifyChange(uriToReturn, null);
         Log.i(TAG, "Insert successfull, resulting in: " + uriToReturn);
         return uriToReturn;
     }
 
     @Override
-    public int bulkInsert(Uri uri, ContentValues[] values) {
+    public int bulkInsert(@NonNull Uri uri, @NonNull ContentValues[] values) {
         SQLiteDatabase db = numbersDBHelper.getWritableDatabase();
         switch (sUriMatcher.match(uri)) {
             case CODE_LEVELS: {
@@ -153,7 +157,7 @@ public class NumbersProvider extends ContentProvider {
                     db.endTransaction();
                 }
                 if (rowsInserted > 0) {
-                    getContext().getContentResolver().notifyChange(uri, null);
+                    Objects.requireNonNull(getContext()).getContentResolver().notifyChange(uri, null);
                 }
                 Log.i(TAG, "BulkInsert successfull, inserted : " + rowsInserted);
                 return rowsInserted;
@@ -173,21 +177,21 @@ public class NumbersProvider extends ContentProvider {
                     db.endTransaction();
                 }
                 if (rowsInserted > 0) {
-                    getContext().getContentResolver().notifyChange(uri, null);
+                    Objects.requireNonNull(getContext()).getContentResolver().notifyChange(uri, null);
                 }
                 Log.i(TAG, "BulkInsert successfull, inserted : " + rowsInserted);
                 return rowsInserted;
             }
             default:
-                Log.i(TAG, "Default bulkInsert : " + uri + " " + values);
+                Log.i(TAG, "Default bulkInsert : " + uri + " " + Arrays.toString(values));
                 return super.bulkInsert(uri, values);
         }
     }
 
     @Override
-    public int delete(Uri uri, String selection, String[] selectionArgs) {
+    public int delete(@NonNull Uri uri, String selection, String[] selectionArgs) {
         SQLiteDatabase db = numbersDBHelper.getWritableDatabase();
-        int numRowsDeleted = 0;
+        int numRowsDeleted;
         switch (sUriMatcher.match(uri)) {
             case (CODE_LEVELS): {
             /*
@@ -235,15 +239,15 @@ public class NumbersProvider extends ContentProvider {
                 throw new UnsupportedOperationException("Unsupported Uri: " + uri);
         }
         if (numRowsDeleted > 0) {
-            getContext().getContentResolver().notifyChange(uri, null);
+            Objects.requireNonNull(getContext()).getContentResolver().notifyChange(uri, null);
         }
         Log.i(TAG, "Delete successfull, deleted: " + numRowsDeleted);
         return numRowsDeleted ;
     }
 
     @Override
-    public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-        int numUpdated = 0;
+    public int update(@NonNull Uri uri, ContentValues values, String selection, String[] selectionArgs) {
+        int numUpdated;
         SQLiteDatabase db = numbersDBHelper.getWritableDatabase();
         switch (sUriMatcher.match(uri)) {
             case CODE_LEVELS: {
@@ -281,14 +285,14 @@ public class NumbersProvider extends ContentProvider {
             }
         }
         if (numUpdated > 0) {
-            getContext().getContentResolver().notifyChange(uri, null);
+            Objects.requireNonNull(getContext()).getContentResolver().notifyChange(uri, null);
         }
         Log.i(TAG, "Update successfull, updated: " + numUpdated);
         return numUpdated;
     }
 
     @Override
-    public String getType(Uri uri) {
+    public String getType(@NonNull Uri uri) {
         return null;
     }
 
@@ -310,7 +314,7 @@ public class NumbersProvider extends ContentProvider {
 
     /**
      * Checks if level is of format 001002003004005006007008
-     * @param level
+     * @param level level
      * @return true if level has the correct format
      */
     private boolean isValidLevel(String level) {

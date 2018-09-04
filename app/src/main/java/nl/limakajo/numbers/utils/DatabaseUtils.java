@@ -6,11 +6,11 @@ import android.database.Cursor;
 import android.net.Uri;
 
 import nl.limakajo.numbers.data.NumbersContract;
-import nl.limakajo.numbers.data.NumbersProvider;
 import nl.limakajo.numbers.main.MainActivity;
 import nl.limakajo.numbers.numbersgame.Level;
 
 import java.util.LinkedList;
+import java.util.Objects;
 
 /**
  * @author M.W.Bouwkamp
@@ -21,8 +21,8 @@ public class DatabaseUtils {
     /**
      * Retrieves all levels from SQLite database
      *
-     * @param context
-     * @return levels
+     * @param context context
+     * @return levels levels
      */
     public static LinkedList<Level> getLevels(Context context) {
         String[] projection = {
@@ -30,8 +30,7 @@ public class DatabaseUtils {
                 NumbersContract.TableLevels.KEY_USER_TIME };
         Cursor cursor = context.getContentResolver().query(NumbersContract.TableLevels.BASE_CONTENT_URI_LEVELS, projection, null, null, null, null);
         String numbersString;
-        LinkedList<Level> levels = new LinkedList<Level>();
-        int averageTime;
+        LinkedList<Level> levels = new LinkedList<>();
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 numbersString = cursor.getString(cursor.getColumnIndex(NumbersContract.TableLevels.KEY_NUMBERS));
@@ -51,7 +50,7 @@ public class DatabaseUtils {
     /**
      * Retrieves all completed levels from SQLite database
      *
-     * @param context
+     * @param context context
      * @return completed levels
      */
     public static LinkedList<Level> getCompletedLevels(Context context) {
@@ -60,9 +59,8 @@ public class DatabaseUtils {
                 NumbersContract.TableCompletedLevels.KEY_USER_TIME };
         Cursor cursor = context.getContentResolver().query(NumbersContract.TableCompletedLevels.BASE_CONTENT_URI_COMPLETED_LEVELS, projection, null, null, null, null);
         String numbersString;
-        LinkedList<Level> levels = new LinkedList<Level>();
-        int averageTime;
-        if (cursor.moveToFirst()){
+        LinkedList<Level> levels = new LinkedList<>();
+        if (Objects.requireNonNull(cursor).moveToFirst()){
             numbersString = cursor.getString(cursor.getColumnIndex(NumbersContract.TableCompletedLevels.KEY_NUMBERS));
             int userTime= Integer.parseInt(cursor.getString(cursor.getColumnIndex(NumbersContract.TableCompletedLevels.KEY_USER_TIME)));
             levels.add(new Level(numbersString, 0, userTime));
@@ -79,8 +77,8 @@ public class DatabaseUtils {
     /**
      * Updates levels in SQLite database
      *
-     * @param context
-     * @param levels
+     * @param context context
+     * @param levels levels
      */
     public static void setLevels(Context context, LinkedList<Level> levels) {
         String selection = NumbersContract.TableLevels.KEY_NUMBERS + " = ?";
@@ -101,7 +99,7 @@ public class DatabaseUtils {
 
     /**
      * Calculates and returns the averageTime it takes the user to complete levels
-     * @param context
+     * @param context context
      * @return averageTime
      */
     public static int getAverageTime(Context context) {
@@ -124,9 +122,9 @@ public class DatabaseUtils {
 
     /**
      * Updates userTime for a level in table levels in SQLite database
-     * @param context
-     * @param level
-     * @param userTime
+     * @param context context
+     * @param level level
+     * @param userTime userTime
      */
     public static void updateTableLevelsUserTime(Context context, Level level, int userTime) {
         String selection = NumbersContract.TableLevels.KEY_NUMBERS + " = ?";

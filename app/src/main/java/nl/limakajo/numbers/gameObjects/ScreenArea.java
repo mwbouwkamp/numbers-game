@@ -13,8 +13,8 @@ import android.graphics.Rect;
 
 public class ScreenArea implements GameObject {
 
-    private Rect rect;
-    private Paint paint;
+    private final Rect rect;
+    private final Paint paint;
 
     public ScreenArea(Rect rect, Paint paint) {
         this.rect = rect;

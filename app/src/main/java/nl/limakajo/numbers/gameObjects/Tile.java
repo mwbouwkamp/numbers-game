@@ -5,7 +5,6 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
 
-import nl.limakajo.numbers.main.MainThread;
 import nl.limakajo.numbers.utils.Attributes;
 import nl.limakajo.numbers.utils.GameUtils;
 
@@ -20,13 +19,13 @@ import java.util.LinkedList;
 
 public class Tile implements GameObject {
 
-	private int number;
-	private Tile[] composition;
+	private final int number;
+	private final Tile[] composition;
 	private Point originalPosition;
 	private Point currentPosition;
-	private int color;
-	private int colorIndex;
-	private Paint paint;
+	private final int color;
+	private final int colorIndex;
+	private final Paint paint;
 	private boolean animating;
 	private long animationStart;
 	private int animateXInit;

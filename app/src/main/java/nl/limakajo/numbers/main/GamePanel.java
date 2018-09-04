@@ -15,14 +15,12 @@ import nl.limakajo.numbers.scenes.SceneManager;
 
 public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
-    private Context ctx;
     private MainThread thread;
 
-    private SceneManager sceneManager;
+    private final SceneManager sceneManager;
 
     public GamePanel(Context context) {
         super(context);
-        this.ctx = context;
         getHolder().addCallback(this);
 
         sceneManager = new SceneManager();
@@ -44,7 +42,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
         boolean retry = true;
-        while (true) {
+        while (retry) {
             try {
                 thread.setRunning(false);
                 thread.join();

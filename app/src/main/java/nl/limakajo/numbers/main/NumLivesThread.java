@@ -14,9 +14,9 @@ import java.util.Date;
  */
 public class NumLivesThread extends Thread {
 
-	private SharedPreferences prefs;
-	private Context context;
-	private Player player;
+	private final SharedPreferences prefs;
+	private final Context context;
+	private final Player player;
 	private Date lastCheckNumLives;
 
 	public NumLivesThread(Context context, Player player) {
@@ -44,8 +44,8 @@ public class NumLivesThread extends Thread {
 			if (player.getNumLives() == GameUtils.MAX_NUMLIVES) {
 				lastCheckNumLives = new Date();
 			}
-			prefs.edit().putLong(context.getString(R.string.prefs_last_update_number_of_lifes_key), lastCheckNumLives.getTime()).commit();
-			prefs.edit().putInt(context.getString(R.string.prefs_number_of_lives_key), player.getNumLives()).commit();
+			prefs.edit().putLong(context.getString(R.string.prefs_last_update_number_of_lifes_key), lastCheckNumLives.getTime()).apply();
+			prefs.edit().putInt(context.getString(R.string.prefs_number_of_lives_key), player.getNumLives()).apply();
 		}
 	}
 

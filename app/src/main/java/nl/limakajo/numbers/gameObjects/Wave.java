@@ -16,13 +16,11 @@ import nl.limakajo.numbers.utils.Attributes;
  */
 public class Wave implements GameObject {
 
-	private Point position;
+	private final Point position;
 	private float radius;
-	private Paint paint;
-	private int alpha;
-	private int stroke;
-	private long animationStart;
-	private int animateTime;
+	private final Paint paint;
+	private final long animationStart;
+	private final int animateTime;
 	private volatile boolean animating;
 	
 	/**
@@ -57,8 +55,8 @@ public class Wave implements GameObject {
 		float timePassed  = (System.nanoTime() - animationStart) / 1000000;
 		float factor = timePassed /(float) (animateTime);
 		radius = (int) (500 * factor + Attributes.TILE_WIDTH * (1-factor) / 2);
-		alpha = (int) (Attributes.WAVE_ALPHA_START * (1-factor));
-		stroke = (int) (Attributes.WAVE_STROKE_START + (factor) * (Attributes.WAVE_STROKE_END - Attributes.WAVE_STROKE_START));
+		int alpha = (int) (Attributes.WAVE_ALPHA_START * (1 - factor));
+		int stroke = (int) (Attributes.WAVE_STROKE_START + (factor) * (Attributes.WAVE_STROKE_END - Attributes.WAVE_STROKE_START));
 		paint.setStrokeWidth(stroke);
 		paint.setARGB(alpha, Attributes.WAVE_RED, Attributes.WAVE_GREEN, Attributes.WAVE_BLUE);
 		if (timePassed >= animateTime) {

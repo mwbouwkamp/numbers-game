@@ -1,9 +1,9 @@
 <resources>
     <string name="app_name">Numbers</string>
 
-    <!-- Strings for SyncAdapter -->
-    <string name="sync_account_type">numbers.limakajo.nl</string>
-    <string name="content_authority">nl.limakajo.numbers</string>
+    <!--&lt;!&ndash; Strings for SyncAdapter &ndash;&gt;-->
+    <!--<string name="sync_account_type">numbers.limakajo.nl</string>-->
+    <!--<string name="content_authority">nl.limakajo.numbers</string>-->
 
     <!-- Strings to be displayed in MenuLayout -->
     <string name="menu_start_text">NUMBERS</string>

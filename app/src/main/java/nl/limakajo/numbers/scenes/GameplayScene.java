@@ -21,6 +21,7 @@ import nl.limakajo.numbers.utils.GameUtils;
 import java.util.ConcurrentModificationException;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 import static nl.limakajo.numbers.utils.GameUtils.GameState.GAME_OVER_STATE;
 import static nl.limakajo.numbers.utils.GameUtils.GameState.GAME_STATE;
@@ -48,7 +49,7 @@ public class GameplayScene implements SceneInterface {
 
     private GamePlayLayout gamePlayLayout;
 
-    private SceneManager sceneManager;
+    private final SceneManager sceneManager;
 
     GameplayScene(SceneManager sceneManager) {
         this.sceneManager = sceneManager;
@@ -114,36 +115,38 @@ public class GameplayScene implements SceneInterface {
 
     @Override
     public void update() {
-        if (state == GAME_STATE) {
-            try {
-                int i = 0;
-                for (Tile tile: tilesOnShelf) {
-                    tile.setOriginalPosition(i);
-                    if (tile.getCurrentPosition().x != tile.getOriginalPosition().x && tile != tilePressed) {
-                        tile.startAnimation();
+        switch (state) {
+            case GAME_STATE:
+                try {
+                    int i = 0;
+                    for (Tile tile : tilesOnShelf) {
+                        tile.setOriginalPosition(i);
+                        if (tile.getCurrentPosition().x != tile.getOriginalPosition().x && tile != tilePressed) {
+                            tile.startAnimation();
+                        }
+                        i++;
+                        tile.update();
                     }
-                    i++;
-                    tile.update();
+                } catch (ConcurrentModificationException | NoSuchElementException | NullPointerException e) {
+                    e.printStackTrace();
                 }
-            } catch (ConcurrentModificationException | NoSuchElementException | NullPointerException e) {
-                e.printStackTrace();
-            }
-            try {
-                for (Wave wave: waves) {
-                    wave.update();
-                    if (!wave.animates()) {
-                        waves.remove(wave);
+                try {
+                    for (Wave wave : waves) {
+                        wave.update();
+                        if (!wave.animates()) {
+                            waves.remove(wave);
+                        }
                     }
+                } catch (ConcurrentModificationException | NoSuchElementException | NullPointerException e) {
+                    e.printStackTrace();
                 }
-            } catch (ConcurrentModificationException | NoSuchElementException | NullPointerException e) {
-                e.printStackTrace();
-            }
-        }
-        else if (state == GameUtils.GameState.GAME_OVER_STATE) {
-            sceneManager.setScene(GAME_OVER_STATE.toString());
-        }
-        else if (state == GameUtils.GameState.LEVEL_COMPLETE_STATE) {
-            sceneManager.setScene(LEVEL_COMPLETE_STATE.toString());
+                break;
+            case GAME_OVER_STATE:
+                sceneManager.setScene(GAME_OVER_STATE.toString());
+                break;
+            case LEVEL_COMPLETE_STATE:
+                sceneManager.setScene(LEVEL_COMPLETE_STATE.toString());
+                break;
         }
     }
 
@@ -201,7 +204,7 @@ public class GameplayScene implements SceneInterface {
     public boolean isNetworkAvailable(Context ctx)
     {
         ConnectivityManager cm = (ConnectivityManager)ctx.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        NetworkInfo netInfo = Objects.requireNonNull(cm).getActiveNetworkInfo();
         if (netInfo != null && netInfo.isConnectedOrConnecting()&& cm.getActiveNetworkInfo().isAvailable()&& cm.getActiveNetworkInfo().isConnected())
         {
             return true;
@@ -219,30 +222,35 @@ public class GameplayScene implements SceneInterface {
      */
     private void calculate(char operator) {
         int newValue = 0;
-        if (operator == '+') {
-            newValue = firstTile.getNumber() + secondTile.getNumber();
-        } else if (operator == '-') {
-            if (firstTile.getNumber() >= secondTile.getNumber()) {
-                newValue = firstTile.getNumber() - secondTile.getNumber();
-            } else {
-                statusBarText = "Results in negative integer";
-                firstTile.toShelf(tilesOnShelf);
-                secondTile.toShelf(tilesOnShelf);
-                firstTile = null;
-                secondTile = null;
-            }
-        } else if (operator == '*') {
-            newValue = firstTile.getNumber() * secondTile.getNumber();
-        } else if (operator == '/') {
-            if (firstTile.getNumber() % secondTile.getNumber() == 0) {
-                newValue = firstTile.getNumber() / secondTile.getNumber();
-            } else {
-                statusBarText = "Results in non-integer";
-                firstTile.toShelf(tilesOnShelf);
-                secondTile.toShelf(tilesOnShelf);
-                firstTile = null;
-                secondTile = null;
-            }
+        switch (operator) {
+            case '+':
+                newValue = firstTile.getNumber() + secondTile.getNumber();
+                break;
+            case '-':
+                if (firstTile.getNumber() >= secondTile.getNumber()) {
+                    newValue = firstTile.getNumber() - secondTile.getNumber();
+                } else {
+                    statusBarText = "Results in negative integer";
+                    firstTile.toShelf(tilesOnShelf);
+                    secondTile.toShelf(tilesOnShelf);
+                    firstTile = null;
+                    secondTile = null;
+                }
+                break;
+            case '*':
+                newValue = firstTile.getNumber() * secondTile.getNumber();
+                break;
+            case '/':
+                if (firstTile.getNumber() % secondTile.getNumber() == 0) {
+                    newValue = firstTile.getNumber() / secondTile.getNumber();
+                } else {
+                    statusBarText = "Results in non-integer";
+                    firstTile.toShelf(tilesOnShelf);
+                    secondTile.toShelf(tilesOnShelf);
+                    firstTile = null;
+                    secondTile = null;
+                }
+                break;
         }
         if (newValue > 0) {
             Tile[] compositionNewTile = {firstTile, secondTile};

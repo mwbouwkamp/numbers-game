@@ -10,10 +10,10 @@ import nl.limakajo.numbers.utils.GameUtils;
 public class Level {
 
 	//	rep:
-	private int[] hand;
-	private int goal;
-	private int averageTime;
-	private int userTime;
+	private final int[] hand;
+	private final int goal;
+	private final int averageTime;
+	private final int userTime;
 
 	//	rep invariant:
 	//		size of hand is NumbersGame.NUMTILES
@@ -36,9 +36,7 @@ public class Level {
 	 */
 	public Level(int[] hand, int goal, int averageTime) {
 		this.hand = new int[GameUtils.NUMTILES];
-		for (int i = 0; i < GameUtils.NUMTILES; i++) {
-			this.hand[i] = hand[i];
-		}
+		System.arraycopy(hand, 0, this.hand, 0, GameUtils.NUMTILES);
 		this.goal = goal;
 		this.averageTime = averageTime;
 		this.userTime = 0;
@@ -120,12 +118,12 @@ public class Level {
 	 * @example: 001002003004005006007008 for seven tiles with values 1 - 7 and a goal of 8
 	 */
 	public String toString() {
-		String returnString = "";
+		StringBuilder returnString = new StringBuilder();
 		for (int i = 0; i < GameUtils.NUMTILES; i++) {
-			returnString += intToString(this.getHand()[i]);
+			returnString.append(intToString(this.getHand()[i]));
 		}
-		returnString += intToString(this.getGoal());
-		return returnString;
+		returnString.append(intToString(this.getGoal()));
+		return returnString.toString();
 	}
 
 	/**

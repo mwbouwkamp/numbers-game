@@ -14,7 +14,7 @@ import static nl.limakajo.numbers.utils.GameUtils.GameState.GAME_STATE;
 
 public class GameOverScene implements SceneInterface {
 
-    private SceneManager sceneManager;
+    private final SceneManager sceneManager;
 
     GameOverScene(SceneManager sceneManager) {
         this.sceneManager = sceneManager;

@@ -14,7 +14,7 @@ import static nl.limakajo.numbers.utils.GameUtils.GameState.GAME_STATE;
 
 public class LevelCompleteScene implements SceneInterface {
 
-    private SceneManager sceneManager;
+    private final SceneManager sceneManager;
 
     LevelCompleteScene(SceneManager sceneManager) {
         this.sceneManager = sceneManager;

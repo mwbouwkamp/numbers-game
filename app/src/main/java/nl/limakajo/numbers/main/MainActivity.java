@@ -40,7 +40,7 @@ public class MainActivity extends Activity {
 
 		//Setup activity
 		super.onCreate(savedInstanceState);
-		this.context = getApplicationContext();
+		context = getApplicationContext();
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
@@ -67,7 +67,7 @@ public class MainActivity extends Activity {
 		//Start the action. Developer mode or mormal mode
 		Boolean developer = true;
 		if (developer) {
-			DevelopersMenu developersMenu = new DevelopersMenu(this, player, numberOfLivesThread);
+			new DevelopersMenu(this, player, numberOfLivesThread);
 		}
 		else {
 			setContentView(new GamePanel(context));
@@ -103,7 +103,7 @@ public class MainActivity extends Activity {
 	 */
 	public void loadSharedPreferences() {
 	    // Get current version code of app
-	    int currentVersionCode = 0;
+	    int currentVersionCode;
 	    try {
 	        currentVersionCode = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionCode;
 	    } catch (android.content.pm.PackageManager.NameNotFoundException e) {
@@ -135,15 +135,15 @@ public class MainActivity extends Activity {
 	    }
 
 	    // Update the shared preferences
-	    prefs.edit().putInt(context.getString(R.string.prefs_version_code_key), currentVersionCode).commit();
-		prefs.edit().putInt(context.getString(R.string.prefs_number_of_lives_key), player.getNumLives()).commit();
-		prefs.edit().putLong(context.getString(R.string.prefs_last_update_number_of_lifes_key), player.getLastCheckNumLives().getTime()).commit();
+	    prefs.edit().putInt(context.getString(R.string.prefs_version_code_key), currentVersionCode).apply();
+		prefs.edit().putInt(context.getString(R.string.prefs_number_of_lives_key), player.getNumLives()).apply();
+		prefs.edit().putLong(context.getString(R.string.prefs_last_update_number_of_lifes_key), player.getLastCheckNumLives().getTime()).apply();
 	}
 
 	/**
 	 * updates Player based on saved data and elapsed time (add additional lives, if necessary)
 	 *
-	 * @param prefs
+	 * @param prefs prefs
 	 */
 	private void updatePlayer(SharedPreferences prefs) {
 		//retrieve initial data
@@ -173,16 +173,6 @@ public class MainActivity extends Activity {
         }
 	}
 
-	@Override
-	protected void onPause() {
-		super.onPause();
-	}
-
-	@Override
-	protected void onResume() {
-		super.onResume();
-	}
-
 	public static Player getPlayer() {
 		return player;
 	}
@@ -190,7 +180,6 @@ public class MainActivity extends Activity {
 	public static Device getDevice() {
 		return device;
 	}
-
 
 	public static Context getContext() {
 		return context;

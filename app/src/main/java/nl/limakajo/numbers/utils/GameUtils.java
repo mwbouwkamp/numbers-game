@@ -1,7 +1,5 @@
 package nl.limakajo.numbers.utils;
 
-import nl.limakajo.numbers.main.MainActivity;
-
 /**
  * @author M.W.Bouwkamp
  */
@@ -14,7 +12,6 @@ public class GameUtils {
     public static final long TIMER = 60000;
     public static final int TIMEPENALTY = 120000;
     public static final int NUMTILES = 6;
-    static final int[] NUMBERS = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 25, 50, 75, 100};
 
     //GameStates
     public enum GameState {

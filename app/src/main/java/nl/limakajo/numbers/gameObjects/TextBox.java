@@ -14,9 +14,9 @@ import nl.limakajo.numbers.utils.Attributes;
 public class TextBox implements GameObject {
 
     private String text;
-    private Attributes.TextAllignment alignment;
-    private Rect rect;
-    private Paint paint;
+    private final Attributes.TextAllignment alignment;
+    private final Rect rect;
+    private final Paint paint;
     private Point textPosition;
 
     public TextBox(String text, Attributes.TextAllignment alignment, Rect rect, Paint paint) {
@@ -42,18 +42,18 @@ public class TextBox implements GameObject {
         switch (alignment) {
             case XYCENTERED:
                 paint.setTextAlign(Paint.Align.CENTER);
-                textPosition.x = (int) (rect.left + rect.width() / 2);
-                textPosition.y = (int) (rect.top + rect.height() / 2 + bounds.height() / 2);
+                textPosition.x = rect.left + rect.width() / 2;
+                textPosition.y = rect.top + rect.height() / 2 + bounds.height() / 2;
                 break;
             case XCENTERED:
                 paint.setTextAlign(Paint.Align.CENTER);
-                textPosition.x = (int) (rect.left + rect.width() / 2);
+                textPosition.x = rect.left + rect.width() / 2;
                 textPosition.y = rect.top + Attributes.MARGE;
                 break;
             case YCENTERED:
                 paint.setTextAlign(Paint.Align.LEFT);
                 textPosition.x = rect.left + Attributes.MARGE;
-                textPosition.y = (int) (rect.top + rect.height() / 2 + bounds.height() / 2);
+                textPosition.y = rect.top + rect.height() / 2 + bounds.height() / 2;
                 break;
             default:
                 paint.setTextAlign(Paint.Align.LEFT);
@@ -70,9 +70,5 @@ public class TextBox implements GameObject {
     @Override
     public void update() {
 
-    }
-
-    public void update(String text) {
-        this.text = text;
     }
 }

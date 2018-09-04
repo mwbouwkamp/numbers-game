@@ -8,7 +8,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.test.ProviderTestCase2;
 
-import static org.junit.Assert.*;
+import java.util.Objects;
 
 /**
  * Created by mwbou on 30-12-2017.
@@ -16,7 +16,6 @@ import static org.junit.Assert.*;
 public class NumbersProviderTest extends ProviderTestCase2<NumbersProvider> {
 
 
-    private ContentResolver contentResolver;
     private ContentValues[] multipleLevels, multipleCompletedLevels;
     private ContentValues singleLevel, singleCompletedLevel;
 
@@ -26,7 +25,7 @@ public class NumbersProviderTest extends ProviderTestCase2<NumbersProvider> {
 
     protected void setUp() throws Exception {
         super.setUp();
-        contentResolver = getMockContentResolver();
+        ContentResolver contentResolver = getMockContentResolver();
         ContentValues level1 = new ContentValues();
         level1.put(NumbersContract.TableLevels.KEY_NUMBERS, "001002003004005006007008");
         level1.put(NumbersContract.TableLevels.KEY_AVERAGE_TIME, 10);
@@ -94,16 +93,16 @@ public class NumbersProviderTest extends ProviderTestCase2<NumbersProvider> {
 
         //Check query for all levels in TableLevels without selection
         Cursor result = contentProvider.query(NumbersContract.TableLevels.BASE_CONTENT_URI_LEVELS, null, null, null, null);
-        assertEquals("testQuery: Correct number of levels", 3, result.getCount());
+        assertEquals("testQuery: Correct number of levels", 3, Objects.requireNonNull(result).getCount());
         //Check query for all levels in TableLevels with userTime > 10
         result = contentProvider.query(NumbersContract.TableLevels.BASE_CONTENT_URI_LEVELS, null, NumbersContract.TableLevels.KEY_USER_TIME + " > ?", new String[] {"10"}, null);
-        assertEquals("testQuery: Correct number of levels", 2, result.getCount());
+        assertEquals("testQuery: Correct number of levels", 2, Objects.requireNonNull(result).getCount());
         //Check query for all levels in RecentlyCopletedTableLevels without selection
         result = contentProvider.query(NumbersContract.TableCompletedLevels.BASE_CONTENT_URI_COMPLETED_LEVELS, null, null, null, null);
-        assertEquals("testQuery: Correct number of levels", 3, result.getCount());
+        assertEquals("testQuery: Correct number of levels", 3, Objects.requireNonNull(result).getCount());
         //Check query for all levels in RecentlyCopletedTableLevels with userTime > 10
         result = contentProvider.query(NumbersContract.TableCompletedLevels.BASE_CONTENT_URI_COMPLETED_LEVELS, null, NumbersContract.TableLevels.KEY_USER_TIME + " > ?", new String[] {"10"}, null);
-        assertEquals("testQuery: Correct number of levels", 2, result.getCount());
+        assertEquals("testQuery: Correct number of levels", 2, Objects.requireNonNull(result).getCount());
 
         //Check query for specific level from TableLevels
         //existing level
@@ -111,28 +110,28 @@ public class NumbersProviderTest extends ProviderTestCase2<NumbersProvider> {
         String level = "002004006008010012014016";
         uri = uri.buildUpon().appendPath(level).build();
         result = contentProvider.query(uri, null, null, null, null);
-        result.moveToFirst();
+        Objects.requireNonNull(result).moveToFirst();
         assertEquals("testQuery: Correct level", level, result.getString(result.getColumnIndex(NumbersContract.TableLevels.KEY_NUMBERS)));
         //non-existing level
         level = "111222333444555666777888";
         uri = NumbersContract.TableLevels.BASE_CONTENT_URI_LEVELS;
         uri = uri.buildUpon().appendPath(level).build();
         result = contentProvider.query(uri, null, null, null, null);
-        assertEquals("testQuery: No levels found with invalid query", 0, result.getCount());
+        assertEquals("testQuery: No levels found with invalid query", 0, Objects.requireNonNull(result).getCount());
         //Check query for specific level from TableLevels
         //existing level
         uri = NumbersContract.TableCompletedLevels.BASE_CONTENT_URI_COMPLETED_LEVELS;
         level = "001002003004005006007008";
         uri = uri.buildUpon().appendPath(level).build();
         result = contentProvider.query(uri, null, null, null, null);
-        result.moveToFirst();
+        Objects.requireNonNull(result).moveToFirst();
         assertEquals("testQuery: Correct level", level, result.getString(result.getColumnIndex(NumbersContract.TableCompletedLevels.KEY_NUMBERS)));
         //non-existing level
         level = "111222333444555666777888";
         uri = NumbersContract.TableCompletedLevels.BASE_CONTENT_URI_COMPLETED_LEVELS;
         uri = uri.buildUpon().appendPath(level).build();
         result = contentProvider.query(uri, null, null, null, null);
-        assertEquals("testQuery: No levels found with invalid query", 0, result.getCount());
+        assertEquals("testQuery: No levels found with invalid query", 0, Objects.requireNonNull(result).getCount());
 
 
     }
@@ -149,7 +148,7 @@ public class NumbersProviderTest extends ProviderTestCase2<NumbersProvider> {
         int numDeleted = contentProvider.delete(uri, null, null);
         assertEquals("testDelete: Correct number of deleted levels", 1, numDeleted);
         Cursor result = contentProvider.query(NumbersContract.TableLevels.BASE_CONTENT_URI_LEVELS, null, null, null, null);
-        assertEquals("testDelete: correct number of levels left after delete", 2, result.getCount());
+        assertEquals("testDelete: correct number of levels left after delete", 2, Objects.requireNonNull(result).getCount());
         result.moveToFirst();
         String levelNumbers = result.getString(result.getColumnIndex(NumbersContract.TableLevels.KEY_NUMBERS));
         assertFalse("testDelete: deleted level not present", levelNumbers.equals(level));
@@ -164,7 +163,7 @@ public class NumbersProviderTest extends ProviderTestCase2<NumbersProvider> {
         numDeleted = contentProvider.delete(uri, null, null);
         assertEquals("testDelete: Correct number of deleted levels", 1, numDeleted);
         result = contentProvider.query(NumbersContract.TableCompletedLevels.BASE_CONTENT_URI_COMPLETED_LEVELS, null, null, null, null);
-        assertEquals("testDelete: correct number of levels left after delete", 2, result.getCount());
+        assertEquals("testDelete: correct number of levels left after delete", 2, Objects.requireNonNull(result).getCount());
         result.moveToFirst();
         levelNumbers = result.getString(result.getColumnIndex(NumbersContract.TableCompletedLevels.KEY_NUMBERS));
         assertFalse("testDelete: deleted level not present", levelNumbers.equals(level));
@@ -192,7 +191,7 @@ public class NumbersProviderTest extends ProviderTestCase2<NumbersProvider> {
         int numUpdated = contentProvider.update(NumbersContract.TableLevels.BASE_CONTENT_URI_LEVELS, contentValues, null, null);
         assertEquals("testUpdate: correct number updated", 3, numUpdated);
         Cursor result = contentProvider.query(NumbersContract.TableLevels.BASE_CONTENT_URI_LEVELS, null, null, null, null);
-        result.moveToFirst();
+        Objects.requireNonNull(result).moveToFirst();
         String userTime = result.getString(result.getColumnIndex(NumbersContract.TableLevels.KEY_USER_TIME));
         assertEquals("testUpdate: correct userTime", "99", userTime);
         while (result.moveToNext()) {
@@ -205,7 +204,7 @@ public class NumbersProviderTest extends ProviderTestCase2<NumbersProvider> {
         numUpdated = contentProvider.update(NumbersContract.TableCompletedLevels.BASE_CONTENT_URI_COMPLETED_LEVELS, contentValues, null, null);
         assertEquals("testUpdate: correct number updated", 3, numUpdated);
         result = contentProvider.query(NumbersContract.TableCompletedLevels.BASE_CONTENT_URI_COMPLETED_LEVELS, null, null, null, null);
-        result.moveToFirst();
+        Objects.requireNonNull(result).moveToFirst();
         userTime = result.getString(result.getColumnIndex(NumbersContract.TableCompletedLevels.KEY_USER_TIME));
         assertEquals("testUpdate: correct userTime", "99", userTime);
         while (result.moveToNext()) {
@@ -222,7 +221,7 @@ public class NumbersProviderTest extends ProviderTestCase2<NumbersProvider> {
         numUpdated = contentProvider.update(uri, contentValues, null, null);
         assertEquals("testUpdate: correct number updated", 1, numUpdated);
         result = contentProvider.query(uri, null, null, null, null);
-        result.moveToFirst();
+        Objects.requireNonNull(result).moveToFirst();
         assertEquals("testUpdate: correct userTime", "0", result.getString(result.getColumnIndex(NumbersContract.TableLevels.KEY_USER_TIME)));
         //Update single userTime in TableCompletedLevels
         contentValues = new ContentValues();
@@ -233,7 +232,7 @@ public class NumbersProviderTest extends ProviderTestCase2<NumbersProvider> {
         numUpdated = contentProvider.update(uri, contentValues, null, null);
         assertEquals("testUpdate: correct number updated", 1, numUpdated);
         result = contentProvider.query(uri, null, null, null, null);
-        result.moveToFirst();
+        Objects.requireNonNull(result).moveToFirst();
         assertEquals("testUpdate: correct userTime", "0", result.getString(result.getColumnIndex(NumbersContract.TableCompletedLevels.KEY_USER_TIME)));
     }
 

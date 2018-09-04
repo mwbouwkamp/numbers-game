@@ -1,15 +1,9 @@
 package nl.limakajo.numbers.data;
 
-import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-
-import nl.limakajo.numbers.numbersgame.Level;
-
-import java.util.LinkedList;
 
 /**
  * NumbersDBHelper
@@ -22,7 +16,7 @@ import java.util.LinkedList;
  * @author M.W.Bouwkamp
  *
  */
-public class NumbersDBHelper extends SQLiteOpenHelper {
+class NumbersDBHelper extends SQLiteOpenHelper {
 
 	//Database Name
     static final String DATABASE_NAME = "numbersgame";
@@ -31,16 +25,14 @@ public class NumbersDBHelper extends SQLiteOpenHelper {
 	static final int DATABASE_VERSION = 1;
 
 	//Logcat tag
-	private static final String TAG = NumbersDBHelper.class.getName();;
+	private static final String TAG = NumbersDBHelper.class.getName();
 
-	private Context context;
 	/**
 	 * Constructor
-	 * @param context
+	 * @param context context
 	 */
 	public NumbersDBHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
-		this.context = context;
 		Log.i(TAG, "Database created");
 	}
 

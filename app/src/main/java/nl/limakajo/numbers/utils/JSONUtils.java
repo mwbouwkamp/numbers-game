@@ -20,13 +20,13 @@ public class JSONUtils {
     private static final String AVERAGE_TIME = "averagetime";
 
     public static LinkedList<Level> getLevelsFromJson(String jsonString) {
-        LinkedList<Level> levels = new LinkedList<Level>();
+        LinkedList<Level> levels = new LinkedList<>();
         if (TextUtils.isEmpty(jsonString)) {
             return null;
         }
         try {
             JSONArray jsonArray = new JSONArray(jsonString);
-            levels = new LinkedList<Level>();
+            levels = new LinkedList<>();
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject object = jsonArray.getJSONObject(i);
                 String numbersString = object.getString(NUMBERS);
