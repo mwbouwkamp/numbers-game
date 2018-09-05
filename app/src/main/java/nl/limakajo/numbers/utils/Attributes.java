@@ -1,7 +1,12 @@
 package nl.limakajo.numbers.utils;
 
 import android.content.res.Resources;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.RadialGradient;
+import android.graphics.Shader;
 import android.graphics.Typeface;
+import android.support.annotation.NonNull;
 
 import nl.limakajo.numbers.R;
 import nl.limakajo.numbers.main.MainActivity;
@@ -20,24 +25,35 @@ public class Attributes {
     public static final int FOOTER_HEIGHT = 40;
 
     //Fonts
-    public static final Typeface TYPEFACE_CALIBRI = Typeface.createFromAsset(MainActivity.getContext().getAssets(), "fonts/Calibri.ttf");
-    public static final Typeface TYPEFACE_NUMBERSGAME = Typeface.createFromAsset(MainActivity.getContext().getAssets(), "fonts/NumbersFont.otf");
+    private static final Typeface TYPEFACE_CALIBRI = Typeface.createFromAsset(MainActivity.getContext().getAssets(), "fonts/Calibri.ttf");
+    private static final Typeface TYPEFACE_NUMBERSGAME = Typeface.createFromAsset(MainActivity.getContext().getAssets(), "fonts/NumbersFont.otf");
 
     //	GamePlayLayout Attributes
     public static final int BG_COLOR = RESOURCES.getColor(R.color.colorBackground);
-    public static final int GOAL_COLOR = RESOURCES.getColor(R.color.colorGoal);
-    public static final int FOOTER_COLOR = RESOURCES.getColor(R.color.colorFooter);
-    public static final int SHELF_COLOR = RESOURCES.getColor(R.color.colorShelf);
-    public static final int PLUS_COLOR = RESOURCES.getColor(R.color.colorPlus);
-    public static final int PLUS_COLOR_2 = RESOURCES.getColor(R.color.colorPlus2);
-    public static final int MIN_COLOR = RESOURCES.getColor(R.color.colorMin);
-    public static final int MIN_COLOR_2 = RESOURCES.getColor(R.color.colorMin2);
-    public static final int MULT_COLOR = RESOURCES.getColor(R.color.colorMult);
-    public static final int MULT_COLOR_2 = RESOURCES.getColor(R.color.colorMult2);
-    public static final int DIV_COLOR = RESOURCES.getColor(R.color.colorDiv);
-    public static final int DIV_COLOR_2 = RESOURCES.getColor(R.color.colorDiv2);
-    public static final int GAME_OVER_COLOR = RESOURCES.getColor(R.color.colorGameOver);
-    public static final int LEVEL_COMPLETE_COLOR = RESOURCES.getColor(R.color.colorLevelComplete);
+    private static final int GOAL_COLOR = RESOURCES.getColor(R.color.colorGoal);
+    private static final int PLUS_COLOR = RESOURCES.getColor(R.color.colorPlus);
+    private static final int PLUS_COLOR_2 = RESOURCES.getColor(R.color.colorPlus2);
+    private static final int MIN_COLOR = RESOURCES.getColor(R.color.colorMin);
+    private static final int MIN_COLOR_2 = RESOURCES.getColor(R.color.colorMin2);
+    private static final int MULT_COLOR = RESOURCES.getColor(R.color.colorMult);
+    private static final int MULT_COLOR_2 = RESOURCES.getColor(R.color.colorMult2);
+    private static final int DIV_COLOR = RESOURCES.getColor(R.color.colorDiv);
+    private static final int DIV_COLOR_2 = RESOURCES.getColor(R.color.colorDiv2);
+
+    public static final Paint BG_PAINT = getBackGroundPaint();
+    public static final Paint EMPTY_PAINT = new Paint();
+    public static final Paint TEXTBOX_LARGE_PAINT = getTextBoxLargeFontPaint();
+    public static final Paint TEXTBOX_SMALL_PAINT = getTextBoxSmallFontPaint();
+    public static final Paint TEXTBOX_NUMLIVES_PAINT = getTextBoxNumlivesPaint();
+    public static final Paint TEXT_BOX_OPERATOR_PAINT = getTextBoxOperatorPaint();
+    public static final Paint PLUS_PAINT = getPlusPaint();
+    public static final Paint PLUS_PAINT_2 = getPlus2Paint();
+    public static final Paint MIN_PAINT = getMinPaint();
+    public static final Paint MIN_PAINT_2 = getMin2Paint();
+    public static final Paint MULT_PAINT = getMultPaint();
+    public static final Paint MULT_PAINT_2 = getMult2Paint();
+    public static final Paint DIV_PAINT = getDivPaint();
+    public static final Paint DIV_PAINT_2 = getDiv2Paint();
 
     //Tile Attributes
     public static final int[] TILE_COLORS = {
@@ -74,4 +90,142 @@ public class Attributes {
     public static final int WAVE_STROKE_START = 3;
     public static final int WAVE_STROKE_END = 60;
     public static final int WAVE_ANIMATION_TIME = 300;
+
+    @NonNull
+    //TODO: Fix hardcoded text size
+    private static Paint getTextBoxLargeFontPaint() {
+        Paint paint = getStrokePaint();
+        paint.setTextSize(100);
+        paint.setTypeface(Attributes.TYPEFACE_CALIBRI);
+        paint.setColor(Attributes.GOAL_COLOR);
+        return paint;
+    }
+
+    @NonNull
+    //TODO: Fix hardcoded text size
+    private static Paint getTextBoxOperatorPaint() {
+        Paint paint = getStrokePaint();
+        paint.setTextSize(220);
+        paint.setTypeface(Attributes.TYPEFACE_NUMBERSGAME);
+        paint.setColor(Attributes.BG_COLOR);
+        paint.setStrokeWidth(7);
+        return paint;
+    }
+
+    @NonNull
+    //TODO: Fix hardcoded text size
+    private static Paint getTextBoxNumlivesPaint() {
+        Paint paint = getStrokePaint();
+        paint.setTextSize(80);
+        paint.setColor(Attributes.GOAL_COLOR);
+        paint.setTextSize(96);
+        paint.setTypeface(Attributes.TYPEFACE_NUMBERSGAME);
+        return paint;
+    }
+
+    @NonNull
+    //TODO: Fix hardcoded text size
+    private static Paint getTextBoxSmallFontPaint() {
+        Paint paint = getStrokePaint();
+        paint.setTextSize(32);
+        paint.setTypeface(Attributes.TYPEFACE_CALIBRI);
+        paint.setColor(Attributes.GOAL_COLOR);
+        return paint;
+    }
+
+    @NonNull
+    private static Paint getBackGroundPaint() {
+        Paint paint = getFillPaint();
+        paint.setColor(Attributes.BG_COLOR);
+        paint.setShader(new RadialGradient(MainActivity.getDevice().getWidth() / 2,
+                MainActivity.getDevice().getHeight() / 2,
+                Math.max(MainActivity.getDevice().getHeight(), MainActivity.getDevice().getWidth()),
+                new int[]{Attributes.BG_COLOR, Color.BLACK},
+                null,
+                Shader.TileMode.MIRROR));
+        return paint;
+    }
+
+    @NonNull
+    private static Paint getPlusPaint() {
+        Paint paint = getFillPaint();
+        paint.setColor(Attributes.PLUS_COLOR);
+        return paint;
+    }
+
+    @NonNull
+    private static Paint getPlus2Paint() {
+        Paint paint = getFillPaint();
+        paint.setColor(Attributes.PLUS_COLOR_2);
+        return paint;
+    }
+
+    @NonNull
+    private static Paint getMinPaint() {
+        Paint paint = getFillPaint();
+        paint.setColor(Attributes.MIN_COLOR);
+        return paint;
+    }
+
+    @NonNull
+    private static Paint getMin2Paint() {
+        Paint paint = getFillPaint();
+        paint.setColor(Attributes.MIN_COLOR_2);
+        return paint;
+    }
+
+    @NonNull
+    private static Paint getMultPaint() {
+        Paint paint = getFillPaint();
+        paint.setColor(Attributes.MULT_COLOR);
+        return paint;
+    }
+
+    @NonNull
+    private static Paint getMult2Paint() {
+        Paint paint = getFillPaint();
+        paint.setColor(Attributes.MULT_COLOR_2);
+        return paint;
+    }
+
+    @NonNull
+    private static Paint getDivPaint() {
+        Paint paint = getFillPaint();
+        paint.setColor(Attributes.DIV_COLOR);
+        return paint;
+    }
+
+    @NonNull
+    private static Paint getDiv2Paint() {
+        Paint paint = getFillPaint();
+        paint.setColor(Attributes.DIV_COLOR_2);
+        return paint;
+    }
+
+    @NonNull
+    private static Paint getFillPaint() {
+        Paint paint = new Paint();
+        paint.setAntiAlias(true);
+        paint.setDither(true);
+        paint.setStrokeJoin(Paint.Join.MITER);
+        paint.setStrokeCap(Paint.Cap.ROUND);
+        paint.setStrokeWidth(3);
+        paint.setAlpha(100);
+        paint.setStyle(Paint.Style.FILL);
+        return paint;
+    }
+
+    @NonNull
+    private static Paint getStrokePaint() {
+        Paint paint = new Paint();
+        paint.setAntiAlias(true);
+        paint.setDither(true);
+        paint.setStrokeJoin(Paint.Join.MITER);
+        paint.setStrokeCap(Paint.Cap.ROUND);
+        paint.setStrokeWidth(3);
+        paint.setAlpha(100);
+        paint.setStyle(Paint.Style.STROKE);
+        return paint;
+    }
+
 }

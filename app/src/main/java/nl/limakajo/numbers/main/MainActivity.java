@@ -65,7 +65,7 @@ public class MainActivity extends Activity {
 		numberOfLivesThread.start();
 
 		//Start the action. Developer mode or mormal mode
-		Boolean developer = true;
+		Boolean developer = false;
 		if (developer) {
 			new DevelopersMenu(this, player, numberOfLivesThread);
 		}

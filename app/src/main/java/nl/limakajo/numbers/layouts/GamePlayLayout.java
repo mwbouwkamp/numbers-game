@@ -1,11 +1,6 @@
 package nl.limakajo.numbers.layouts;
 
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.RadialGradient;
 import android.graphics.Rect;
-import android.graphics.Shader;
-import android.graphics.Typeface;
 
 import nl.limakajo.numbers.R;
 import nl.limakajo.numbers.gameObjects.ScreenArea;
@@ -26,216 +21,147 @@ public class GamePlayLayout extends Layout {
 	 * Constructor
 	 */
 	public GamePlayLayout() {
-		Paint paint = new Paint();
-		paint.setAntiAlias(true);
-		paint.setDither(true);
-		paint.setStyle(Paint.Style.STROKE);
-		paint.setStrokeJoin(Paint.Join.MITER);
-		paint.setStrokeCap(Paint.Cap.ROUND);
-		paint.setStrokeWidth(3);
-		paint.setAlpha(100);
-		paint.setStyle(Paint.Style.FILL);
-
-		paint.setColor(Attributes.BG_COLOR);
-		paint.setShader(new RadialGradient(MainActivity.getDevice().getWidth() / 2,
-				MainActivity.getDevice().getHeight() / 2,
-				Math.max(MainActivity.getDevice().getHeight(), MainActivity.getDevice().getWidth()),
-				new int[]{Attributes.BG_COLOR, Color.BLACK},
-				null,
-				Shader.TileMode.MIRROR));
 		ScreenArea fullscreen = new ScreenArea (
 				new Rect(
 						0,
 						0,
 						MainActivity.getDevice().getWidth(),
 						MainActivity.getDevice().getHeight()),
-				paint);
-		paint = new Paint();
-		paint.setAntiAlias(true);
-		paint.setDither(true);
-		paint.setStyle(Paint.Style.STROKE);
-		paint.setStrokeJoin(Paint.Join.MITER);
-		paint.setStrokeCap(Paint.Cap.ROUND);
-		paint.setStrokeWidth(3);
-		paint.setAlpha(100);
-		paint.setStyle(Paint.Style.FILL);
+				Attributes.BG_PAINT);
 		ScreenArea playArea = new ScreenArea (
 				new Rect(
 						Attributes.MARGE,
 						Attributes.MARGE,
 						MainActivity.getDevice().getWidth() - Attributes.MARGE,
 						MainActivity.getDevice().getHeight() - Attributes.MARGE),
-				paint);
+				Attributes.EMPTY_PAINT);
 		ScreenArea headerArea = new ScreenArea (
 				new Rect(
 						playArea.getArea().left,
 						playArea.getArea().top,
 						playArea.getArea().right,
 						playArea.getArea().top + Attributes.GOAL_HEIGHT),
-				paint);
+				Attributes.EMPTY_PAINT);
 		ScreenArea timerArea = new ScreenArea (
 				new Rect(
 						headerArea.getArea().left + (headerArea.getArea().width() - Attributes.GOAL_HEIGHT) / 2,
 						headerArea.getArea().top,
 						headerArea.getArea().left + (headerArea.getArea().width() + Attributes.GOAL_HEIGHT) / 2,
 						headerArea.getArea().bottom),
-				paint);
+				Attributes.EMPTY_PAINT);
 		ScreenArea footerArea = new ScreenArea(
 				new Rect(
 						playArea.getArea().left,
 						playArea.getArea().bottom - Attributes.FOOTER_HEIGHT,
 						playArea.getArea().right,
 						playArea.getArea().bottom),
-				paint
-				);
-		paint.setStyle(Paint.Style.STROKE);
-		paint.setTextSize(100);
-		Typeface typeface = Attributes.TYPEFACE_CALIBRI;
-		paint.setTypeface(typeface);
-		paint.setColor(Attributes.GOAL_COLOR);
+				Attributes.EMPTY_PAINT);
 		TextBox goalText = new TextBox(
 				MainActivity.getContext().getString(R.string.gameplay_empty_text),
 				Attributes.TextAllignment.XYCENTERED,
 				headerArea.getArea(),
-				paint);
-		paint.setColor(Attributes.FOOTER_COLOR);
-		paint.setTextSize(32);
+				Attributes.TEXTBOX_LARGE_PAINT);
 		TextBox footerText = new TextBox(
 				MainActivity.getContext().getString(R.string.gameplay_empty_text),
 				Attributes.TextAllignment.XYCENTERED,
 				footerArea.getArea(),
-				paint);
-		paint.setTextSize(96);
-		typeface = Attributes.TYPEFACE_NUMBERSGAME;
-		paint.setTypeface(typeface);
+				Attributes.TEXTBOX_SMALL_PAINT);
 		TextBox numLivesText = new TextBox(
 				//TODO: Here the actual number of lifes needs to be displayed. A (in this font) is a star
 				"A1",
 				Attributes.TextAllignment.YCENTERED,
 				footerText.getArea(),
-				paint
-		);
-		paint.setColor(Attributes.SHELF_COLOR);
+				Attributes.TEXTBOX_NUMLIVES_PAINT);
 		ScreenArea shelfArea = new ScreenArea(
 				new Rect(
 						playArea.getArea().left,
 						headerArea.getArea().bottom + Attributes.MARGE,
 						playArea.getArea().right,
 						(int) (headerArea.getArea().bottom + 2.0 * Attributes.MARGE + (playArea.getArea().right - playArea.getArea().left - Attributes.MARGE) / GameUtils.NUMTILES) - Attributes.MARGE),
-				paint);
+				Attributes.EMPTY_PAINT);
 		ScreenArea operatorsArea = new ScreenArea(
 				new Rect(
 						playArea.getArea().left,
 						shelfArea.getArea().bottom + Attributes.MARGE,
 						playArea.getArea().right,
 						footerText.getArea().top - Attributes.MARGE),
-				paint);
-		paint.setStyle(Paint.Style.FILL);
-		paint.setColor(Attributes.PLUS_COLOR);
+				Attributes.EMPTY_PAINT);
 		ScreenArea plusArea = new ScreenArea(
 				new Rect(
 						operatorsArea.getArea().left,
 						operatorsArea.getArea().top,
-						operatorsArea.getArea().width() / 2 - Attributes.MARGE / 2,
+						operatorsArea.getArea().width() / 2 + Attributes.MARGE / 2,
 						operatorsArea.getArea().top + operatorsArea.getArea().height() / 2 - Attributes.MARGE / 2),
-				paint);
-		paint.setColor(Attributes.PLUS_COLOR_2);
+				Attributes.PLUS_PAINT);
 		ScreenArea plusArea2 = new ScreenArea(
 				new Rect(
 						plusArea.getArea().left,
 						plusArea.getArea().top + 10 * (plusArea.getArea().bottom - plusArea.getArea().top)/11,
 						plusArea.getArea().right,
 						plusArea.getArea().bottom),
-				paint);
-		paint.setColor(Attributes.MIN_COLOR);
+				Attributes.PLUS_PAINT_2);
 		ScreenArea minArea = new ScreenArea(
 				new Rect(
 						plusArea.getArea().right + Attributes.MARGE,
 						operatorsArea.getArea().top,
 						operatorsArea.getArea().right,
 						plusArea.getArea().bottom),
-				paint);
-		paint.setColor(Attributes.MIN_COLOR_2);
+				Attributes.MIN_PAINT);
 		ScreenArea minArea2 = new ScreenArea(
 				new Rect(
 						minArea.getArea().left,
 						minArea.getArea().top + 10 * (minArea.getArea().bottom - minArea.getArea().top)/11,
 						minArea.getArea().right,
 						minArea.getArea().bottom),
-				paint);
-		paint.setColor(Attributes.MULT_COLOR);
+				Attributes.MIN_PAINT_2);
 		ScreenArea multArea = new ScreenArea(
 				new Rect(
 						plusArea.getArea().left,
 						plusArea.getArea().bottom + Attributes.MARGE,
 						plusArea.getArea().right,
 						operatorsArea.getArea().bottom),
-				paint);
-		paint.setColor(Attributes.MULT_COLOR_2);
+				Attributes.MULT_PAINT);
 		ScreenArea multArea2 = new ScreenArea(
 				new Rect(
 						multArea.getArea().left,
 						multArea.getArea().top + 10 * (multArea.getArea().bottom - multArea.getArea().top)/11,
 						multArea.getArea().right,
 						multArea.getArea().bottom),
-				paint);
-		paint.setColor(Attributes.DIV_COLOR);
+				Attributes.MULT_PAINT_2);
 		ScreenArea divArea = new ScreenArea(
 				new Rect(
 						minArea.getArea().left,
 						multArea.getArea().top,
 						minArea.getArea().right,
 						multArea.getArea().bottom),
-				paint);
-		paint.setColor(Attributes.DIV_COLOR_2);
+				Attributes.DIV_PAINT);
 		ScreenArea divArea2 = new ScreenArea(
 				new Rect(
 						divArea.getArea().left,
 						divArea.getArea().top + 10 * (divArea.getArea().bottom - divArea.getArea().top)/11,
 						divArea.getArea().right,
 						divArea.getArea().bottom),
-				paint);
-		paint.setTextSize(220);
-		paint.setStyle(Paint.Style.STROKE);
-		paint.setColor(Attributes.BG_COLOR);
-		paint.setStrokeWidth(7);
+				Attributes.DIV_PAINT_2);
 		TextBox plusText = new TextBox(
 				MainActivity.getContext().getString(R.string.gameplay_plus_sign),
 				Attributes.TextAllignment.XYCENTERED,
 				plusArea.getArea(),
-				paint);
+				Attributes.TEXT_BOX_OPERATOR_PAINT);
 		TextBox minText = new TextBox(
 				MainActivity.getContext().getString(R.string.gameplay_min_sign),
 				Attributes.TextAllignment.XYCENTERED,
 				minArea.getArea(),
-				paint);
+				Attributes.TEXT_BOX_OPERATOR_PAINT);
 		TextBox multText = new TextBox(
 				MainActivity.getContext().getString(R.string.gameplay_mult_sign),
 				Attributes.TextAllignment.XYCENTERED,
 				multArea.getArea(),
-				paint);
+				Attributes.TEXT_BOX_OPERATOR_PAINT);
 		TextBox divText = new TextBox(
 				MainActivity.getContext().getString(R.string.gameplay_div_sign),
 				Attributes.TextAllignment.XYCENTERED,
 				divArea.getArea(),
-				paint);
-
-		paint.setColor(Attributes.LEVEL_COMPLETE_COLOR);
-		ScreenArea levelcomplete = new ScreenArea(
-				new Rect(
-						0,
-						(playArea.getArea().top + playArea.getArea().bottom) / 2 - 200,
-						MainActivity.getDevice().getWidth(),
-						(playArea.getArea().top + playArea.getArea().bottom) / 2),
-				paint);
-		paint.setColor(Attributes.GAME_OVER_COLOR);
-		ScreenArea gameover = new ScreenArea(
-				new Rect(
-						0,
-						(playArea.getArea().top + playArea.getArea().bottom) / 2 - 200,
-						MainActivity.getDevice().getWidth(),
-						(playArea.getArea().top + playArea.getArea().bottom) / 2),
-				paint);
+				Attributes.TEXT_BOX_OPERATOR_PAINT);
 
 		screenAreas = new HashMap<>();
 		screenAreas.put("fullscreen", fullscreen);
@@ -252,8 +178,6 @@ public class GamePlayLayout extends Layout {
 		screenAreas.put("mult2", multArea2);
 		screenAreas.put("div", divArea);
 		screenAreas.put("div2", divArea2);
-		screenAreas.put("gameover", gameover);
-		screenAreas.put("levelcomplete", levelcomplete);
 
 		textBoxes = new HashMap<>();
 		textBoxes.put("goalText", goalText);
