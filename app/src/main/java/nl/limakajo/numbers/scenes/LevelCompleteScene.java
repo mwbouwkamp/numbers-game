@@ -6,6 +6,8 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.view.MotionEvent;
 
+import nl.limakajo.numbers.layouts.LevelCompleteLayout;
+
 import static nl.limakajo.numbers.utils.GameUtils.GameState.GAME_STATE;
 
 /**
@@ -15,14 +17,16 @@ import static nl.limakajo.numbers.utils.GameUtils.GameState.GAME_STATE;
 public class LevelCompleteScene implements SceneInterface {
 
     private final SceneManager sceneManager;
+    private LevelCompleteLayout levelCompleteLayout;
 
     LevelCompleteScene(SceneManager sceneManager) {
         this.sceneManager = sceneManager;
+        init();
     }
 
     @Override
     public void init() {
-
+        levelCompleteLayout = new LevelCompleteLayout();
     }
 
     @Override
@@ -32,12 +36,11 @@ public class LevelCompleteScene implements SceneInterface {
 
     @Override
     public void draw(Canvas canvas) {
-        Rect rect = new Rect(100,100,300,300);
-        Paint paint = new Paint();
-        paint.setStyle(Paint.Style.FILL);
-        paint.setColor(Color.GREEN);
-        canvas.drawRect(rect, paint);
-
+        levelCompleteLayout.getScreenAreas().get("blue").draw(canvas);
+        levelCompleteLayout.getScreenAreas().get("red").draw(canvas);
+        levelCompleteLayout.getScreenAreas().get("green").draw(canvas);
+        levelCompleteLayout.getScreenAreas().get("yellow").draw(canvas);
+        levelCompleteLayout.getTextBoxes().get("logotext").draw(canvas);
     }
 
     @Override

@@ -28,7 +28,7 @@ public class Attributes {
     private static final Typeface TYPEFACE_CALIBRI = Typeface.createFromAsset(MainActivity.getContext().getAssets(), "fonts/Calibri.ttf");
     private static final Typeface TYPEFACE_NUMBERSGAME = Typeface.createFromAsset(MainActivity.getContext().getAssets(), "fonts/NumbersFont.otf");
 
-    //	GamePlayLayout Attributes
+    //	Layout Attributes
     public static final int BG_COLOR = RESOURCES.getColor(R.color.colorBackground);
     private static final int GOAL_COLOR = RESOURCES.getColor(R.color.colorGoal);
     private static final int PLUS_COLOR = RESOURCES.getColor(R.color.colorPlus);
