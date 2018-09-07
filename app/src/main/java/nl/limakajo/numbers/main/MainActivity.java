@@ -13,6 +13,7 @@ import android.view.WindowManager;
 import nl.limakajo.numbers.R;
 import nl.limakajo.numbers.developer.DevelopersMenu;
 import nl.limakajo.numbers.numbersgame.Device;
+import nl.limakajo.numbers.numbersgame.Game;
 import nl.limakajo.numbers.numbersgame.Player;
 import nl.limakajo.numbers.sync.NumbersSyncIntentService;
 import nl.limakajo.numbers.sync.NumbersSyncTasks;
@@ -34,6 +35,7 @@ public class MainActivity extends Activity {
 	private static Context context;
 	private static Player player;
 	private static Device device;
+	private static Game game;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +54,9 @@ public class MainActivity extends Activity {
 		Point size = new Point();
 		display.getSize(size);
 		device = new Device(size);
+
+		//Create Game
+		game = new Game();
 
 		// launch services that take care of uploading levels if there are levels that need uploading and downloading levels to update local database
 		launchUploadService();
@@ -185,7 +190,9 @@ public class MainActivity extends Activity {
 		return context;
 	}
 
-
+	public static Game getGame() {
+		return game;
+	}
 
 
 

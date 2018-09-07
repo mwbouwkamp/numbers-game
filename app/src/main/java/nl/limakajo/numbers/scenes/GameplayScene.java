@@ -35,8 +35,6 @@ public class GameplayScene implements SceneInterface {
 
     private static GameUtils.GameState state;
 
-    private Level level;
-
     private Tile tilePressed, firstTile, secondTile;
     private boolean onShelf;
     private Point clickPosition;
@@ -53,7 +51,7 @@ public class GameplayScene implements SceneInterface {
 
     GameplayScene(SceneManager sceneManager) {
         this.sceneManager = sceneManager;
-        init();
+        gamePlayLayout = new GamePlayLayout();
     }
 
     /**
@@ -83,14 +81,13 @@ public class GameplayScene implements SceneInterface {
         statusBarText = "";
 
         //Construct a level and update the ScreenLayout goal accordingly
-        level = getLevel();
+        MainActivity.getGame().setLevel(getLevel());
         //TODO: After selecting a level, immediately set the usertime to the TIMEPENALTY, both in the table levels and completedlevels
-        gamePlayLayout = new GamePlayLayout();
         tilesOnShelf = new LinkedList<>();
         for (int i = 0; i < GameUtils.NUMTILES; i++) {
-            tilesOnShelf.add(new Tile(level.getHand()[i], i));
+            tilesOnShelf.add(new Tile(MainActivity.getGame().getLevel().getHand()[i], i));
         }
-        gamePlayLayout.getTextBox("goalText").setText(Integer.toString(level.getGoal()));
+        gamePlayLayout.getTextBox("goalText").setText(Integer.toString(MainActivity.getGame().getLevel().getGoal()));
     }
 
     /**
@@ -142,9 +139,11 @@ public class GameplayScene implements SceneInterface {
                 }
                 break;
             case GAME_OVER_STATE:
+                MainActivity.getGame().getLevel().setUserTime(GameUtils.TIMEPENALTY);
                 sceneManager.setScene(GAME_OVER_STATE.toString());
                 break;
             case LEVEL_COMPLETE_STATE:
+                MainActivity.getGame().getLevel().setUserTime((int)(System.currentTimeMillis() - startTime));
                 sceneManager.setScene(LEVEL_COMPLETE_STATE.toString());
                 break;
         }
@@ -205,14 +204,7 @@ public class GameplayScene implements SceneInterface {
     {
         ConnectivityManager cm = (ConnectivityManager)ctx.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = Objects.requireNonNull(cm).getActiveNetworkInfo();
-        if (netInfo != null && netInfo.isConnectedOrConnecting()&& cm.getActiveNetworkInfo().isAvailable()&& cm.getActiveNetworkInfo().isConnected())
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return netInfo != null && netInfo.isConnectedOrConnecting() && cm.getActiveNetworkInfo().isAvailable() && cm.getActiveNetworkInfo().isConnected();
     }
 
     /**
@@ -263,12 +255,12 @@ public class GameplayScene implements SceneInterface {
             numMult = 0;
             numDiv = 0;
             for (Tile tile: tilesOnShelf) {
-                if (tile.getNumber() == level.getGoal()) {
+                if (tile.getNumber() == MainActivity.getGame().getLevel().getGoal()) {
                     state = GameUtils.GameState.LEVEL_COMPLETE_STATE;
                     MainActivity.getPlayer().increaseNumLives();
                     int userTime = (int)(System.currentTimeMillis() - startTime);
-                    DatabaseUtils.updateTableLevelsUserTime(MainActivity.getContext(), level, userTime);
-                    DatabaseUtils.updateTableCompletedLevelsUserTime(MainActivity.getContext(), level, userTime);
+                    DatabaseUtils.updateTableLevelsUserTime(MainActivity.getContext(), MainActivity.getGame().getLevel(), userTime);
+                    DatabaseUtils.updateTableCompletedLevelsUserTime(MainActivity.getContext(), MainActivity.getGame().getLevel(), userTime);
                     MainActivity.launchDownloadService();
                     MainActivity.launchUploadService();
                 }
@@ -301,8 +293,8 @@ public class GameplayScene implements SceneInterface {
         //Changes GameState to gameover when  GameState is running and play time has elapsed
         if (state == GAME_STATE && System.currentTimeMillis() - startTime > GameUtils.TIMER){
             state = GameUtils.GameState.GAME_OVER_STATE;
-            DatabaseUtils.updateTableLevelsUserTime(MainActivity.getContext(), level, GameUtils.TIMEPENALTY);
-            DatabaseUtils.updateTableCompletedLevelsUserTime(MainActivity.getContext(), level, GameUtils.TIMEPENALTY);
+            DatabaseUtils.updateTableLevelsUserTime(MainActivity.getContext(), MainActivity.getGame().getLevel(), GameUtils.TIMEPENALTY);
+            DatabaseUtils.updateTableCompletedLevelsUserTime(MainActivity.getContext(), MainActivity.getGame().getLevel(), GameUtils.TIMEPENALTY);
             MainActivity.launchDownloadService();
             MainActivity.launchUploadService();
         }
@@ -319,14 +311,6 @@ public class GameplayScene implements SceneInterface {
         drawTiles(canvas);
         if (state == GAME_STATE) {
             drawTimerRound(canvas);
-        }
-        if (state == GameUtils.GameState.GAME_OVER_STATE) {
-            //TODO: Check if this needs to be reimplemented
-//            drawGameOver(canvas);
-        }
-        if (state == GameUtils.GameState.LEVEL_COMPLETE_STATE) {
-            //TODO: Check if this needs to be reimplemented
-//            drawLevelComplete(canvas);
         }
     }
 

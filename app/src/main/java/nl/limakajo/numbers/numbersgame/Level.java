@@ -13,7 +13,7 @@ public class Level {
 	private final int[] hand;
 	private final int goal;
 	private final int averageTime;
-	private final int userTime;
+	private int userTime;
 
 	//	rep invariant:
 	//		size of hand is NumbersGame.NUMTILES
@@ -145,4 +145,7 @@ public class Level {
 		return userTime;
 	}
 
+	public void setUserTime(int userTime) {
+		this.userTime = userTime;
+	}
 }

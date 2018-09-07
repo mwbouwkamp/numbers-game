@@ -27,8 +27,9 @@ public class SceneManager {
         return scenes.get(sceneType);
     }
 
-    public void setScene(String sceneType) {
-        this.activeScene = sceneType;
+    public void setScene(String sceneName) {
+        this.activeScene = sceneName;
+        scenes.get(sceneName).init();
 
     }
     public void recieveTouch(MotionEvent event) {

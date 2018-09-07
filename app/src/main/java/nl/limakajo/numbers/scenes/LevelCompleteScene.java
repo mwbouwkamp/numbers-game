@@ -7,6 +7,7 @@ import android.graphics.Rect;
 import android.view.MotionEvent;
 
 import nl.limakajo.numbers.layouts.LevelCompleteLayout;
+import nl.limakajo.numbers.main.MainActivity;
 
 import static nl.limakajo.numbers.utils.GameUtils.GameState.GAME_STATE;
 
@@ -21,12 +22,12 @@ public class LevelCompleteScene implements SceneInterface {
 
     LevelCompleteScene(SceneManager sceneManager) {
         this.sceneManager = sceneManager;
-        init();
+        levelCompleteLayout = new LevelCompleteLayout();
     }
 
     @Override
     public void init() {
-        levelCompleteLayout = new LevelCompleteLayout();
+        levelCompleteLayout.getTextBox("levelcompletetext").setText(Integer.toString(MainActivity.getGame().getLevel().getUserTime()));
     }
 
     @Override
@@ -40,7 +41,7 @@ public class LevelCompleteScene implements SceneInterface {
         levelCompleteLayout.getScreenAreas().get("red").draw(canvas);
         levelCompleteLayout.getScreenAreas().get("green").draw(canvas);
         levelCompleteLayout.getScreenAreas().get("yellow").draw(canvas);
-        levelCompleteLayout.getTextBoxes().get("logotext").draw(canvas);
+        levelCompleteLayout.getTextBoxes().get("levelcompletetext").draw(canvas);
     }
 
     @Override
