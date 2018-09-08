@@ -5,15 +5,19 @@
     <!--<string name="sync_account_type">numbers.limakajo.nl</string>-->
     <!--<string name="content_authority">nl.limakajo.numbers</string>-->
 
+    <!-- Strings to be displayed in Layouts -->
+    <string name="empty_text"> </string>
+    <string name="star">A</string>
+
     <!-- Strings to be displayed in MenuLayout -->
     <string name="menu_start_text">NUMBERS</string>
 
-    <!-- Strings to be displayed in GamePlayLayout -->
-    <string name="gameplay_empty_text"> </string>
+    <!-- Strings to be displayed in GameplayLayout -->
     <string name="gameplay_plus_sign">+</string>
     <string name="gameplay_min_sign">-</string>
     <string name="gameplay_mult_sign">*</string>
     <string name="gameplay_div_sign">/</string>
+
 
 
 </resources>

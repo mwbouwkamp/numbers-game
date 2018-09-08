@@ -37,11 +37,15 @@ public class LevelCompleteScene implements SceneInterface {
 
     @Override
     public void draw(Canvas canvas) {
+        levelCompleteLayout.getScreenAreas().get("fullscreen").draw(canvas);
         levelCompleteLayout.getScreenAreas().get("blue").draw(canvas);
         levelCompleteLayout.getScreenAreas().get("red").draw(canvas);
         levelCompleteLayout.getScreenAreas().get("green").draw(canvas);
         levelCompleteLayout.getScreenAreas().get("yellow").draw(canvas);
-        levelCompleteLayout.getTextBoxes().get("levelcompletetext").draw(canvas);
+        levelCompleteLayout.getTextBox("levelcompletetext").draw(canvas);
+        levelCompleteLayout.getTextBox("star1text").draw(canvas);
+        levelCompleteLayout.getTextBox("star2text").draw(canvas);
+        levelCompleteLayout.getTextBox("star3text").draw(canvas);
     }
 
     @Override

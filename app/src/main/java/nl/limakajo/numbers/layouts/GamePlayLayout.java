@@ -57,12 +57,12 @@ public class GamePlayLayout extends Layout {
 						playArea.getArea().bottom),
 				Attributes.EMPTY_PAINT);
 		TextBox goalText = new TextBox(
-				MainActivity.getContext().getString(R.string.gameplay_empty_text),
+				MainActivity.getContext().getString(R.string.empty_text),
 				Attributes.TextAllignment.XYCENTERED,
 				headerArea.getArea(),
 				Attributes.TEXTBOX_LARGE_PAINT);
 		TextBox footerText = new TextBox(
-				MainActivity.getContext().getString(R.string.gameplay_empty_text),
+				MainActivity.getContext().getString(R.string.empty_text),
 				Attributes.TextAllignment.XYCENTERED,
 				footerArea.getArea(),
 				Attributes.TEXTBOX_SMALL_PAINT);

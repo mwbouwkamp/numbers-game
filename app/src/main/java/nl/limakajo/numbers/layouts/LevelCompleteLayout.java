@@ -37,6 +37,34 @@ public class LevelCompleteLayout extends Layout {
                         fullscreen.getArea().right,
                         logoArea.getArea().bottom + 3 * Attributes.MARGE + 200),
                 Attributes.BG_PAINT);
+        ScreenArea starsArea = new ScreenArea(
+                new Rect(
+                        logoArea.getArea().left,
+                        levelCompleteTextArea.getArea().bottom + Attributes.MARGE,
+                        logoArea.getArea().right,
+                        levelCompleteTextArea.getArea().bottom + 6 * Attributes.MARGE),
+                Attributes.BG_PAINT);
+        ScreenArea starArea1 = new ScreenArea(
+                new Rect(
+                        starsArea.getArea().left,
+                        starsArea.getArea().top,
+                        starsArea.getArea().left + starsArea.getArea().width() / 3,
+                        starsArea.getArea().bottom),
+                Attributes.BG_PAINT);
+        ScreenArea starArea2 = new ScreenArea(
+                new Rect(
+                        starsArea.getArea().left + starsArea.getArea().width() / 3,
+                        starsArea.getArea().top,
+                        starsArea.getArea().left + 2 * starsArea.getArea().width() / 3,
+                        starsArea.getArea().bottom),
+                Attributes.BG_PAINT);
+        ScreenArea starArea3 = new ScreenArea(
+                new Rect(
+                        starsArea.getArea().left + 2 * starsArea.getArea().width() / 3,
+                        starsArea.getArea().top,
+                        starsArea.getArea().right,
+                        starsArea.getArea().bottom),
+                Attributes.BG_PAINT);
         ScreenArea blueArea = new ScreenArea(
                 new Rect(
                         logoArea.getArea().left,
@@ -70,19 +98,42 @@ public class LevelCompleteLayout extends Layout {
         screenAreas.put("fullscreen", fullscreen);
         screenAreas.put("logo", logoArea);
         screenAreas.put("levelcomplete", levelCompleteTextArea);
+        screenAreas.put("stars", starsArea);
+        screenAreas.put("star1", starArea1);
+        screenAreas.put("star2", starArea2);
+        screenAreas.put("star3", starArea3);
         screenAreas.put("blue", blueArea);
         screenAreas.put("red", redArea);
         screenAreas.put("green", greenArea);
         screenAreas.put("yellow", yellowArea);
 
         TextBox levelCompleteText = new TextBox(
-                MainActivity.getContext().getString(R.string.gameplay_empty_text),
+                MainActivity.getContext().getString(R.string.empty_text),
                 Attributes.TextAllignment.XYCENTERED,
                 levelCompleteTextArea.getArea(),
                 Attributes.TEXTBOX_LARGE_PAINT);
+        TextBox star1Text = new TextBox(
+                MainActivity.getContext().getString(R.string.star),
+                Attributes.TextAllignment.XYCENTERED,
+                starArea1.getArea(),
+                Attributes.TEXT_BOX_STARS_PAINT);
+        TextBox star2Text = new TextBox(
+                MainActivity.getContext().getString(R.string.star),
+                Attributes.TextAllignment.XYCENTERED,
+                starArea2.getArea(),
+                Attributes.TEXT_BOX_STARS_PAINT);
+        TextBox star3Text = new TextBox(
+                MainActivity.getContext().getString(R.string.star),
+                Attributes.TextAllignment.XYCENTERED,
+                starArea3.getArea(),
+                //TODO: temp paint used. To be removed once the animation of stars has been taken care of
+                Attributes.TEXT_BOX_STARS_PAINT_TEMP);
 
         textBoxes = new HashMap<>();
         textBoxes.put("levelcompletetext", levelCompleteText);
+        textBoxes.put("star1text", star1Text);
+        textBoxes.put("star2text", star2Text);
+        textBoxes.put("star3text", star3Text);
 
 
     }
