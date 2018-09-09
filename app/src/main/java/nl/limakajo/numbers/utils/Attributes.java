@@ -40,6 +40,7 @@ public class Attributes {
     private static final int DIV_COLOR = RESOURCES.getColor(R.color.colorDiv);
     private static final int DIV_COLOR_2 = RESOURCES.getColor(R.color.colorDiv2);
     private static final int STARS_COLOR = RESOURCES.getColor(R.color.colorDiv);
+    public static final int STARS_DARK_ALPHA = 40;
 
     public static final Paint BG_PAINT = getBackGroundPaint();
     public static final Paint EMPTY_PAINT = new Paint();
@@ -48,8 +49,6 @@ public class Attributes {
     public static final Paint TEXTBOX_NUMLIVES_PAINT = getTextBoxNumlivesPaint();
     public static final Paint TEXT_BOX_OPERATOR_PAINT = getTextBoxOperatorPaint();
     public static final Paint TEXT_BOX_STARS_PAINT = getTextBoxStarsPaint();
-    //TODO: Remove when stars animation has been taken care of
-    //public static final Paint TEXT_BOX_STARS_PAINT_TEMP = getTextBoxStarsPaintTemp();
     public static final Paint PLUS_PAINT = getPlusPaint();
     public static final Paint PLUS_PAINT_2 = getPlus2Paint();
     public static final Paint MIN_PAINT = getMinPaint();
@@ -95,6 +94,10 @@ public class Attributes {
     public static final int WAVE_STROKE_END = 60;
     public static final int WAVE_ANIMATION_TIME = 300;
 
+    //LevelCompleteScene Attributes
+    public static final long LEVELCOMPLETE_ANIMATION_TIME = 1000;
+    public static final long LEVELCOMPLETE_TIME_BETWEEN_ANIMATIONS = 900 / LEVELCOMPLETE_ANIMATION_TIME;
+
     @NonNull
     //TODO: Fix hardcoded text size
     private static Paint getTextBoxLargeFontPaint() {
@@ -124,19 +127,7 @@ public class Attributes {
         paint.setColor(Attributes.STARS_COLOR);
         paint.setTextSize(96);
         paint.setTypeface(Attributes.TYPEFACE_NUMBERSGAME);
-        return paint;
-    }
-
-    @NonNull
-    //TODO: Fix hardcoded text size
-    //TODO: Remove this once the animation of the stars has been taken care of
-    private static Paint getTextBoxStarsPaintTemp() {
-        Paint paint = getStrokePaint();
-        paint.setTextSize(80);
-        paint.setColor(Attributes.STARS_COLOR);
         paint.setAlpha(40);
-        paint.setTextSize(96);
-        paint.setTypeface(Attributes.TYPEFACE_NUMBERSGAME);
         return paint;
     }
 

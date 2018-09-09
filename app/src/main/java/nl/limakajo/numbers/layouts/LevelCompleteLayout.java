@@ -113,17 +113,17 @@ public class LevelCompleteLayout extends Layout {
                 levelCompleteTextArea.getArea(),
                 Attributes.TEXTBOX_LARGE_PAINT);
         TextBox star1Text = new TextBox(
-                MainActivity.getContext().getString(R.string.empty_text),
+                MainActivity.getContext().getString(R.string.star),
                 Attributes.TextAllignment.XYCENTERED,
                 starArea1.getArea(),
                 Attributes.TEXT_BOX_STARS_PAINT);
         TextBox star2Text = new TextBox(
-                MainActivity.getContext().getString(R.string.empty_text),
+                MainActivity.getContext().getString(R.string.star),
                 Attributes.TextAllignment.XYCENTERED,
                 starArea2.getArea(),
                 Attributes.TEXT_BOX_STARS_PAINT);
         TextBox star3Text = new TextBox(
-                MainActivity.getContext().getString(R.string.empty_text),
+                MainActivity.getContext().getString(R.string.star),
                 Attributes.TextAllignment.XYCENTERED,
                 starArea3.getArea(),
                 //TODO: temp paint used. To be removed once the animation of stars has been taken care of

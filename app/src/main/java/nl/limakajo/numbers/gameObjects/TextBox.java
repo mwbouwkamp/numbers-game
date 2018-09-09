@@ -71,4 +71,9 @@ public class TextBox implements GameObject {
     public void update() {
 
     }
+
+    public Paint getPaint() {
+        return paint;
+    }
 }
+
