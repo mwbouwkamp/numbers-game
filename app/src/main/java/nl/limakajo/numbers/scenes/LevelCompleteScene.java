@@ -65,23 +65,24 @@ public class LevelCompleteScene implements SceneInterface {
 
     @Override
     public void update() {
-        double factor = (System.currentTimeMillis() - animationStartTime) / (1.0 * Attributes.LEVELCOMPLETE_ANIMATION_TIME);
-        if (factor <= 1) {
-            levelCompleteLayout.getTextBox("star1text").getPaint().setAlpha((int) (Attributes.STARS_DARK_ALPHA + (255 - Attributes.STARS_DARK_ALPHA) * factor));
+        double relativeTime = (System.currentTimeMillis() - animationStartTime) / (1.0 * Attributes.LEVELCOMPLETE_ANIMATION_TIME);
+        double delay = 1.0 * Attributes.LEVELCOMPLETE_TIME_BETWEEN_ANIMATIONS / Attributes.LEVELCOMPLETE_ANIMATION_TIME;
+        if (relativeTime <= 1) {
+            levelCompleteLayout.getTextBox("star1text").getPaint().setAlpha((int) (Attributes.STARS_DARK_ALPHA + (255 - Attributes.STARS_DARK_ALPHA) * relativeTime));
         }
-        if (factor > 1) {
+        if (relativeTime > 1) {
             levelCompleteLayout.getTextBox("star1text").getPaint().setStyle(Paint.Style.FILL);
         }
-        if (factor > 1 + Attributes.LEVELCOMPLETE_TIME_BETWEEN_ANIMATIONS && factor <= 2 + Attributes.LEVELCOMPLETE_TIME_BETWEEN_ANIMATIONS && numStarsToAdd > 1) {
-            levelCompleteLayout.getTextBox("star2text").getPaint().setAlpha((int) (Attributes.STARS_DARK_ALPHA + (255 - Attributes.STARS_DARK_ALPHA) * (factor - 1)));
+        if (relativeTime > 1 + delay && relativeTime <= 2 + delay && numStarsToAdd > 1) {
+            levelCompleteLayout.getTextBox("star2text").getPaint().setAlpha((int) (Attributes.STARS_DARK_ALPHA + (255 - Attributes.STARS_DARK_ALPHA) * (relativeTime - 1 - delay)));
         }
-        if (factor > 2 + Attributes.LEVELCOMPLETE_TIME_BETWEEN_ANIMATIONS && numStarsToAdd > 1) {
+        if (relativeTime > 2 + delay && numStarsToAdd > 1) {
             levelCompleteLayout.getTextBox("star2text").getPaint().setStyle(Paint.Style.FILL);
         }
-        if (factor > 2 + 2 * + Attributes.LEVELCOMPLETE_TIME_BETWEEN_ANIMATIONS && factor <= 3 + 2 * + Attributes.LEVELCOMPLETE_TIME_BETWEEN_ANIMATIONS && numStarsToAdd > 2) {
-            levelCompleteLayout.getTextBox("star3text").getPaint().setAlpha((int) (Attributes.STARS_DARK_ALPHA + (255 - Attributes.STARS_DARK_ALPHA) * (factor - 2)));
+        if (relativeTime > 2 + 2 * delay && relativeTime <= 3 + 2 * delay && numStarsToAdd > 2) {
+            levelCompleteLayout.getTextBox("star3text").getPaint().setAlpha((int) (Attributes.STARS_DARK_ALPHA + (255 - Attributes.STARS_DARK_ALPHA) * (relativeTime - 2 - 2 * delay)));
         }
-        if (factor > 3 + 2 * + Attributes.LEVELCOMPLETE_TIME_BETWEEN_ANIMATIONS && numStarsToAdd > 2) {
+        if (relativeTime > 3 + 2 * delay && numStarsToAdd > 2) {
             levelCompleteLayout.getTextBox("star3text").getPaint().setStyle(Paint.Style.FILL);
         }
     }

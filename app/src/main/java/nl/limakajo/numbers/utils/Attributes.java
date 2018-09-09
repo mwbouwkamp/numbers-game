@@ -96,7 +96,7 @@ public class Attributes {
 
     //LevelCompleteScene Attributes
     public static final long LEVELCOMPLETE_ANIMATION_TIME = 1000;
-    public static final long LEVELCOMPLETE_TIME_BETWEEN_ANIMATIONS = 900 / LEVELCOMPLETE_ANIMATION_TIME;
+    public static final long LEVELCOMPLETE_TIME_BETWEEN_ANIMATIONS = 900;
 
     @NonNull
     //TODO: Fix hardcoded text size
