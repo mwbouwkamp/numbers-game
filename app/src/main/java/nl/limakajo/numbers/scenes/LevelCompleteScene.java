@@ -8,6 +8,7 @@ import android.view.MotionEvent;
 
 import nl.limakajo.numbers.layouts.LevelCompleteLayout;
 import nl.limakajo.numbers.main.MainActivity;
+import nl.limakajo.numbers.utils.GameUtils;
 
 import static nl.limakajo.numbers.utils.GameUtils.GameState.GAME_STATE;
 
@@ -27,7 +28,44 @@ public class LevelCompleteScene implements SceneInterface {
 
     @Override
     public void init() {
-        levelCompleteLayout.getTextBox("levelcompletetext").setText(Integer.toString(MainActivity.getGame().getLevel().getUserTime()));
+        int userTime = MainActivity.getGame().getLevel().getUserTime();
+        int averageTime = MainActivity.getGame().getLevel().getAverageTime();
+        levelCompleteLayout.getTextBox("levelcompletetext").setText(Integer.toString(userTime) + " | " + Integer.toString(averageTime));
+        int numStarsToAdd = calculateNumStarsToAdd(userTime, averageTime);
+        switch (numStarsToAdd) {
+            case 1:
+                levelCompleteLayout.getTextBox("star1text").setText("A");
+                levelCompleteLayout.getTextBox("star2text").setText("");
+                levelCompleteLayout.getTextBox("star3text").setText("");
+                break;
+            case 2:
+                levelCompleteLayout.getTextBox("star1text").setText("A");
+                levelCompleteLayout.getTextBox("star2text").setText("A");
+                levelCompleteLayout.getTextBox("star3text").setText("");
+                break;
+            case 3:
+                levelCompleteLayout.getTextBox("star1text").setText("A");
+                levelCompleteLayout.getTextBox("star2text").setText("A");
+                levelCompleteLayout.getTextBox("star3text").setText("A");
+                break;
+        }
+    }
+
+    /**
+     * Calculates the number of stars to add, based on the userTime
+     * *: averageTime
+     * @param userTime
+     * @return
+     */
+    private int calculateNumStarsToAdd(int userTime, int averageTime) {
+        int numStarsToAdd = 1;
+        if (userTime < averageTime + (GameUtils.TIMER - averageTime) / 3) {
+            numStarsToAdd++;
+        }
+        if (userTime < averageTime / 2) {
+            numStarsToAdd++;
+        }
+        return numStarsToAdd;
     }
 
     @Override
