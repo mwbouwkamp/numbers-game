@@ -49,7 +49,7 @@ public class Attributes {
     public static final Paint TEXT_BOX_OPERATOR_PAINT = getTextBoxOperatorPaint();
     public static final Paint TEXT_BOX_STARS_PAINT = getTextBoxStarsPaint();
     //TODO: Remove when stars animation has been taken care of
-    public static final Paint TEXT_BOX_STARS_PAINT_TEMP = getTextBoxStarsPaintTemp();
+    //public static final Paint TEXT_BOX_STARS_PAINT_TEMP = getTextBoxStarsPaintTemp();
     public static final Paint PLUS_PAINT = getPlusPaint();
     public static final Paint PLUS_PAINT_2 = getPlus2Paint();
     public static final Paint MIN_PAINT = getMinPaint();

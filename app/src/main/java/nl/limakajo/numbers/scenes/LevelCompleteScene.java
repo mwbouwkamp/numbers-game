@@ -37,16 +37,19 @@ public class LevelCompleteScene implements SceneInterface {
                 levelCompleteLayout.getTextBox("star1text").setText("A");
                 levelCompleteLayout.getTextBox("star2text").setText("");
                 levelCompleteLayout.getTextBox("star3text").setText("");
+                System.out.println("*");
                 break;
             case 2:
                 levelCompleteLayout.getTextBox("star1text").setText("A");
                 levelCompleteLayout.getTextBox("star2text").setText("A");
                 levelCompleteLayout.getTextBox("star3text").setText("");
+                System.out.println("**");
                 break;
             case 3:
                 levelCompleteLayout.getTextBox("star1text").setText("A");
                 levelCompleteLayout.getTextBox("star2text").setText("A");
                 levelCompleteLayout.getTextBox("star3text").setText("A");
+                System.out.println("***");
                 break;
         }
     }
