@@ -287,6 +287,7 @@ public class GameplayScene implements SceneInterface {
         gamePlayLayout.getTextBoxes().get("multText").draw(canvas);
         gamePlayLayout.getTextBoxes().get("divText").draw(canvas);
         gamePlayLayout.getTextBoxes().get("numLivesText").draw(canvas);
+        gamePlayLayout.getTextBoxes().get("numStarsText").draw(canvas);
 
 
 

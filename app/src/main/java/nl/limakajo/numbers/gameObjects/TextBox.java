@@ -45,14 +45,19 @@ public class TextBox implements GameObject {
                 textPosition.x = rect.left + rect.width() / 2;
                 textPosition.y = rect.top + rect.height() / 2 + bounds.height() / 2;
                 break;
-            case XCENTERED:
+            case XCENTERED_YTOP:
                 paint.setTextAlign(Paint.Align.CENTER);
                 textPosition.x = rect.left + rect.width() / 2;
                 textPosition.y = rect.top + Attributes.MARGE;
                 break;
-            case YCENTERED:
+            case XLEFT_YCENTERED:
                 paint.setTextAlign(Paint.Align.LEFT);
                 textPosition.x = rect.left + Attributes.MARGE;
+                textPosition.y = rect.top + rect.height() / 2 + bounds.height() / 2;
+                break;
+            case XRIGHT_YCENTERED:
+                paint.setTextAlign(Paint.Align.RIGHT);
+                textPosition.x = rect.right - Attributes.MARGE;
                 textPosition.y = rect.top + rect.height() / 2 + bounds.height() / 2;
                 break;
             default:

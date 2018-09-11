@@ -79,10 +79,10 @@ public class Attributes {
     public static final int TILE_YCOORD = 3 * MARGE + GOAL_HEIGHT + TILE_WIDTH /2;
     public static final long TILE_ANIMATION_TIME = 500;
     public enum TextAllignment {
-        NOTCENTERED,
-        XCENTERED,
-        YCENTERED,
-        XYCENTERED
+        XCENTERED_YTOP,
+        XLEFT_YCENTERED,
+        XYCENTERED,
+        XRIGHT_YCENTERED
     }
 
     //Wave Attributes
@@ -135,10 +135,10 @@ public class Attributes {
     //TODO: Fix hardcoded text size
     private static Paint getTextBoxNumlivesPaint() {
         Paint paint = getStrokePaint();
-        paint.setTextSize(80);
         paint.setColor(Attributes.GOAL_COLOR);
-        paint.setTextSize(96);
+        paint.setTextSize(40);
         paint.setTypeface(Attributes.TYPEFACE_NUMBERSGAME);
+        paint.setColor(Attributes.GOAL_COLOR);
         return paint;
     }
 

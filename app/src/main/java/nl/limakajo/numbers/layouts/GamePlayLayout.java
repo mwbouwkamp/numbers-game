@@ -49,6 +49,20 @@ public class GamePlayLayout extends Layout {
 						headerArea.getArea().left + (headerArea.getArea().width() + Attributes.GOAL_HEIGHT) / 2,
 						headerArea.getArea().bottom),
 				Attributes.EMPTY_PAINT);
+		ScreenArea numLivesArea = new ScreenArea(
+				new Rect(
+						headerArea.getArea().left,
+						headerArea.getArea().top,
+						timerArea.getArea().left,
+						headerArea.getArea().top + Attributes.GOAL_HEIGHT / 3),
+				Attributes.EMPTY_PAINT);
+		ScreenArea numStarsArea = new ScreenArea(
+				new Rect(
+						timerArea.getArea().right,
+						headerArea.getArea().top,
+						headerArea.getArea().right,
+						headerArea.getArea().top + Attributes.GOAL_HEIGHT / 3),
+				Attributes.EMPTY_PAINT);
 		ScreenArea footerArea = new ScreenArea(
 				new Rect(
 						playArea.getArea().left,
@@ -56,22 +70,6 @@ public class GamePlayLayout extends Layout {
 						playArea.getArea().right,
 						playArea.getArea().bottom),
 				Attributes.EMPTY_PAINT);
-		TextBox goalText = new TextBox(
-				MainActivity.getContext().getString(R.string.empty_text),
-				Attributes.TextAllignment.XYCENTERED,
-				headerArea.getArea(),
-				Attributes.TEXTBOX_LARGE_PAINT);
-		TextBox footerText = new TextBox(
-				MainActivity.getContext().getString(R.string.empty_text),
-				Attributes.TextAllignment.XYCENTERED,
-				footerArea.getArea(),
-				Attributes.TEXTBOX_SMALL_PAINT);
-		TextBox numLivesText = new TextBox(
-				//TODO: Here the actual number of lifes needs to be displayed. A (in this font) is a star
-				"A1",
-				Attributes.TextAllignment.YCENTERED,
-				footerText.getArea(),
-				Attributes.TEXTBOX_NUMLIVES_PAINT);
 		ScreenArea shelfArea = new ScreenArea(
 				new Rect(
 						playArea.getArea().left,
@@ -84,7 +82,7 @@ public class GamePlayLayout extends Layout {
 						playArea.getArea().left,
 						shelfArea.getArea().bottom + Attributes.MARGE,
 						playArea.getArea().right,
-						footerText.getArea().top - Attributes.MARGE),
+						footerArea.getArea().top - Attributes.MARGE),
 				Attributes.EMPTY_PAINT);
 		ScreenArea plusArea = new ScreenArea(
 				new Rect(
@@ -142,6 +140,47 @@ public class GamePlayLayout extends Layout {
 						divArea.getArea().right,
 						divArea.getArea().bottom),
 				Attributes.DIV_PAINT_2);
+
+		screenAreas = new HashMap<>();
+		screenAreas.put("fullscreen", fullscreen);
+		screenAreas.put("play", playArea);
+		screenAreas.put("header", headerArea);
+		screenAreas.put("timerRound", timerArea);
+		screenAreas.put("numlives", numLivesArea);
+		screenAreas.put("numstars", numStarsArea);
+		screenAreas.put("shelf", shelfArea);
+		screenAreas.put("operators", operatorsArea);
+		screenAreas.put("plus", plusArea);
+		screenAreas.put("plus2", plusArea2);
+		screenAreas.put("min", minArea);
+		screenAreas.put("min2", minArea2);
+		screenAreas.put("mult", multArea);
+		screenAreas.put("mult2", multArea2);
+		screenAreas.put("div", divArea);
+		screenAreas.put("div2", divArea2);
+
+		TextBox goalText = new TextBox(
+				MainActivity.getContext().getString(R.string.empty_text),
+				Attributes.TextAllignment.XYCENTERED,
+				headerArea.getArea(),
+				Attributes.TEXTBOX_LARGE_PAINT);
+		TextBox footerText = new TextBox(
+				MainActivity.getContext().getString(R.string.empty_text),
+				Attributes.TextAllignment.XYCENTERED,
+				footerArea.getArea(),
+				Attributes.TEXTBOX_SMALL_PAINT);
+		TextBox numLivesText = new TextBox(
+				//TODO: Here the actual number of lifes needs to be displayed. A (in this font) is a star
+				"A1",
+				Attributes.TextAllignment.XLEFT_YCENTERED,
+				numLivesArea.getArea(),
+				Attributes.TEXTBOX_NUMLIVES_PAINT);
+		TextBox numStarsText = new TextBox(
+				//TODO: Here the actual number of stars needs to be displayed. A (in this font) is a star
+				"B1",
+				Attributes.TextAllignment.XRIGHT_YCENTERED,
+				numStarsArea.getArea(),
+				Attributes.TEXTBOX_NUMLIVES_PAINT);
 		TextBox plusText = new TextBox(
 				MainActivity.getContext().getString(R.string.gameplay_plus_sign),
 				Attributes.TextAllignment.XYCENTERED,
@@ -162,23 +201,6 @@ public class GamePlayLayout extends Layout {
 				Attributes.TextAllignment.XYCENTERED,
 				divArea.getArea(),
 				Attributes.TEXT_BOX_OPERATOR_PAINT);
-
-		screenAreas = new HashMap<>();
-		screenAreas.put("fullscreen", fullscreen);
-		screenAreas.put("play", playArea);
-		screenAreas.put("header", headerArea);
-		screenAreas.put("timerRound", timerArea);
-		screenAreas.put("shelf", shelfArea);
-		screenAreas.put("operators", operatorsArea);
-		screenAreas.put("plus", plusArea);
-		screenAreas.put("plus2", plusArea2);
-		screenAreas.put("min", minArea);
-		screenAreas.put("min2", minArea2);
-		screenAreas.put("mult", multArea);
-		screenAreas.put("mult2", multArea2);
-		screenAreas.put("div", divArea);
-		screenAreas.put("div2", divArea2);
-
 		textBoxes = new HashMap<>();
 		textBoxes.put("goalText", goalText);
 		textBoxes.put("footerText", footerText);
@@ -187,5 +209,6 @@ public class GamePlayLayout extends Layout {
 		textBoxes.put("multText", multText);
 		textBoxes.put("divText", divText);
 		textBoxes.put("numLivesText", numLivesText);
+		textBoxes.put("numStarsText", numStarsText);
 	}
 }
