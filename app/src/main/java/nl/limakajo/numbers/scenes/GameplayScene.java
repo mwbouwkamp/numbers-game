@@ -88,10 +88,8 @@ public class GameplayScene implements SceneInterface {
             tilesOnShelf.add(new Tile(MainActivity.getGame().getLevel().getHand()[i], i));
         }
         gamePlayLayout.getTextBox("goalText").setText(Integer.toString(MainActivity.getGame().getLevel().getGoal()));
-
         gamePlayLayout.getTextBox("numStarsText").setText("A" + Integer.toString(MainActivity.getPlayer().getNumStars()));
         gamePlayLayout.getTextBox("numLivesText").setText("B" + Integer.toString(MainActivity.getPlayer().getNumLives()));
-
     }
 
     /**
@@ -101,6 +99,7 @@ public class GameplayScene implements SceneInterface {
     private Level getLevel() {
         Level toReturn = null;
         LinkedList<Level> levels = DatabaseUtils.getLevels(MainActivity.getContext());
+        //TODO: Refactor userAverageTime: move to Player
         int userAverageTime = DatabaseUtils.getAverageTime(MainActivity.getContext());
         int timeDifferenceSelectedLevel = 999999;
         for (Level level: levels) {
@@ -151,10 +150,12 @@ public class GameplayScene implements SceneInterface {
                     }
                 }
                 break;
+            //TODO: dow I still need the other states? Now that I have a scenemanager?
             case GAME_OVER_STATE:
                 MainActivity.getGame().getLevel().setUserTime(GameUtils.TIMEPENALTY);
                 sceneManager.setScene(GAME_OVER_STATE.toString());
                 break;
+            //TODO: dow I still need the other states? Now that I have a scenemanager?
             case LEVEL_COMPLETE_STATE:
                 MainActivity.getGame().getLevel().setUserTime((int)(System.currentTimeMillis() - startTime));
                 sceneManager.setScene(LEVEL_COMPLETE_STATE.toString());
@@ -170,6 +171,7 @@ public class GameplayScene implements SceneInterface {
      * @return Tile or null depending on outcome. The Tile itself is returns if the Tile is on an operator ScreenArea or null if the Tile is returned to the shelf
      */
     private Tile consequenceTilePosition(Tile tile) {
+        //TODO: Refactor that first a method is called that checks in which area the tile is (if in any), followed by a switch to see what needs to happen.
         if (tile.inArea(gamePlayLayout.getScreenArea("plus"))) {
             numPlus++;
             numMin = 0;
@@ -267,6 +269,7 @@ public class GameplayScene implements SceneInterface {
      * @param canvas canvas
      */
     private void drawTimerRound(Canvas canvas){
+        //TODO: Extract Paint and move to Attributes
         Paint paint = new Paint();
         double timeFraction = (System.currentTimeMillis() - startTime) / (double) GameUtils.TIMER;
         paint.setStyle(Paint.Style.STROKE);
@@ -305,6 +308,7 @@ public class GameplayScene implements SceneInterface {
         clickPosition.y = (int) event.getY();
         if (firstTile != null) {
             if (firstTile.isClicked(clickPosition)) {
+                //The following three lines can be extracted in a method
                 tilePressed = firstTile;
                 tileStart = new Point(tilePressed.getCurrentPosition());
                 statusBarText = firstTile.toString();
@@ -318,6 +322,7 @@ public class GameplayScene implements SceneInterface {
                 statusBarText = tilePressed.toString();
             }
         }
+        //TODO: Check if this is still needed
         if (tilePressed != null) {
             tilePressed.stopAnimation();
         }
@@ -372,6 +377,7 @@ public class GameplayScene implements SceneInterface {
         tilePressed = null;
         onShelf = true;
         if (secondTile != null) {
+            //Convert into a switch
             if (numPlus == 2) {
                 calculate('+');
             } else if (numMin == 2) {
