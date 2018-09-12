@@ -202,19 +202,6 @@ public class GameplayScene implements SceneInterface {
     }
 
     /**
-     * Checks if network is available
-     *
-     * @param ctx context
-     * @return true if network is available
-     */
-    public boolean isNetworkAvailable(Context ctx)
-    {
-        ConnectivityManager cm = (ConnectivityManager)ctx.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo netInfo = Objects.requireNonNull(cm).getActiveNetworkInfo();
-        return netInfo != null && netInfo.isConnectedOrConnecting() && cm.getActiveNetworkInfo().isAvailable() && cm.getActiveNetworkInfo().isConnected();
-    }
-
-    /**
      * Performs the actual calculations, making new Tiles based on the operation or returns Tiles to the shelf when the operation is not valid
      *
      * @param operator operator
