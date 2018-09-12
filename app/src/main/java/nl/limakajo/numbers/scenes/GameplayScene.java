@@ -260,7 +260,6 @@ public class GameplayScene implements SceneInterface {
 
     @Override
     public void draw(Canvas canvas) {
-
         gamePlayLayout.getScreenAreas().get("fullscreen").draw(canvas);
         gamePlayLayout.getScreenAreas().get("plus").draw(canvas);
         gamePlayLayout.getScreenAreas().get("plus2").draw(canvas);
@@ -278,20 +277,21 @@ public class GameplayScene implements SceneInterface {
         gamePlayLayout.getTextBoxes().get("divText").draw(canvas);
         gamePlayLayout.getTextBoxes().get("numLivesText").draw(canvas);
         gamePlayLayout.getTextBoxes().get("numStarsText").draw(canvas);
-
-
-
         gamePlayLayout.getTextBox("footerText").setText(statusBarText);
+        drawWaves(canvas);
+        drawTiles(canvas);
+        drawTimerRound(canvas);
+    }
 
+    /**
+     * Draw Waves onto the canvas
+     * @param canvas canvas
+     */
+    private void drawWaves(Canvas canvas) {
         for (Wave wave: waves) {
             if (wave != null) {
                 wave.draw(canvas);
             }
-        }
-
-        drawTiles(canvas);
-        if (state == GAME_STATE) {
-            drawTimerRound(canvas);
         }
     }
 
@@ -317,7 +317,6 @@ public class GameplayScene implements SceneInterface {
      *
      * @param canvas canvas
      */
-
     private void drawTimerRound(Canvas canvas){
         Paint paint = new Paint();
         double timeFraction = (System.currentTimeMillis() - startTime) / (double) GameUtils.TIMER;
@@ -329,8 +328,6 @@ public class GameplayScene implements SceneInterface {
         paint.setColor(Color.rgb((int) (255 * timeFraction), (int) (255 * (1 - timeFraction)), 0));
         canvas.drawArc(rect, 270, (float) ((1 - timeFraction) * 360), false, paint);
     }
-
-
 
     @Override
     public void terminate() {
