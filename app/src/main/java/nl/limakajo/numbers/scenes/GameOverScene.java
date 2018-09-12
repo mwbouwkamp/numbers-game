@@ -6,6 +6,10 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.view.MotionEvent;
 
+import nl.limakajo.numbers.main.MainActivity;
+import nl.limakajo.numbers.utils.DatabaseUtils;
+import nl.limakajo.numbers.utils.GameUtils;
+
 import static nl.limakajo.numbers.utils.GameUtils.GameState.GAME_STATE;
 
 /**
@@ -22,7 +26,10 @@ public class GameOverScene implements SceneInterface {
 
     @Override
     public void init() {
-
+        DatabaseUtils.updateTableLevelsUserTime(MainActivity.getContext(), MainActivity.getGame().getLevel(), GameUtils.TIMEPENALTY);
+        DatabaseUtils.updateTableCompletedLevelsUserTime(MainActivity.getContext(), MainActivity.getGame().getLevel(), GameUtils.TIMEPENALTY);
+        MainActivity.launchDownloadService();
+        MainActivity.launchUploadService();
     }
 
     @Override

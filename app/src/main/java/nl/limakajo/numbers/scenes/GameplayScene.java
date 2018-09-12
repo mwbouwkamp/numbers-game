@@ -118,7 +118,10 @@ public class GameplayScene implements SceneInterface {
     public void update() {
         switch (state) {
             case GAME_STATE:
-                try {
+                if (System.currentTimeMillis() - startTime > GameUtils.TIMER){
+                    state = GameUtils.GameState.GAME_OVER_STATE;
+                }
+                else try {
                     int i = 0;
                     for (Tile tile : tilesOnShelf) {
                         tile.setOriginalPosition(i);
@@ -291,17 +294,6 @@ public class GameplayScene implements SceneInterface {
 
 
 
-        //TODO: This logic should not be here. Should be part of update
-        //Changes GameState to gameover when  GameState is running and play time has elapsed
-        if (state == GAME_STATE && System.currentTimeMillis() - startTime > GameUtils.TIMER){
-            state = GameUtils.GameState.GAME_OVER_STATE;
-            DatabaseUtils.updateTableLevelsUserTime(MainActivity.getContext(), MainActivity.getGame().getLevel(), GameUtils.TIMEPENALTY);
-            DatabaseUtils.updateTableCompletedLevelsUserTime(MainActivity.getContext(), MainActivity.getGame().getLevel(), GameUtils.TIMEPENALTY);
-            MainActivity.launchDownloadService();
-            MainActivity.launchUploadService();
-        }
-
-//        drawNumLives(canvas);
         gamePlayLayout.getTextBox("footerText").setText(statusBarText);
 
         for (Wave wave: waves) {
