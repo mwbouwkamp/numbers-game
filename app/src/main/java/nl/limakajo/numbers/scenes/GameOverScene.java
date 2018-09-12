@@ -19,6 +19,7 @@ import static nl.limakajo.numbers.utils.GameUtils.GameState.GAME_STATE;
 public class GameOverScene implements SceneInterface {
 
     private final SceneManager sceneManager;
+    private boolean initiating;
 
     GameOverScene(SceneManager sceneManager) {
         this.sceneManager = sceneManager;
@@ -30,6 +31,7 @@ public class GameOverScene implements SceneInterface {
         DatabaseUtils.updateTableCompletedLevelsUserTime(MainActivity.getContext(), MainActivity.getGame().getLevel(), GameUtils.TIMEPENALTY);
         MainActivity.launchDownloadService();
         MainActivity.launchUploadService();
+        initiating = false;
     }
 
     @Override
@@ -57,5 +59,15 @@ public class GameOverScene implements SceneInterface {
         GameplayScene gameplayScene = (GameplayScene) sceneManager.getScene(GAME_STATE.toString());
         gameplayScene.init();
 
+    }
+
+    @Override
+    public boolean getInitiating() {
+        return initiating;
+    }
+
+    @Override
+    public void setInitiating(boolean initiating) {
+        this.initiating = initiating;
     }
 }

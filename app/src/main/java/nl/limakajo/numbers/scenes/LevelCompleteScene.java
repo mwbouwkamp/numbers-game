@@ -25,6 +25,7 @@ public class LevelCompleteScene implements SceneInterface {
     private long animationStartTime;
     private int numStarsToAdd;
     private boolean animating;
+    private boolean initiating;
 
     LevelCompleteScene(SceneManager sceneManager) {
         this.sceneManager = sceneManager;
@@ -50,6 +51,7 @@ public class LevelCompleteScene implements SceneInterface {
         resetStar("star2text");
         resetStar("star3text");
         animationStartTime = System.currentTimeMillis();
+        initiating = false;
     }
 
     private void resetStar(String star1text) {
@@ -126,5 +128,15 @@ public class LevelCompleteScene implements SceneInterface {
             GameplayScene gameplayScene = (GameplayScene) sceneManager.getScene(GAME_STATE.toString());
             gameplayScene.init();
         }
+    }
+
+    @Override
+    public boolean getInitiating() {
+        return initiating;
+    }
+
+    @Override
+    public void setInitiating(boolean initiating) {
+        this.initiating = initiating;
     }
 }

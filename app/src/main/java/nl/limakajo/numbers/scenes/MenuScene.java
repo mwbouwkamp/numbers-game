@@ -15,15 +15,17 @@ public class MenuScene implements SceneInterface {
 
     private final SceneManager sceneManager;
     private MenuLayout menuLayout;
+    private boolean initiating;
 
     MenuScene(SceneManager sceneManager) {
         this.sceneManager = sceneManager;
-        init();
+        menuLayout = new MenuLayout();
     }
 
     @Override
     public void init() {
-        menuLayout = new MenuLayout();
+        initiating = false;
+
     }
 
     @Override
@@ -52,5 +54,15 @@ public class MenuScene implements SceneInterface {
         GameplayScene gameplayScene = (GameplayScene) sceneManager.getScene(GAME_STATE.toString());
         gameplayScene.init();
 
+    }
+
+    @Override
+    public boolean getInitiating() {
+        return initiating;
+    }
+
+    @Override
+    public void setInitiating(boolean initiating) {
+        this.initiating = initiating;
     }
 }

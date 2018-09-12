@@ -33,7 +33,7 @@ import static nl.limakajo.numbers.utils.GameUtils.GameState.LEVEL_COMPLETE_STATE
 
 public class GameplayScene implements SceneInterface {
 
-    private static GameUtils.GameState state;
+    private boolean initiating;
 
     private Tile tilePressed, firstTile, secondTile;
     private boolean onShelf;
@@ -60,7 +60,6 @@ public class GameplayScene implements SceneInterface {
      * Starts GameThread, initializes variables and sets the initial GameState
      */
     public void init() {
-        state = GAME_STATE;
         startTime = System.currentTimeMillis();
 
         //Make sure that player loses a life, even when games gets to end before completing a level or running out of time
@@ -90,6 +89,7 @@ public class GameplayScene implements SceneInterface {
         gamePlayLayout.getTextBox("goalText").setText(Integer.toString(MainActivity.getGame().getLevel().getGoal()));
         gamePlayLayout.getTextBox("numStarsText").setText("A" + Integer.toString(MainActivity.getPlayer().getNumStars()));
         gamePlayLayout.getTextBox("numLivesText").setText("B" + Integer.toString(MainActivity.getPlayer().getNumLives()));
+        initiating = false;
     }
 
     /**
@@ -115,51 +115,39 @@ public class GameplayScene implements SceneInterface {
 
     @Override
     public void update() {
-        switch (state) {
-            case GAME_STATE:
-                try {
-                    int i = 0;
-                    for (Tile tile : tilesOnShelf) {
-                        tile.setOriginalPosition(i);
-                        if (tile.getCurrentPosition().x != tile.getOriginalPosition().x && tile != tilePressed) {
-                            tile.startAnimation();
-                        }
-                        i++;
-                        tile.update();
-                    }
-                } catch (ConcurrentModificationException | NoSuchElementException | NullPointerException e) {
-                    e.printStackTrace();
-                }
-                try {
-                    for (Wave wave : waves) {
-                        wave.update();
-                        if (!wave.animates()) {
-                            waves.remove(wave);
-                        }
-                    }
-                } catch (ConcurrentModificationException | NoSuchElementException | NullPointerException e) {
-                    e.printStackTrace();
-                }
-                if (System.currentTimeMillis() - startTime > GameUtils.TIMER){
-                    state = GameUtils.GameState.GAME_OVER_STATE;
-                }
-                for (Tile tile: tilesOnShelf) {
-                    if (tile.getNumber() == MainActivity.getGame().getLevel().getGoal()) {
-                        int userTime = (int)(System.currentTimeMillis() - startTime);
-                        state = GameUtils.GameState.LEVEL_COMPLETE_STATE;
-                    }
-                }
-                break;
-            //TODO: dow I still need the other states? Now that I have a scenemanager?
-            case GAME_OVER_STATE:
-                MainActivity.getGame().getLevel().setUserTime(GameUtils.TIMEPENALTY);
-                sceneManager.setScene(GAME_OVER_STATE.toString());
-                break;
-            //TODO: dow I still need the other states? Now that I have a scenemanager?
-            case LEVEL_COMPLETE_STATE:
+        if (System.currentTimeMillis() - startTime > GameUtils.TIMER){
+            MainActivity.getGame().getLevel().setUserTime(GameUtils.TIMEPENALTY);
+            sceneManager.setScene(GAME_OVER_STATE.toString());
+        }
+        for (Tile tile: tilesOnShelf) {
+            if (tile.getNumber() == MainActivity.getGame().getLevel().getGoal()) {
+                int userTime = (int)(System.currentTimeMillis() - startTime);
                 MainActivity.getGame().getLevel().setUserTime((int)(System.currentTimeMillis() - startTime));
                 sceneManager.setScene(LEVEL_COMPLETE_STATE.toString());
-                break;
+            }
+        }
+        try {
+            int i = 0;
+            for (Tile tile : tilesOnShelf) {
+                tile.setOriginalPosition(i);
+                if (tile.getCurrentPosition().x != tile.getOriginalPosition().x && tile != tilePressed) {
+                    tile.startAnimation();
+                }
+                i++;
+                tile.update();
+            }
+        } catch (ConcurrentModificationException | NoSuchElementException | NullPointerException e) {
+            e.printStackTrace();
+        }
+        try {
+            for (Wave wave : waves) {
+                wave.update();
+                if (!wave.animates()) {
+                    waves.remove(wave);
+                }
+            }
+        } catch (ConcurrentModificationException | NoSuchElementException | NullPointerException e) {
+            e.printStackTrace();
         }
     }
 
@@ -442,5 +430,15 @@ public class GameplayScene implements SceneInterface {
             numMult = 0;
             numDiv = 0;
         }
+    }
+
+    @Override
+    public boolean getInitiating() {
+        return initiating;
+    }
+
+    @Override
+    public void setInitiating(boolean initiating) {
+        this.initiating = initiating;
     }
 }

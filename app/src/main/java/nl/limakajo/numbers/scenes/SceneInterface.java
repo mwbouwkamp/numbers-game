@@ -14,4 +14,6 @@ public interface SceneInterface {
     void draw(Canvas canvas);
     void terminate();
     void receiveTouch(MotionEvent event);
+    boolean getInitiating();
+    void setInitiating(boolean initiating);
 }
