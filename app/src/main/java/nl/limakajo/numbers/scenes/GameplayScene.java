@@ -201,63 +201,6 @@ public class GameplayScene implements SceneInterface {
         }
     }
 
-    /**
-     * Performs the actual calculations, making new Tiles based on the operation or returns Tiles to the shelf when the operation is not valid
-     *
-     * @param operator operator
-     */
-    private void calculate(char operator) {
-        int newValue = 0;
-        switch (operator) {
-            case '+':
-                newValue = firstTile.getNumber() + secondTile.getNumber();
-                break;
-            case '-':
-                if (firstTile.getNumber() >= secondTile.getNumber()) {
-                    newValue = firstTile.getNumber() - secondTile.getNumber();
-                } else {
-                    statusBarText = "Results in negative integer";
-                    firstTile.toShelf(tilesOnShelf);
-                    secondTile.toShelf(tilesOnShelf);
-                    firstTile = null;
-                    secondTile = null;
-                }
-                break;
-            case '*':
-                newValue = firstTile.getNumber() * secondTile.getNumber();
-                break;
-            case '/':
-                if (firstTile.getNumber() % secondTile.getNumber() == 0) {
-                    newValue = firstTile.getNumber() / secondTile.getNumber();
-                } else {
-                    statusBarText = "Results in non-integer";
-                    firstTile.toShelf(tilesOnShelf);
-                    secondTile.toShelf(tilesOnShelf);
-                    firstTile = null;
-                    secondTile = null;
-                }
-                break;
-        }
-        if (newValue > 0) {
-            Tile[] compositionNewTile = {firstTile, secondTile};
-            Tile toAdd = new Tile(newValue, tilesOnShelf.size(), compositionNewTile, firstTile.getColorIndex() + secondTile.getColorIndex() + 1);
-            toAdd.toShelf(tilesOnShelf);
-            firstTile = null;
-            secondTile = null;
-            numPlus = 0;
-            numMin = 0;
-            numMult = 0;
-            numDiv = 0;
-            //TODO: This logic should not be here but in update method
-            for (Tile tile: tilesOnShelf) {
-                if (tile.getNumber() == MainActivity.getGame().getLevel().getGoal()) {
-                    int userTime = (int)(System.currentTimeMillis() - startTime);
-                    state = GameUtils.GameState.LEVEL_COMPLETE_STATE;
-                }
-            }
-        }
-    }
-
     @Override
     public void draw(Canvas canvas) {
         gamePlayLayout.getScreenAreas().get("fullscreen").draw(canvas);
@@ -457,10 +400,68 @@ public class GameplayScene implements SceneInterface {
     }
 
     /**
+     * Performs the actual calculations, making new Tiles based on the operation or returns Tiles to the shelf when the operation is not valid
+     *
+     * @param operator operator
+     */
+    private void calculate(char operator) {
+        int newValue = 0;
+        switch (operator) {
+            case '+':
+                newValue = firstTile.getNumber() + secondTile.getNumber();
+                break;
+            case '-':
+                if (firstTile.getNumber() >= secondTile.getNumber()) {
+                    newValue = firstTile.getNumber() - secondTile.getNumber();
+                } else {
+                    statusBarText = "Results in negative integer";
+                    firstTile.toShelf(tilesOnShelf);
+                    secondTile.toShelf(tilesOnShelf);
+                    firstTile = null;
+                    secondTile = null;
+                }
+                break;
+            case '*':
+                newValue = firstTile.getNumber() * secondTile.getNumber();
+                break;
+            case '/':
+                if (firstTile.getNumber() % secondTile.getNumber() == 0) {
+                    newValue = firstTile.getNumber() / secondTile.getNumber();
+                } else {
+                    statusBarText = "Results in non-integer";
+                    firstTile.toShelf(tilesOnShelf);
+                    secondTile.toShelf(tilesOnShelf);
+                    firstTile = null;
+                    secondTile = null;
+                }
+                break;
+        }
+        if (newValue > 0) {
+            Tile[] compositionNewTile = {firstTile, secondTile};
+            Tile toAdd = new Tile(newValue, tilesOnShelf.size(), compositionNewTile, firstTile.getColorIndex() + secondTile.getColorIndex() + 1);
+            toAdd.toShelf(tilesOnShelf);
+            firstTile = null;
+            secondTile = null;
+            numPlus = 0;
+            numMin = 0;
+            numMult = 0;
+            numDiv = 0;
+            //TODO: This logic should not be here but in update method
+            for (Tile tile: tilesOnShelf) {
+                if (tile.getNumber() == MainActivity.getGame().getLevel().getGoal()) {
+                    int userTime = (int)(System.currentTimeMillis() - startTime);
+                    state = GameUtils.GameState.LEVEL_COMPLETE_STATE;
+                }
+            }
+        }
+    }
+
+    /**
      * Orchestrates what to do when the screen is released in the levelcomplete GameState
      *
      * @param event event
      */
+    //TODO: Check if we still neeed this
     private void levelCompleteTouchDown(MotionEvent event) {
         if (gamePlayLayout.getScreenArea("levelcomplete").getArea().contains((int) event.getX(), (int) event.getY())) {
             state = GAME_STATE;
@@ -473,6 +474,7 @@ public class GameplayScene implements SceneInterface {
      *
      * @param event event
      */
+    //TODO: Check if we still neeed this
     private void gameOverTouchDown(MotionEvent event) {
         if (gamePlayLayout.getScreenArea("gameover").getArea().contains((int) event.getX(), (int) event.getY())) {
             state = GAME_STATE;
