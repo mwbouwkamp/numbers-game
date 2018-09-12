@@ -159,7 +159,6 @@ public class GameplayScene implements SceneInterface {
      * @return Tile or null depending on outcome. The Tile itself is returns if the Tile is on an operator ScreenArea or null if the Tile is returned to the shelf
      */
     private Tile consequenceTilePosition(Tile tile) {
-        //TODO: Refactor that first a method is called that checks in which area the tile is (if in any), followed by a switch to see what needs to happen.
         if (tile.inArea(gamePlayLayout.getScreenArea("plus"))) {
             numPlus++;
             numMin = 0;
