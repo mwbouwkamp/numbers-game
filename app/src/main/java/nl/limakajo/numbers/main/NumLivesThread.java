@@ -37,7 +37,7 @@ public class NumLivesThread extends Thread {
 			long timePassedLastCheckNumLives = new Date().getTime() - lastCheckNumLives.getTime();
 			if (timePassedLastCheckNumLives > GameUtils.TIME_TO_NEW_LIFE) {
 				if (player.getNumLives() < GameUtils.MAX_NUMLIVES) {
-					player.increaseNumLives();
+					player.increaseNumLives(1);
 					lastCheckNumLives = new Date(lastCheckNumLives.getTime() + GameUtils.TIME_TO_NEW_LIFE);
 				}
 			}
@@ -45,7 +45,8 @@ public class NumLivesThread extends Thread {
 				lastCheckNumLives = new Date();
 			}
 			prefs.edit().putLong(context.getString(R.string.prefs_last_update_number_of_lifes_key), lastCheckNumLives.getTime()).apply();
-			prefs.edit().putInt(context.getString(R.string.prefs_number_of_lives_key), player.getNumLives()).apply();
+            prefs.edit().putInt(context.getString(R.string.prefs_number_of_lives_key), player.getNumLives()).apply();
+            prefs.edit().putInt(context.getString(R.string.prefs_number_of_stars_key), player.getNumStars()).apply();
 		}
 	}
 

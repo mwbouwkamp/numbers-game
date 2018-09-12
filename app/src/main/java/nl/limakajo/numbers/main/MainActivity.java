@@ -142,6 +142,7 @@ public class MainActivity extends Activity {
 	    // Update the shared preferences
 	    prefs.edit().putInt(context.getString(R.string.prefs_version_code_key), currentVersionCode).apply();
 		prefs.edit().putInt(context.getString(R.string.prefs_number_of_lives_key), player.getNumLives()).apply();
+		prefs.edit().putInt(context.getString(R.string.prefs_number_of_stars_key), player.getNumStars()).apply();
 		prefs.edit().putLong(context.getString(R.string.prefs_last_update_number_of_lifes_key), player.getLastCheckNumLives().getTime()).apply();
 	}
 
@@ -154,6 +155,7 @@ public class MainActivity extends Activity {
 		//retrieve initial data
 		player.setLastCheckNumLives(new Date(prefs.getLong(context.getString(R.string.prefs_last_update_number_of_lifes_key), context.getResources().getInteger(R.integer.doesnt_exist))));
 		player.setNumLives(prefs.getInt(context.getString(R.string.prefs_number_of_lives_key), context.getResources().getInteger(R.integer.doesnt_exist)));
+		player.setNumStars(prefs.getInt(context.getString(R.string.prefs_number_of_stars_key), context.getResources().getInteger(R.integer.doesnt_exist)));
 
 		//Update for elapsed time
 		//Calc numLivesToAdd

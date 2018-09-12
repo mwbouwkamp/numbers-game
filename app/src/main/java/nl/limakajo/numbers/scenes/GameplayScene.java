@@ -88,6 +88,10 @@ public class GameplayScene implements SceneInterface {
             tilesOnShelf.add(new Tile(MainActivity.getGame().getLevel().getHand()[i], i));
         }
         gamePlayLayout.getTextBox("goalText").setText(Integer.toString(MainActivity.getGame().getLevel().getGoal()));
+
+        gamePlayLayout.getTextBox("numStarsText").setText("A" + Integer.toString(MainActivity.getPlayer().getNumStars()));
+        gamePlayLayout.getTextBox("numLivesText").setText("B" + Integer.toString(MainActivity.getPlayer().getNumLives()));
+
     }
 
     /**
@@ -254,15 +258,11 @@ public class GameplayScene implements SceneInterface {
             numMin = 0;
             numMult = 0;
             numDiv = 0;
+            //TODO: This logic should not be here but in update method
             for (Tile tile: tilesOnShelf) {
                 if (tile.getNumber() == MainActivity.getGame().getLevel().getGoal()) {
-                    state = GameUtils.GameState.LEVEL_COMPLETE_STATE;
-                    MainActivity.getPlayer().increaseNumLives();
                     int userTime = (int)(System.currentTimeMillis() - startTime);
-                    DatabaseUtils.updateTableLevelsUserTime(MainActivity.getContext(), MainActivity.getGame().getLevel(), userTime);
-                    DatabaseUtils.updateTableCompletedLevelsUserTime(MainActivity.getContext(), MainActivity.getGame().getLevel(), userTime);
-                    MainActivity.launchDownloadService();
-                    MainActivity.launchUploadService();
+                    state = GameUtils.GameState.LEVEL_COMPLETE_STATE;
                 }
             }
         }
@@ -291,6 +291,7 @@ public class GameplayScene implements SceneInterface {
 
 
 
+        //TODO: This logic should not be here. Should be part of update
         //Changes GameState to gameover when  GameState is running and play time has elapsed
         if (state == GAME_STATE && System.currentTimeMillis() - startTime > GameUtils.TIMER){
             state = GameUtils.GameState.GAME_OVER_STATE;

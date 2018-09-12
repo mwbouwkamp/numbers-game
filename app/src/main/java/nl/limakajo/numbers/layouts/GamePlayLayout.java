@@ -49,14 +49,14 @@ public class GamePlayLayout extends Layout {
 						headerArea.getArea().left + (headerArea.getArea().width() + Attributes.GOAL_HEIGHT) / 2,
 						headerArea.getArea().bottom),
 				Attributes.EMPTY_PAINT);
-		ScreenArea numLivesArea = new ScreenArea(
+		ScreenArea numStarsArea = new ScreenArea(
 				new Rect(
 						headerArea.getArea().left,
 						headerArea.getArea().top,
 						timerArea.getArea().left,
 						headerArea.getArea().top + Attributes.GOAL_HEIGHT / 3),
 				Attributes.EMPTY_PAINT);
-		ScreenArea numStarsArea = new ScreenArea(
+		ScreenArea numLivesArea = new ScreenArea(
 				new Rect(
 						timerArea.getArea().right,
 						headerArea.getArea().top,
@@ -169,17 +169,15 @@ public class GamePlayLayout extends Layout {
 				Attributes.TextAllignment.XYCENTERED,
 				footerArea.getArea(),
 				Attributes.TEXTBOX_SMALL_PAINT);
-		TextBox numLivesText = new TextBox(
-				//TODO: Here the actual number of lifes needs to be displayed. A (in this font) is a star
-				"A1",
-				Attributes.TextAllignment.XLEFT_YCENTERED,
-				numLivesArea.getArea(),
-				Attributes.TEXTBOX_NUMLIVES_PAINT);
 		TextBox numStarsText = new TextBox(
-				//TODO: Here the actual number of stars needs to be displayed. A (in this font) is a star
-				"B1",
-				Attributes.TextAllignment.XRIGHT_YCENTERED,
+				"A",
+				Attributes.TextAllignment.XLEFT_YCENTERED,
 				numStarsArea.getArea(),
+				Attributes.TEXTBOX_NUMLIVES_PAINT);
+		TextBox numLivesText = new TextBox(
+				"B",
+				Attributes.TextAllignment.XRIGHT_YCENTERED,
+				numLivesArea.getArea(),
 				Attributes.TEXTBOX_NUMLIVES_PAINT);
 		TextBox plusText = new TextBox(
 				MainActivity.getContext().getString(R.string.gameplay_plus_sign),

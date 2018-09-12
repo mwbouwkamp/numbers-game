@@ -9,6 +9,7 @@ import android.view.MotionEvent;
 import nl.limakajo.numbers.layouts.LevelCompleteLayout;
 import nl.limakajo.numbers.main.MainActivity;
 import nl.limakajo.numbers.utils.Attributes;
+import nl.limakajo.numbers.utils.DatabaseUtils;
 import nl.limakajo.numbers.utils.GameUtils;
 
 import static nl.limakajo.numbers.utils.GameUtils.GameState.GAME_STATE;
@@ -23,18 +24,28 @@ public class LevelCompleteScene implements SceneInterface {
     private LevelCompleteLayout levelCompleteLayout;
     private long animationStartTime;
     private int numStarsToAdd;
+    private boolean animating;
 
     LevelCompleteScene(SceneManager sceneManager) {
         this.sceneManager = sceneManager;
+        this.animating = false;
         levelCompleteLayout = new LevelCompleteLayout();
     }
 
     @Override
     public void init() {
         int userTime = MainActivity.getGame().getLevel().getUserTime();
+        animating = true;
         int averageTime = MainActivity.getGame().getLevel().getAverageTime();
+        DatabaseUtils.updateTableLevelsUserTime(MainActivity.getContext(), MainActivity.getGame().getLevel(), userTime);
+        DatabaseUtils.updateTableCompletedLevelsUserTime(MainActivity.getContext(), MainActivity.getGame().getLevel(), userTime);
+        MainActivity.launchDownloadService();
+        MainActivity.launchUploadService();
+
         levelCompleteLayout.getTextBox("levelcompletetext").setText(Integer.toString(userTime) + " | " + Integer.toString(averageTime));
         numStarsToAdd = calculateNumStarsToAdd(userTime, averageTime);
+        MainActivity.getPlayer().increaseNumLives(numStarsToAdd);
+        MainActivity.getPlayer().increaseNumStars(numStarsToAdd);
         resetStar("star1text");
         resetStar("star2text");
         resetStar("star3text");
@@ -85,6 +96,9 @@ public class LevelCompleteScene implements SceneInterface {
         if (relativeTime > 3 + 2 * delay && numStarsToAdd > 2) {
             levelCompleteLayout.getTextBox("star3text").getPaint().setStyle(Paint.Style.FILL);
         }
+        if (System.currentTimeMillis() - animationStartTime > Attributes.LEVELCOMPLETE_ANIMATION_TIME * 3 + Attributes.LEVELCOMPLETE_TIME_BETWEEN_ANIMATIONS * 2){
+            animating = false;
+        }
     }
 
     @Override
@@ -107,9 +121,10 @@ public class LevelCompleteScene implements SceneInterface {
 
     @Override
     public void receiveTouch(MotionEvent event) {
-        sceneManager.setScene(GAME_STATE.toString());
-        GameplayScene gameplayScene = (GameplayScene) sceneManager.getScene(GAME_STATE.toString());
-        gameplayScene.init();
-
+        if (!animating) {
+            sceneManager.setScene(GAME_STATE.toString());
+            GameplayScene gameplayScene = (GameplayScene) sceneManager.getScene(GAME_STATE.toString());
+            gameplayScene.init();
+        }
     }
 }

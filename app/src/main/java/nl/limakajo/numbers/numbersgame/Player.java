@@ -15,11 +15,13 @@ public class Player {
 
 	//	rep:
 	private int numLives;
+	private int numStars;
 	private int userAverageTime;
 	private Date lastCheckNumLives;
 
 	//	rep invariant:
 	//		0 <= numLives <= MainActivity.MAX_NUMLIVES
+	// 		0 <= numStars
 	//		0 <= userAverageTime <= NumberGames.TIMEPENALTY
 	//
 	//	abstraction function:
@@ -33,6 +35,7 @@ public class Player {
 	 */
 	public Player() {
 		this.numLives = 0;
+		this.numStars = 0;
 		this.lastCheckNumLives = new Date();
 		userAverageTime = calcUserAverageTime();
 		checkRep();
@@ -46,6 +49,9 @@ public class Player {
 	private void checkRep() {
 		if (numLives < 0 || numLives > GameUtils.MAX_NUMLIVES) {
 			throw new RuntimeException("number of lives out of range");
+		}
+		if (numStars < 0) {
+			throw new RuntimeException("number of stars out of range");
 		}
 		if (userAverageTime < 0 || userAverageTime> GameUtils.TIMEPENALTY) {
 			throw new RuntimeException("averageTime out of range");
@@ -61,22 +67,27 @@ public class Player {
 	}
 
 	/**
-	 * Increases the number of Lives with one if numLives < MainActivity.MAX_NUMLIVES. Otherwise sets 
+	 * Increases the number of Lives based on numStarsToAdd. If resulting numLives > MainActivity.MAX_NUMLIVES sets
 	 * numLives to MainActivity.MAX_NUMLIVES
 	 */
-	public synchronized void increaseNumLives() {
-		if (numLives < GameUtils.MAX_NUMLIVES) {
-			numLives++;
-		}
-		else {
+	public synchronized void increaseNumLives(int numLivesToAdd) {
+		numLives += numLivesToAdd;
+		if (numLives > GameUtils.MAX_NUMLIVES) {
 			numLives = GameUtils.MAX_NUMLIVES;
 		}
 	}
-	
+
+	/**
+	 * Increases the number of Stars based on numStarsToAdd
+	 */
+	public synchronized void increaseNumStars(int numStarsToAdd) {
+		numStars += numStarsToAdd;
+	}
+
 	/**
 	 * Decreases the number of Lives with one if numLives > 0. Otherwise sets numLives to 0
 	 */
-	public synchronized void decreaseNumLives() {
+	public void decreaseNumLives() {
 		if (numLives > 0) {
 			numLives--;
 		}
@@ -92,6 +103,10 @@ public class Player {
 		return numLives;
 	}
 
+	public int getNumStars() {
+		return numStars;
+	}
+
 	public int getUserAverageTime() {
 		return userAverageTime;
 	}
@@ -105,6 +120,10 @@ public class Player {
 	 */
 	public synchronized void setNumLives(int numLives) {
 		this.numLives = numLives;
+	}
+
+	public synchronized void setNumStars(int numStars) {
+		this.numStars = numStars;
 	}
 
 	public void setLastCheckNumLives(Date date) {

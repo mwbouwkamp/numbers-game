@@ -4,6 +4,7 @@
     <string name="prefs_name">UserData</string>
     <string name="prefs_version_code_key">version_code</string>
     <string name="prefs_number_of_lives_key">numbers_of_life</string>
+    <string name="prefs_number_of_stars_key">numbers_of_stars</string>
     <string name="prefs_last_update_number_of_lifes_key">last update number of lives</string>
 
     <integer name="doesnt_exist">-1</integer>
