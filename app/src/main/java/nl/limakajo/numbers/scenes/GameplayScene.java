@@ -118,10 +118,7 @@ public class GameplayScene implements SceneInterface {
     public void update() {
         switch (state) {
             case GAME_STATE:
-                if (System.currentTimeMillis() - startTime > GameUtils.TIMER){
-                    state = GameUtils.GameState.GAME_OVER_STATE;
-                }
-                else try {
+                try {
                     int i = 0;
                     for (Tile tile : tilesOnShelf) {
                         tile.setOriginalPosition(i);
@@ -143,6 +140,15 @@ public class GameplayScene implements SceneInterface {
                     }
                 } catch (ConcurrentModificationException | NoSuchElementException | NullPointerException e) {
                     e.printStackTrace();
+                }
+                if (System.currentTimeMillis() - startTime > GameUtils.TIMER){
+                    state = GameUtils.GameState.GAME_OVER_STATE;
+                }
+                for (Tile tile: tilesOnShelf) {
+                    if (tile.getNumber() == MainActivity.getGame().getLevel().getGoal()) {
+                        int userTime = (int)(System.currentTimeMillis() - startTime);
+                        state = GameUtils.GameState.LEVEL_COMPLETE_STATE;
+                    }
                 }
                 break;
             case GAME_OVER_STATE:
@@ -446,13 +452,6 @@ public class GameplayScene implements SceneInterface {
             numMin = 0;
             numMult = 0;
             numDiv = 0;
-            //TODO: This logic should not be here but in update method
-            for (Tile tile: tilesOnShelf) {
-                if (tile.getNumber() == MainActivity.getGame().getLevel().getGoal()) {
-                    int userTime = (int)(System.currentTimeMillis() - startTime);
-                    state = GameUtils.GameState.LEVEL_COMPLETE_STATE;
-                }
-            }
         }
     }
 
