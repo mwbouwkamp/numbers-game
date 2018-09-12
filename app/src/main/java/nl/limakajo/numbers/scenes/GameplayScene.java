@@ -285,32 +285,15 @@ public class GameplayScene implements SceneInterface {
 
     @Override
     public void receiveTouch(MotionEvent event) {
-        switch (state) {
-            case GAME_STATE:
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    runningTouchDown(event);
-                }
-                if (event.getAction() == MotionEvent.ACTION_MOVE) {
-                    runningTouchDragged(event);
-                }
-                if (event.getAction() == MotionEvent.ACTION_UP) {
-                    runningTouchUp(event);
-                }
-                break;
-            case LEVEL_COMPLETE_STATE:
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    levelCompleteTouchDown(event);
-                }
-                break;
-            case GAME_OVER_STATE:
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    gameOverTouchDown(event);
-                }
-                break;
-            default:
-                break;
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            runningTouchDown(event);
         }
-
+        if (event.getAction() == MotionEvent.ACTION_MOVE) {
+            runningTouchDragged(event);
+        }
+        if (event.getAction() == MotionEvent.ACTION_UP) {
+            runningTouchUp(event);
+        }
     }
     /**
      * Orchestrates what to do when the screen is touched in the running GameState
@@ -454,31 +437,4 @@ public class GameplayScene implements SceneInterface {
             numDiv = 0;
         }
     }
-
-    /**
-     * Orchestrates what to do when the screen is released in the levelcomplete GameState
-     *
-     * @param event event
-     */
-    //TODO: Check if we still neeed this
-    private void levelCompleteTouchDown(MotionEvent event) {
-        if (gamePlayLayout.getScreenArea("levelcomplete").getArea().contains((int) event.getX(), (int) event.getY())) {
-            state = GAME_STATE;
-            init();
-        }
-    }
-
-    /**
-     * Orchestrates what to do when the screen is released in the gameover GameState
-     *
-     * @param event event
-     */
-    //TODO: Check if we still neeed this
-    private void gameOverTouchDown(MotionEvent event) {
-        if (gamePlayLayout.getScreenArea("gameover").getArea().contains((int) event.getX(), (int) event.getY())) {
-            state = GAME_STATE;
-            init();
-        }
-    }
-
 }
