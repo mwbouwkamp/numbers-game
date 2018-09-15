@@ -51,8 +51,6 @@ public class MenuScene implements SceneInterface {
     @Override
     public void receiveTouch(MotionEvent event) {
         sceneManager.setScene(GAME_STATE.toString());
-        GameplayScene gameplayScene = (GameplayScene) sceneManager.getScene(GAME_STATE.toString());
-        gameplayScene.init();
 
     }
 

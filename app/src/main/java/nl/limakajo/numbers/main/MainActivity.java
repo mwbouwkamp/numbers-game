@@ -36,6 +36,7 @@ public class MainActivity extends Activity {
 	private static Player player;
 	private static Device device;
 	private static Game game;
+	private static GamePanel gamePanel;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +76,8 @@ public class MainActivity extends Activity {
 			new DevelopersMenu(this, player, numberOfLivesThread);
 		}
 		else {
-			setContentView(new GamePanel(context));
+		    gamePanel = new GamePanel(context);
+			setContentView(gamePanel);
 		}
 	}
 
@@ -196,14 +198,11 @@ public class MainActivity extends Activity {
 		return game;
 	}
 
-
-
-
-//	public static NumLivesThread getCheckNumberOfLivesThread() {
-//		return checkNumberOfLivesThread;
-//	}
-
-
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        //TODO: Implement
+    }
 }
 
 
