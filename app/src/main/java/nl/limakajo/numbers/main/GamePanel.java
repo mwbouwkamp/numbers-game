@@ -16,7 +16,6 @@ import nl.limakajo.numbers.scenes.SceneManager;
 public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
     private MainThread thread;
-
     private final SceneManager sceneManager;
 
     public GamePanel(Context context) {
