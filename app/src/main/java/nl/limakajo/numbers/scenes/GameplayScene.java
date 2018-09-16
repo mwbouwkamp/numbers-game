@@ -118,13 +118,13 @@ public class GameplayScene implements SceneInterface {
     public void update() {
         if (System.currentTimeMillis() - startTime > GameUtils.TIMER){
             MainActivity.getGame().getLevel().setUserTime(GameUtils.TIMEPENALTY);
-            sceneManager.setScene(GAME_OVER_STATE.toString());
+            sceneManager.setScene(new GameOverScene(sceneManager));
         }
         for (Tile tile: tilesOnShelf) {
             if (tile.getNumber() == MainActivity.getGame().getLevel().getGoal()) {
                 int userTime = (int)(System.currentTimeMillis() - startTime);
                 MainActivity.getGame().getLevel().setUserTime((int)(System.currentTimeMillis() - startTime));
-                sceneManager.setScene(LEVEL_COMPLETE_STATE.toString());
+                sceneManager.setScene(new LevelCompleteScene(sceneManager));
             }
         }
         try {
@@ -271,7 +271,8 @@ public class GameplayScene implements SceneInterface {
 
     @Override
     public void terminate() {
-        sceneManager.setScene(GAME_STATE.toString());
+        //TODO: Figure out what this does..
+        //sceneManager.setScene(GAME_STATE.toString());
     }
 
     @Override

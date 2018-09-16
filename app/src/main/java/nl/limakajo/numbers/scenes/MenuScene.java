@@ -50,7 +50,7 @@ public class MenuScene implements SceneInterface {
 
     @Override
     public void receiveTouch(MotionEvent event) {
-        sceneManager.setScene(GAME_STATE.toString());
+        sceneManager.setScene(new GameplayScene(sceneManager));
 
     }
 

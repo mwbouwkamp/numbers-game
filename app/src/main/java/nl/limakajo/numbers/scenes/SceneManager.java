@@ -13,29 +13,24 @@ import static nl.limakajo.numbers.utils.GameUtils.GameState.*;
  */
 
 public class SceneManager {
-    private final HashMap<String, SceneInterface> scenes = new HashMap<>();
-    private String activeScene;
+    private SceneInterface scene;
     private boolean activeSceneInitiating;
 
     public SceneManager() {
-        scenes.put(MENU_STATE.toString(), new MenuScene(this));
-        scenes.put(GAME_STATE.toString(), new GameplayScene(this));
-        scenes.put(GAME_OVER_STATE.toString(), new GameOverScene(this));
-        scenes.put(LEVEL_COMPLETE_STATE.toString(), new LevelCompleteScene(this));
-        activeScene = MENU_STATE.toString();
-        setScene(activeScene);
+        scene = new MenuScene(this);
+        startScene();
     }
 
-    public SceneInterface getScene(String sceneType) {
-        return scenes.get(sceneType);
+    public void setScene(SceneInterface scene) {
+        this.scene = scene;
+        startScene();
     }
 
-    public void setScene(String sceneName) {
-        this.activeScene = sceneName;
+    public void startScene() {
         activeSceneInitiating = true;
-        scenes.get(sceneName).setInitiating(true);
-        scenes.get(sceneName).init();
-        while (scenes.get(sceneName).getInitiating()) {
+        scene.setInitiating(true);
+        scene.init();
+        while (scene.getInitiating()) {
             try {
                 sleep(100);
             } catch (InterruptedException e) {
@@ -47,19 +42,19 @@ public class SceneManager {
 
     public void recieveTouch(MotionEvent event) {
         if (!activeSceneInitiating) {
-            scenes.get(activeScene).receiveTouch(event);
+            scene.receiveTouch(event);
         }
     }
 
     public void update() {
         if (!activeSceneInitiating) {
-            scenes.get(activeScene).update();
+            scene.update();
         }
     }
 
     public void draw(Canvas canvas) {
         if (!activeSceneInitiating) {
-            scenes.get(activeScene).draw(canvas);
+            scene.draw(canvas);
         }
     }
 

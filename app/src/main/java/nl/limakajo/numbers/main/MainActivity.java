@@ -40,6 +40,7 @@ public class MainActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		System.out.println("onCreate");
 
 		//Setup activity
 		super.onCreate(savedInstanceState);
@@ -203,6 +204,36 @@ public class MainActivity extends Activity {
         super.onSaveInstanceState(outState);
         //TODO: Implement
     }
+
+	@Override
+	protected void onStop() {
+		System.out.println("onStop");
+		super.onStop();
+	}
+
+	@Override
+	protected void onPause() {
+		System.out.println("onPause");
+		super.onPause();
+	}
+
+	@Override
+	protected void onRestart() {
+		System.out.println("onRestart");
+		super.onRestart();
+	}
+
+	@Override
+	protected void onStart() {
+		System.out.println("onStart");
+		super.onStart();
+	}
+
+	@Override
+	protected void onResume() {
+		System.out.println("onResume");
+		super.onResume();
+	}
 }
 
 

@@ -124,7 +124,7 @@ public class LevelCompleteScene implements SceneInterface {
     @Override
     public void receiveTouch(MotionEvent event) {
         if (!animating) {
-            sceneManager.setScene(GAME_STATE.toString());
+            sceneManager.setScene(new GameplayScene(sceneManager));
         }
     }
 
