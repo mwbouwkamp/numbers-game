@@ -178,51 +178,6 @@ public class NetworkUtils {
             Objects.requireNonNull(httpURLConnection).disconnect();
         }
 
-
-
-
-
-
-
-
-
-		/*
-		@SuppressWarnings("resource")
-		HttpClient httpClient = new DefaultHttpClient();
-		HttpPost httpPost = new HttpPost(url);
-		// Request parameters and other properties.
-		List<NameValuePair> postParams = new ArrayList<NameValuePair>();
-		postParams.add(new BasicNameValuePair("server", SERVER));
-		postParams.add(new BasicNameValuePair("user", USER));
-		postParams.add(new BasicNameValuePair("pass", PASS));
-		postParams.add(new BasicNameValuePair("db", DB));
-		postParams.add(new BasicNameValuePair("numbers", numbers));
-		postParams.add(new BasicNameValuePair("usertime", userTime));
-		try {
-		    httpPost.setEntity(new UrlEncodedFormEntity(postParams, "UTF-8"));
-		} catch (UnsupportedEncodingException e) {
-		    // writing error to Log
-		    e.printStackTrace();
-		}
-		*//*
-		 * Execute the HTTP Request
-		 *//*
-		try {
-		    HttpResponse response = httpClient.execute(httpPost);
-		    HttpEntity respEntity = response.getEntity();
-		    if (respEntity != null) {
-		        // EntityUtils to get the response content
-		        result =  EntityUtils.toString(respEntity);
-		    }
-		} catch (ClientProtocolException e) {
-		    // writing exception to log
-		    e.printStackTrace();
-		} catch (IOException e) {
-		    // writing exception to log
-		    e.printStackTrace();
-		}
-		return result;
-	*/
     }
 
 }

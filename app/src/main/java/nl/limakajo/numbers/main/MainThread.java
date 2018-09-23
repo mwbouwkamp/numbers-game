@@ -71,6 +71,14 @@ public class MainThread extends Thread {
         }
     }
 
+    public void onPause() {
+        setRunning(false);
+    }
+
+    public void onResume() {
+        setRunning(true);
+    }
+
     public void setRunning(boolean running) {
         this.running = running;
     }

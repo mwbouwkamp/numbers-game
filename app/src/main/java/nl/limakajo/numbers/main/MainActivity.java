@@ -11,7 +11,6 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import nl.limakajo.numbers.R;
-import nl.limakajo.numbers.developer.DevelopersMenu;
 import nl.limakajo.numbers.numbersgame.Device;
 import nl.limakajo.numbers.numbersgame.Game;
 import nl.limakajo.numbers.numbersgame.Player;
@@ -37,6 +36,7 @@ public class MainActivity extends Activity {
 	private static Device device;
 	private static Game game;
 	private static GamePanel gamePanel;
+	private static NumLivesThread numLivesThread;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -48,17 +48,17 @@ public class MainActivity extends Activity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-		//Create Player
-		player = new Player();
+        //Create Player
+        player = new Player();
 
-		//Create Device
-		Display display = getWindowManager().getDefaultDisplay();
-		Point size = new Point();
-		display.getSize(size);
-		device = new Device(size);
+        //Create Device
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        device = new Device(size);
 
-		//Create Game
-		game = new Game();
+        //Create Game
+        game = new Game();
 
 		// launch services that take care of uploading levels if there are levels that need uploading and downloading levels to update local database
 		launchUploadService();
@@ -67,19 +67,14 @@ public class MainActivity extends Activity {
 		//Load preferences to update player information
 		loadSharedPreferences();
 
-		//Start a new thread that keeps the preference file up to date with respect to number of lives of player
-		NumLivesThread numberOfLivesThread = new NumLivesThread(this, player);
-		numberOfLivesThread.start();
+        //Start a new thread that keeps the preference file up to date with respect to number of lives of player
+        numLivesThread = new NumLivesThread(this, player);
+        numLivesThread.start();
+        numLivesThread.setRunning(true);
 
-		//Start the action. Developer mode or mormal mode
-		Boolean developer = false;
-		if (developer) {
-			new DevelopersMenu(this, player, numberOfLivesThread);
-		}
-		else {
-		    gamePanel = new GamePanel(context);
-			setContentView(gamePanel);
-		}
+		//Start the action
+		gamePanel = new GamePanel(context);
+		setContentView(gamePanel);
 	}
 
 	/**
@@ -199,41 +194,6 @@ public class MainActivity extends Activity {
 		return game;
 	}
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        //TODO: Implement
-    }
-
-	@Override
-	protected void onStop() {
-		System.out.println("onStop");
-		super.onStop();
-	}
-
-	@Override
-	protected void onPause() {
-		System.out.println("onPause");
-		super.onPause();
-	}
-
-	@Override
-	protected void onRestart() {
-		System.out.println("onRestart");
-		super.onRestart();
-	}
-
-	@Override
-	protected void onStart() {
-		System.out.println("onStart");
-		super.onStart();
-	}
-
-	@Override
-	protected void onResume() {
-		System.out.println("onResume");
-		super.onResume();
-	}
 }
 
 

@@ -65,4 +65,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         super.draw(canvas);
         sceneManager.draw(canvas);
     }
+
+    public MainThread getThread() {
+        return thread;
+    }
 }

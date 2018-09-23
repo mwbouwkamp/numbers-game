@@ -18,6 +18,8 @@ public class NumLivesThread extends Thread {
 	private final Context context;
 	private final Player player;
 	private Date lastCheckNumLives;
+	private boolean running;
+
 
 	public NumLivesThread(Context context, Player player) {
 		this.context = context;
@@ -28,7 +30,7 @@ public class NumLivesThread extends Thread {
 
 	@Override
 	public void run() {
-		while (true) {
+		while (running) {
 			try {
 				Thread.sleep(999);
 			} catch (InterruptedException e) {
@@ -52,6 +54,18 @@ public class NumLivesThread extends Thread {
 
 	public Date getLastCheckNumLives() {
 		return lastCheckNumLives;
+	}
+
+	public void onPause() {
+		setRunning(false);
+	}
+
+	public void onResume() {
+		setRunning(true);
+	}
+
+	public void setRunning(boolean running) {
+		this.running = running;
 	}
 
 }
