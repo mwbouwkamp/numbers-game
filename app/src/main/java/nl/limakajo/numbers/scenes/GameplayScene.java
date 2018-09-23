@@ -64,7 +64,6 @@ public class GameplayScene implements SceneInterface {
         startTime = System.currentTimeMillis();
 
         //Make sure that player loses a life, even when games gets to end before completing a level or running out of time
-        //TODO: Hitting the app drawer and then returning to the game allows you to reset the time. This way, you don't loose a life!
         MainActivity.getPlayer().decreaseNumLives();
 
         //Initialize variables

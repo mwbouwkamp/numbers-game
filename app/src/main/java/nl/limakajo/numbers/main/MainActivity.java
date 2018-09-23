@@ -169,7 +169,6 @@ public class MainActivity extends Activity {
         }
 		//lastCheckNumLives
 		if (numLivesToAdd > 0) {
-            //TODO: check volgorde van if clauses?
             if (numLivesToAdd + player.getNumLives() > GameUtils.MAX_NUMLIVES) {
                 player.setLastCheckNumLives(new Date());
             } else {
@@ -195,25 +194,3 @@ public class MainActivity extends Activity {
 	}
 
 }
-
-
-	/**
-	 * Data synchronization strategy
-	 *
-	 * Utils:
-	 * - Use Firejob for scheduling
-	 * - IntentService to run on separate thread
-	 * - Intentfilter to check when user is online
-	 *
-	 * When to synchronize:
-	 * - When user starts the app:
-	 *    - A job should be started to sync local levels with online database
-	 *    - A job should be started to sync online database with completed levels (if there are any)
-	 * - When user completes the app:
-	 *    - A job should be started to sync local levels with online database
-	 *    - A job should be started to sync online database with completed levels
-	 * - When user was offline and goes online:
-	 *    - A job should be started to sync local levels with online database
-	 *    - A job should be started to sync online database with completed levels
-	 *
-	 */
