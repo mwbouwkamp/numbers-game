@@ -80,7 +80,8 @@ public class GameplayScene implements SceneInterface {
         statusBarText = "";
 
         //Construct a level and update the ScreenLayout goal accordingly
-        MainActivity.getGame().setLevel(getLevel());
+        //TODO: This seems smelly...
+        MainActivity.getGame().setLevel(DatabaseUtils.getLevel(MainActivity.getContext()));
         //TODO: After selecting a level, immediately set the usertime to the TIMEPENALTY, both in the table levels and completedlevels
         tilesOnShelf = new LinkedList<>();
         for (int i = 0; i < GameUtils.NUMTILES; i++) {
@@ -90,27 +91,6 @@ public class GameplayScene implements SceneInterface {
         gamePlayLayout.getTextBox("numStarsText").setText("A" + Integer.toString(MainActivity.getPlayer().getNumStars()));
         gamePlayLayout.getTextBox("numLivesText").setText("B" + Integer.toString(MainActivity.getPlayer().getNumLives()));
         initiating = false;
-    }
-
-    /**
-     * Gets level information from local database
-     * Picks the level for which the average time of all users so far is closest to the average time of the user
-     */
-    private Level getLevel() {
-        Level toReturn = null;
-        LinkedList<Level> levels = DatabaseUtils.getLevels(MainActivity.getContext());
-        //TODO: Refactor userAverageTime: move to Player
-        int userAverageTime = DatabaseUtils.getAverageTime(MainActivity.getContext());
-        int timeDifferenceSelectedLevel = 999999;
-        for (Level level: levels) {
-            if (level.getUserTime() == 0) {
-                if (Math.abs(level.getAverageTime() - userAverageTime) < timeDifferenceSelectedLevel) {
-                    toReturn = level;
-                    timeDifferenceSelectedLevel = Math.abs(toReturn.getAverageTime() - userAverageTime);
-                }
-            }
-        }
-        return toReturn;
     }
 
     @Override

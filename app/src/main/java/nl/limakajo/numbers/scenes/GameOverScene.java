@@ -1,16 +1,13 @@
 package nl.limakajo.numbers.scenes;
 
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Rect;
 import android.view.MotionEvent;
 
+import nl.limakajo.numbers.layouts.GameOverLayout;
+import nl.limakajo.numbers.layouts.LevelCompleteLayout;
 import nl.limakajo.numbers.main.MainActivity;
 import nl.limakajo.numbers.utils.DatabaseUtils;
 import nl.limakajo.numbers.utils.GameUtils;
-
-import static nl.limakajo.numbers.utils.GameUtils.GameState.GAME_STATE;
 
 /**
  * @author M.W.Bouwkamp
@@ -19,10 +16,12 @@ import static nl.limakajo.numbers.utils.GameUtils.GameState.GAME_STATE;
 public class GameOverScene implements SceneInterface {
 
     private final SceneManager sceneManager;
+    private GameOverLayout gameOverLayout;
     private boolean initiating;
 
     GameOverScene(SceneManager sceneManager) {
         this.sceneManager = sceneManager;
+        this.gameOverLayout = new GameOverLayout();
     }
 
     @Override
@@ -41,11 +40,12 @@ public class GameOverScene implements SceneInterface {
 
     @Override
     public void draw(Canvas canvas) {
-        Rect rect = new Rect(100,100,300,300);
-        Paint paint = new Paint();
-        paint.setStyle(Paint.Style.FILL);
-        paint.setColor(Color.RED);
-        canvas.drawRect(rect, paint);
+        gameOverLayout.getScreenAreas().get("fullscreen").draw(canvas);
+        gameOverLayout.getScreenAreas().get("blue").draw(canvas);
+        gameOverLayout.getScreenAreas().get("red").draw(canvas);
+        gameOverLayout.getScreenAreas().get("green").draw(canvas);
+        gameOverLayout.getScreenAreas().get("yellow").draw(canvas);
+        gameOverLayout.getTextBox("gameovertext").draw(canvas);
     }
 
     @Override

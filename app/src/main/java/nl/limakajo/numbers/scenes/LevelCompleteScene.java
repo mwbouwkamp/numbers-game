@@ -30,7 +30,7 @@ public class LevelCompleteScene implements SceneInterface {
     LevelCompleteScene(SceneManager sceneManager) {
         this.sceneManager = sceneManager;
         this.animating = false;
-        levelCompleteLayout = new LevelCompleteLayout();
+        this.levelCompleteLayout = new LevelCompleteLayout();
     }
 
     @Override

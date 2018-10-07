@@ -100,6 +100,24 @@ public class DatabaseUtils {
         }
     }
 
+
+    public static Level getLevel(Context context) {
+        Level toReturn = null;
+        LinkedList<Level> levels = getLevels(MainActivity.getContext());
+        //TODO: Refactor userAverageTime: move to Player
+        int userAverageTime = getAverageTime(MainActivity.getContext());
+        int timeDifferenceSelectedLevel = 999999;
+        for (Level level: levels) {
+            if (level.getUserTime() == 0) {
+                if (Math.abs(level.getAverageTime() - userAverageTime) < timeDifferenceSelectedLevel) {
+                    toReturn = level;
+                    timeDifferenceSelectedLevel = Math.abs(toReturn.getAverageTime() - userAverageTime);
+                }
+            }
+        }
+        return toReturn;
+    }
+
     /**
      * Calculates and returns the averageTime it takes the user to complete levels
      * @param context context
