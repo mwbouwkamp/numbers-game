@@ -19,18 +19,22 @@ public class MenuLayout {
 
     public enum ObjectKeys {
         FULLSCREEN_AREA,
+
         LOGO_AREA,
-        LOGO_TEXT_AREA,
         BLUE_AREA,
         RED_AREA,
         GREEN_AREA,
         YELLOW_AREA,
+
         LOGO_TEXT
     }
 
     private EnumMap<ObjectKeys, GameObject> gameObjects;
 
     public MenuLayout() {
+        gameObjects = new EnumMap<>(ObjectKeys.class);
+
+        //Fullscreen
         ScreenArea fullscreen = new ScreenArea (
                 new Rect(
                         0,
@@ -38,19 +42,15 @@ public class MenuLayout {
                         MainActivity.getDevice().getWidth(),
                         MainActivity.getDevice().getHeight()),
                 Attributes.BG_PAINT);
+        gameObjects.put(ObjectKeys.FULLSCREEN_AREA, fullscreen);
+
+        //Logo
         ScreenArea logoArea = new ScreenArea (
                 new Rect(
                         (int) (0.3 * fullscreen.getArea().width()),
                         (int) (0.3 * fullscreen.getArea().width()),
                         (int) (fullscreen.getArea().width() - 0.3 * fullscreen.getArea().width()),
                         (int) (0.7 * fullscreen.getArea().width())),
-                Attributes.BG_PAINT);
-        ScreenArea logotextArea = new ScreenArea (
-                new Rect(
-                        fullscreen.getArea().left,
-                        logoArea.getArea().bottom + 3 * Attributes.MARGE,
-                        fullscreen.getArea().right,
-                        logoArea.getArea().bottom + 3 * Attributes.MARGE + 200),
                 Attributes.BG_PAINT);
         ScreenArea blueArea = new ScreenArea(
                 new Rect(
@@ -80,21 +80,22 @@ public class MenuLayout {
                         redArea.getArea().right,
                         greenArea.getArea().bottom),
                 Attributes.DIV_PAINT);
-
-        TextBox logoText = new TextBox(
-                MainActivity.getContext().getString(R.string.menu_start_text),
-                Attributes.TextAllignment.XYCENTERED,
-                logotextArea.getArea(),
-                Attributes.TEXTBOX_LARGE_PAINT);
-
-        gameObjects = new EnumMap<>(ObjectKeys.class);
-        gameObjects.put(ObjectKeys.FULLSCREEN_AREA, fullscreen);
         gameObjects.put(ObjectKeys.LOGO_AREA, logoArea);
-        gameObjects.put(ObjectKeys.LOGO_TEXT_AREA, logotextArea);
         gameObjects.put(ObjectKeys.BLUE_AREA, blueArea);
         gameObjects.put(ObjectKeys.RED_AREA, redArea);
         gameObjects.put(ObjectKeys.GREEN_AREA, greenArea);
         gameObjects.put(ObjectKeys.YELLOW_AREA, yellowArea);
+
+        //Text
+        TextBox logoText = new TextBox(
+                MainActivity.getContext().getString(R.string.menu_start_text),
+                Attributes.TextAllignment.XYCENTERED,
+                new Rect(
+                        fullscreen.getArea().left,
+                        logoArea.getArea().bottom + 3 * Attributes.MARGE,
+                        fullscreen.getArea().right,
+                        logoArea.getArea().bottom + 3 * Attributes.MARGE + 200),
+                Attributes.TEXTBOX_LARGE_PAINT);
         gameObjects.put(ObjectKeys.LOGO_TEXT, logoText);
     }
 
