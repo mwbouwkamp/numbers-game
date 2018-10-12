@@ -40,12 +40,7 @@ public class GameOverScene implements SceneInterface {
 
     @Override
     public void draw(Canvas canvas) {
-        gameOverLayout.getScreenAreas().get("fullscreen").draw(canvas);
-        gameOverLayout.getScreenAreas().get("blue").draw(canvas);
-        gameOverLayout.getScreenAreas().get("red").draw(canvas);
-        gameOverLayout.getScreenAreas().get("green").draw(canvas);
-        gameOverLayout.getScreenAreas().get("yellow").draw(canvas);
-        gameOverLayout.getTextBox("gameovertext").draw(canvas);
+        gameOverLayout.draw(canvas);
     }
 
     @Override

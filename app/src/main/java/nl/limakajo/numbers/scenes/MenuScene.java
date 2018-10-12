@@ -35,12 +35,7 @@ public class MenuScene implements SceneInterface {
 
     @Override
     public void draw(Canvas canvas) {
-        menuLayout.getScreenAreas().get("fullscreen").draw(canvas);
-        menuLayout.getScreenAreas().get("blue").draw(canvas);
-        menuLayout.getScreenAreas().get("red").draw(canvas);
-        menuLayout.getScreenAreas().get("green").draw(canvas);
-        menuLayout.getScreenAreas().get("yellow").draw(canvas);
-        menuLayout.getTextBoxes().get("logotext").draw(canvas);
+        menuLayout.draw(canvas);
     }
 
     @Override

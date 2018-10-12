@@ -1,10 +1,13 @@
 package nl.limakajo.numbers.layouts;
 
+import android.graphics.Canvas;
 import android.graphics.Rect;
 
-import java.util.HashMap;
+import org.w3c.dom.Text;
 
-import nl.limakajo.numbers.R;
+import java.util.EnumMap;
+
+import nl.limakajo.numbers.gameObjects.GameObject;
 import nl.limakajo.numbers.gameObjects.ScreenArea;
 import nl.limakajo.numbers.gameObjects.TextBox;
 import nl.limakajo.numbers.main.MainActivity;
@@ -13,7 +16,9 @@ import nl.limakajo.numbers.utils.Attributes;
 /**
  * @author M.W.Bouwkamp
  */
-public class GameOverLayout extends Layout {
+public class GameOverLayout {
+
+    private EnumMap<GameOverGameObjectKeys, GameObject> gameObjects;
 
     public GameOverLayout() {
         ScreenArea fullscreen = new ScreenArea (
@@ -30,7 +35,7 @@ public class GameOverLayout extends Layout {
                         (int) (fullscreen.getArea().width() - 0.3 * fullscreen.getArea().width()),
                         (int) (0.7 * fullscreen.getArea().width())),
                 Attributes.BG_PAINT);
-        ScreenArea levelCompleteTextArea = new ScreenArea (
+        ScreenArea gameOverTextArea = new ScreenArea (
                 new Rect(
                         fullscreen.getArea().left,
                         logoArea.getArea().bottom + 3 * Attributes.MARGE,
@@ -66,24 +71,38 @@ public class GameOverLayout extends Layout {
                         greenArea.getArea().bottom),
                 Attributes.DIV_PAINT);
 
-        screenAreas = new HashMap<>();
-        screenAreas.put("fullscreen", fullscreen);
-        screenAreas.put("logo", logoArea);
-        screenAreas.put("levelcomplete", levelCompleteTextArea);
-        screenAreas.put("blue", blueArea);
-        screenAreas.put("red", redArea);
-        screenAreas.put("green", greenArea);
-        screenAreas.put("yellow", yellowArea);
-
-        TextBox levelCompleteText = new TextBox(
+        TextBox GameOverText = new TextBox(
                 "Out of time",
                 Attributes.TextAllignment.XYCENTERED,
-                levelCompleteTextArea.getArea(),
+                gameOverTextArea.getArea(),
                 Attributes.TEXTBOX_LARGE_PAINT);
 
-        textBoxes = new HashMap<>();
-        textBoxes.put("gameovertext", levelCompleteText);
-
-
+        gameObjects = new EnumMap<>(GameOverGameObjectKeys.class);
+        gameObjects.put(GameOverGameObjectKeys.FULLSCREEN_AREA, fullscreen);
+        gameObjects.put(GameOverGameObjectKeys.LOGO_AREA, logoArea);
+        gameObjects.put(GameOverGameObjectKeys.GAME_OVER_TEXT_AREA, gameOverTextArea);
+        gameObjects.put(GameOverGameObjectKeys.BLUE_AREA, blueArea);
+        gameObjects.put(GameOverGameObjectKeys.RED_AREA, redArea);
+        gameObjects.put(GameOverGameObjectKeys.GREEN_AREA, greenArea);
+        gameObjects.put(GameOverGameObjectKeys.YELLOW_AREA, yellowArea);
+        gameObjects.put(GameOverGameObjectKeys.GAME_OVER_TEXT, GameOverText);
     }
+
+    public ScreenArea getScreenArea(GameOverGameObjectKeys gameOverObjectKey) {
+        return (ScreenArea) gameObjects.get(gameOverObjectKey);
+    }
+
+    public TextBox getTextBox(GameOverGameObjectKeys gameOverObjectKey) {
+        return (TextBox) gameObjects.get(gameOverObjectKey);
+    }
+
+    public void draw(Canvas canvas) {
+        gameObjects.get(GameOverGameObjectKeys.FULLSCREEN_AREA).draw(canvas);
+        gameObjects.get(GameOverGameObjectKeys.BLUE_AREA).draw(canvas);
+        gameObjects.get(GameOverGameObjectKeys.RED_AREA).draw(canvas);
+        gameObjects.get(GameOverGameObjectKeys.GREEN_AREA).draw(canvas);
+        gameObjects.get(GameOverGameObjectKeys.YELLOW_AREA).draw(canvas);
+        gameObjects.get(GameOverGameObjectKeys.GAME_OVER_TEXT).draw(canvas);
+    }
+
 }

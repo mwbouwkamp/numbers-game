@@ -1,25 +1,26 @@
 package nl.limakajo.numbers.layouts;
 
+import android.graphics.Canvas;
 import android.graphics.Rect;
 
 import nl.limakajo.numbers.R;
+import nl.limakajo.numbers.gameObjects.GameObject;
 import nl.limakajo.numbers.gameObjects.ScreenArea;
 import nl.limakajo.numbers.gameObjects.TextBox;
 import nl.limakajo.numbers.main.MainActivity;
 import nl.limakajo.numbers.utils.Attributes;
 import nl.limakajo.numbers.utils.GameUtils;
 
-import java.util.HashMap;
+import java.util.EnumMap;
 
 /**
  * @author M.W.Bouwkamp
  */
 
-public class GamePlayLayout extends Layout {
+public class GamePlayLayout {
 
-	/**
-	 * Constructor
-	 */
+	private EnumMap<GamePlayGameObjectKeys, GameObject> gameObjects;
+
 	public GamePlayLayout() {
 		ScreenArea fullscreen = new ScreenArea (
 				new Rect(
@@ -141,24 +142,6 @@ public class GamePlayLayout extends Layout {
 						divArea.getArea().bottom),
 				Attributes.DIV_PAINT_2);
 
-		screenAreas = new HashMap<>();
-		screenAreas.put("fullscreen", fullscreen);
-		screenAreas.put("play", playArea);
-		screenAreas.put("header", headerArea);
-		screenAreas.put("timerRound", timerArea);
-		screenAreas.put("numlives", numLivesArea);
-		screenAreas.put("numstars", numStarsArea);
-		screenAreas.put("shelf", shelfArea);
-		screenAreas.put("operators", operatorsArea);
-		screenAreas.put("plus", plusArea);
-		screenAreas.put("plus2", plusArea2);
-		screenAreas.put("min", minArea);
-		screenAreas.put("min2", minArea2);
-		screenAreas.put("mult", multArea);
-		screenAreas.put("mult2", multArea2);
-		screenAreas.put("div", divArea);
-		screenAreas.put("div2", divArea2);
-
 		TextBox goalText = new TextBox(
 				MainActivity.getContext().getString(R.string.empty_text),
 				Attributes.TextAllignment.XYCENTERED,
@@ -199,14 +182,62 @@ public class GamePlayLayout extends Layout {
 				Attributes.TextAllignment.XYCENTERED,
 				divArea.getArea(),
 				Attributes.TEXT_BOX_OPERATOR_PAINT);
-		textBoxes = new HashMap<>();
-		textBoxes.put("goalText", goalText);
-		textBoxes.put("footerText", footerText);
-		textBoxes.put("plusText", plusText);
-		textBoxes.put("minText", minText);
-		textBoxes.put("multText", multText);
-		textBoxes.put("divText", divText);
-		textBoxes.put("numLivesText", numLivesText);
-		textBoxes.put("numStarsText", numStarsText);
+
+		gameObjects = new EnumMap<>(GamePlayGameObjectKeys.class);
+		gameObjects.put(GamePlayGameObjectKeys.FULLSCREEN_AREA, fullscreen);
+		gameObjects.put(GamePlayGameObjectKeys.PLAY_AREA, playArea);
+		gameObjects.put(GamePlayGameObjectKeys.HEADER_AREA, headerArea);
+		gameObjects.put(GamePlayGameObjectKeys.TIMER_AREA, timerArea);
+		gameObjects.put(GamePlayGameObjectKeys.NUM_LIVES_AREA, numLivesArea);
+		gameObjects.put(GamePlayGameObjectKeys.NUM_STARS_AREA, numStarsArea);
+		gameObjects.put(GamePlayGameObjectKeys.SHELF_AREA, shelfArea);
+		gameObjects.put(GamePlayGameObjectKeys.OPERATORS_AREA, operatorsArea);
+		gameObjects.put(GamePlayGameObjectKeys.PLUS_AREA, plusArea);
+		gameObjects.put(GamePlayGameObjectKeys.PLUS2_AREA, plusArea2);
+		gameObjects.put(GamePlayGameObjectKeys.MIN_AREA, minArea);
+		gameObjects.put(GamePlayGameObjectKeys.MIN2_AREA, minArea2);
+		gameObjects.put(GamePlayGameObjectKeys.MULT_AREA, multArea);
+		gameObjects.put(GamePlayGameObjectKeys.MULT2_AREA, multArea2);
+		gameObjects.put(GamePlayGameObjectKeys.DIV_AREA, divArea);
+		gameObjects.put(GamePlayGameObjectKeys.DIV2_AREA, divArea2);
+
+		gameObjects.put(GamePlayGameObjectKeys.GOAL_TEXT, goalText);
+		gameObjects.put(GamePlayGameObjectKeys.FOOTER_TEXT, footerText);
+		gameObjects.put(GamePlayGameObjectKeys.PLUS_TEXT, plusText);
+		gameObjects.put(GamePlayGameObjectKeys.MIN_TEXT, minText);
+		gameObjects.put(GamePlayGameObjectKeys.MULT_TEXT, multText);
+		gameObjects.put(GamePlayGameObjectKeys.DIV_TEXT, divText);
+		gameObjects.put(GamePlayGameObjectKeys.NUM_LIVES_TEXT, numLivesText);
+		gameObjects.put(GamePlayGameObjectKeys.NUM_STARS_TEXT, numStarsText);
 	}
+
+	public ScreenArea getScreenArea(GamePlayGameObjectKeys gameOverObjectKey) {
+		return (ScreenArea) gameObjects.get(gameOverObjectKey);
+	}
+
+	public TextBox getTextBox(GamePlayGameObjectKeys gameOverObjectKey) {
+		return (TextBox) gameObjects.get(gameOverObjectKey);
+	}
+
+	public void draw(Canvas canvas) {
+		gameObjects.get(GamePlayGameObjectKeys.FULLSCREEN_AREA).draw(canvas);
+		gameObjects.get(GamePlayGameObjectKeys.PLUS_AREA).draw(canvas);
+		gameObjects.get(GamePlayGameObjectKeys.PLUS2_AREA).draw(canvas);
+		gameObjects.get(GamePlayGameObjectKeys.MIN_AREA).draw(canvas);
+		gameObjects.get(GamePlayGameObjectKeys.MIN2_AREA).draw(canvas);
+		gameObjects.get(GamePlayGameObjectKeys.MULT_AREA).draw(canvas);
+		gameObjects.get(GamePlayGameObjectKeys.MULT2_AREA).draw(canvas);
+		gameObjects.get(GamePlayGameObjectKeys.DIV_AREA).draw(canvas);
+		gameObjects.get(GamePlayGameObjectKeys.DIV2_AREA).draw(canvas);
+		gameObjects.get(GamePlayGameObjectKeys.DIV2_AREA).draw(canvas);
+		gameObjects.get(GamePlayGameObjectKeys.GOAL_TEXT).draw(canvas);
+		gameObjects.get(GamePlayGameObjectKeys.FOOTER_TEXT).draw(canvas);
+		gameObjects.get(GamePlayGameObjectKeys.PLUS_TEXT).draw(canvas);
+		gameObjects.get(GamePlayGameObjectKeys.MIN_TEXT).draw(canvas);
+		gameObjects.get(GamePlayGameObjectKeys.MULT_TEXT).draw(canvas);
+		gameObjects.get(GamePlayGameObjectKeys.DIV_TEXT).draw(canvas);
+		gameObjects.get(GamePlayGameObjectKeys.NUM_LIVES_TEXT).draw(canvas);
+		gameObjects.get(GamePlayGameObjectKeys.NUM_STARS_TEXT).draw(canvas);
+	}
+
 }

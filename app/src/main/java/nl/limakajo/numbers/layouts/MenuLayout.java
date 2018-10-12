@@ -1,5 +1,6 @@
 package nl.limakajo.numbers.layouts;
 
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RadialGradient;
@@ -9,9 +10,11 @@ import android.graphics.Typeface;
 
 import org.w3c.dom.Attr;
 
+import java.util.EnumMap;
 import java.util.HashMap;
 
 import nl.limakajo.numbers.R;
+import nl.limakajo.numbers.gameObjects.GameObject;
 import nl.limakajo.numbers.gameObjects.ScreenArea;
 import nl.limakajo.numbers.gameObjects.TextBox;
 import nl.limakajo.numbers.main.MainActivity;
@@ -20,7 +23,9 @@ import nl.limakajo.numbers.utils.Attributes;
 /**
  * @author M.W.Bouwkamp
  */
-public class MenuLayout extends Layout {
+public class MenuLayout {
+
+    private EnumMap<MenuGameObjectKeys, GameObject> gameObjects;
 
     public MenuLayout() {
         ScreenArea fullscreen = new ScreenArea (
@@ -73,23 +78,37 @@ public class MenuLayout extends Layout {
                         greenArea.getArea().bottom),
                 Attributes.DIV_PAINT);
 
-        screenAreas = new HashMap<>();
-        screenAreas.put("fullscreen", fullscreen);
-        screenAreas.put("logo", logoArea);
-        screenAreas.put("blue", blueArea);
-        screenAreas.put("red", redArea);
-        screenAreas.put("green", greenArea);
-        screenAreas.put("yellow", yellowArea);
-
         TextBox logoText = new TextBox(
                 MainActivity.getContext().getString(R.string.menu_start_text),
                 Attributes.TextAllignment.XYCENTERED,
                 logotextArea.getArea(),
                 Attributes.TEXTBOX_LARGE_PAINT);
 
-        textBoxes = new HashMap<>();
-        textBoxes.put("logotext", logoText);
+        gameObjects = new EnumMap<>(MenuGameObjectKeys.class);
+        gameObjects.put(MenuGameObjectKeys.FULLSCREEN_AREA, fullscreen);
+        gameObjects.put(MenuGameObjectKeys.LOGO_AREA, logoArea);
+        gameObjects.put(MenuGameObjectKeys.LOGO_TEXT_AREA, logotextArea);
+        gameObjects.put(MenuGameObjectKeys.BLUE_AREA, blueArea);
+        gameObjects.put(MenuGameObjectKeys.RED_AREA, redArea);
+        gameObjects.put(MenuGameObjectKeys.GREEN_AREA, greenArea);
+        gameObjects.put(MenuGameObjectKeys.YELLOW_AREA, yellowArea);
+        gameObjects.put(MenuGameObjectKeys.LOGO_TEXT, logoText);
+    }
 
+    public ScreenArea getScreenArea(MenuGameObjectKeys gameOverObjectKey) {
+        return (ScreenArea) gameObjects.get(gameOverObjectKey);
+    }
 
+    public TextBox getTextBox(MenuGameObjectKeys gameOverObjectKey) {
+        return (TextBox) gameObjects.get(gameOverObjectKey);
+    }
+
+    public void draw(Canvas canvas) {
+        gameObjects.get(MenuGameObjectKeys.FULLSCREEN_AREA).draw(canvas);
+        gameObjects.get(MenuGameObjectKeys.BLUE_AREA).draw(canvas);
+        gameObjects.get(MenuGameObjectKeys.RED_AREA).draw(canvas);
+        gameObjects.get(MenuGameObjectKeys.GREEN_AREA).draw(canvas);
+        gameObjects.get(MenuGameObjectKeys.YELLOW_AREA).draw(canvas);
+        gameObjects.get(MenuGameObjectKeys.LOGO_TEXT).draw(canvas);
     }
 }
