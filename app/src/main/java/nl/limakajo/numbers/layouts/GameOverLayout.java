@@ -20,6 +20,7 @@ public class GameOverLayout {
 
     private EnumMap<GameOverGameObjectKeys, GameObject> gameObjects;
 
+    //TODO: Refactor so that generic screenareas are abstracted
     public GameOverLayout() {
         ScreenArea fullscreen = new ScreenArea (
                 new Rect(
