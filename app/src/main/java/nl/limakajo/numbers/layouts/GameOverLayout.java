@@ -3,8 +3,6 @@ package nl.limakajo.numbers.layouts;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 
-import org.w3c.dom.Text;
-
 import java.util.EnumMap;
 
 import nl.limakajo.numbers.gameObjects.GameObject;
@@ -18,7 +16,18 @@ import nl.limakajo.numbers.utils.Attributes;
  */
 public class GameOverLayout {
 
-    private EnumMap<GameOverGameObjectKeys, GameObject> gameObjects;
+    public enum ObjectKeys {
+        FULLSCREEN_AREA,
+        LOGO_AREA,
+        GAME_OVER_TEXT_AREA,
+        BLUE_AREA,
+        RED_AREA,
+        GREEN_AREA,
+        YELLOW_AREA,
+        GAME_OVER_TEXT
+    }
+
+    private EnumMap<ObjectKeys, GameObject> gameObjects;
 
     //TODO: Refactor so that generic screenareas are abstracted
     public GameOverLayout() {
@@ -78,32 +87,31 @@ public class GameOverLayout {
                 gameOverTextArea.getArea(),
                 Attributes.TEXTBOX_LARGE_PAINT);
 
-        gameObjects = new EnumMap<>(GameOverGameObjectKeys.class);
-        gameObjects.put(GameOverGameObjectKeys.FULLSCREEN_AREA, fullscreen);
-        gameObjects.put(GameOverGameObjectKeys.LOGO_AREA, logoArea);
-        gameObjects.put(GameOverGameObjectKeys.GAME_OVER_TEXT_AREA, gameOverTextArea);
-        gameObjects.put(GameOverGameObjectKeys.BLUE_AREA, blueArea);
-        gameObjects.put(GameOverGameObjectKeys.RED_AREA, redArea);
-        gameObjects.put(GameOverGameObjectKeys.GREEN_AREA, greenArea);
-        gameObjects.put(GameOverGameObjectKeys.YELLOW_AREA, yellowArea);
-        gameObjects.put(GameOverGameObjectKeys.GAME_OVER_TEXT, GameOverText);
+        gameObjects = new EnumMap<>(ObjectKeys.class);
+        gameObjects.put(ObjectKeys.FULLSCREEN_AREA, fullscreen);
+        gameObjects.put(ObjectKeys.LOGO_AREA, logoArea);
+        gameObjects.put(ObjectKeys.GAME_OVER_TEXT_AREA, gameOverTextArea);
+        gameObjects.put(ObjectKeys.BLUE_AREA, blueArea);
+        gameObjects.put(ObjectKeys.RED_AREA, redArea);
+        gameObjects.put(ObjectKeys.GREEN_AREA, greenArea);
+        gameObjects.put(ObjectKeys.YELLOW_AREA, yellowArea);
+        gameObjects.put(ObjectKeys.GAME_OVER_TEXT, GameOverText);
     }
 
-    public ScreenArea getScreenArea(GameOverGameObjectKeys gameOverObjectKey) {
+    public ScreenArea getScreenArea(ObjectKeys gameOverObjectKey) {
         return (ScreenArea) gameObjects.get(gameOverObjectKey);
     }
 
-    public TextBox getTextBox(GameOverGameObjectKeys gameOverObjectKey) {
+    public TextBox getTextBox(ObjectKeys gameOverObjectKey) {
         return (TextBox) gameObjects.get(gameOverObjectKey);
     }
 
     public void draw(Canvas canvas) {
-        gameObjects.get(GameOverGameObjectKeys.FULLSCREEN_AREA).draw(canvas);
-        gameObjects.get(GameOverGameObjectKeys.BLUE_AREA).draw(canvas);
-        gameObjects.get(GameOverGameObjectKeys.RED_AREA).draw(canvas);
-        gameObjects.get(GameOverGameObjectKeys.GREEN_AREA).draw(canvas);
-        gameObjects.get(GameOverGameObjectKeys.YELLOW_AREA).draw(canvas);
-        gameObjects.get(GameOverGameObjectKeys.GAME_OVER_TEXT).draw(canvas);
+        gameObjects.get(ObjectKeys.FULLSCREEN_AREA).draw(canvas);
+        gameObjects.get(ObjectKeys.BLUE_AREA).draw(canvas);
+        gameObjects.get(ObjectKeys.RED_AREA).draw(canvas);
+        gameObjects.get(ObjectKeys.GREEN_AREA).draw(canvas);
+        gameObjects.get(ObjectKeys.YELLOW_AREA).draw(canvas);
+        gameObjects.get(ObjectKeys.GAME_OVER_TEXT).draw(canvas);
     }
-
 }

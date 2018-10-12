@@ -1,32 +1,22 @@
 package nl.limakajo.numbers.scenes;
 
-import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.RectF;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.view.MotionEvent;
 
 import nl.limakajo.numbers.gameObjects.Tile;
 import nl.limakajo.numbers.gameObjects.Wave;
-import nl.limakajo.numbers.layouts.GamePlayGameObjectKeys;
 import nl.limakajo.numbers.layouts.GamePlayLayout;
 import nl.limakajo.numbers.main.MainActivity;
-import nl.limakajo.numbers.numbersgame.Level;
 import nl.limakajo.numbers.utils.DatabaseUtils;
 import nl.limakajo.numbers.utils.GameUtils;
 
 import java.util.ConcurrentModificationException;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
-import java.util.Objects;
-
-import static nl.limakajo.numbers.utils.GameUtils.GameState.GAME_OVER_STATE;
-import static nl.limakajo.numbers.utils.GameUtils.GameState.GAME_STATE;
-import static nl.limakajo.numbers.utils.GameUtils.GameState.LEVEL_COMPLETE_STATE;
 
 /**
  * @author M.W.Bouwkamp
@@ -88,15 +78,15 @@ public class GameplayScene implements SceneInterface {
         for (int i = 0; i < GameUtils.NUMTILES; i++) {
             tilesOnShelf.add(new Tile(MainActivity.getGame().getLevel().getHand()[i], i));
         }
-        gamePlayLayout.getTextBox(GamePlayGameObjectKeys.GOAL_TEXT).setText(Integer.toString(MainActivity.getGame().getLevel().getGoal()));
-        gamePlayLayout.getTextBox(GamePlayGameObjectKeys.NUM_STARS_TEXT).setText("A" + Integer.toString(MainActivity.getPlayer().getNumStars()));
-        gamePlayLayout.getTextBox(GamePlayGameObjectKeys.NUM_LIVES_TEXT).setText("B" + Integer.toString(MainActivity.getPlayer().getNumLives()));
+        gamePlayLayout.getTextBox(GamePlayLayout.ObjectKeys.GOAL_TEXT).setText(Integer.toString(MainActivity.getGame().getLevel().getGoal()));
+        gamePlayLayout.getTextBox(GamePlayLayout.ObjectKeys.NUM_STARS_TEXT).setText("A" + Integer.toString(MainActivity.getPlayer().getNumStars()));
+        gamePlayLayout.getTextBox(GamePlayLayout.ObjectKeys.NUM_LIVES_TEXT).setText("B" + Integer.toString(MainActivity.getPlayer().getNumLives()));
         initiating = false;
     }
 
     @Override
     public void update() {
-        gamePlayLayout.getTextBox(GamePlayGameObjectKeys.FOOTER_TEXT).setText(statusBarText);
+        gamePlayLayout.getTextBox(GamePlayLayout.ObjectKeys.FOOTER_TEXT).setText(statusBarText);
         if (System.currentTimeMillis() - startTime > GameUtils.TIMER){
             MainActivity.getGame().getLevel().setUserTime(GameUtils.TIMEPENALTY);
             sceneManager.setScene(new GameOverScene(sceneManager));
@@ -141,31 +131,31 @@ public class GameplayScene implements SceneInterface {
      * @return Tile or null depending on outcome. The Tile itself is returns if the Tile is on an operator ScreenArea or null if the Tile is returned to the shelf
      */
     private Tile consequenceTilePosition(Tile tile) {
-        if (tile.inArea(gamePlayLayout.getScreenArea(GamePlayGameObjectKeys.PLUS_AREA))) {
+        if (tile.inArea(gamePlayLayout.getScreenArea(GamePlayLayout.ObjectKeys.PLUS_AREA))) {
             numPlus++;
             numMin = 0;
             numMult = 0;
             numDiv = 0;
             return tile;
-        } else if (tile.inArea(gamePlayLayout.getScreenArea(GamePlayGameObjectKeys.MIN_AREA))) {
+        } else if (tile.inArea(gamePlayLayout.getScreenArea(GamePlayLayout.ObjectKeys.MIN_AREA))) {
             numMin++;
             numPlus = 0;
             numMult = 0;
             numDiv = 0;
             return tile;
-        } else if (tile.inArea(gamePlayLayout.getScreenArea(GamePlayGameObjectKeys.MULT_AREA))) {
+        } else if (tile.inArea(gamePlayLayout.getScreenArea(GamePlayLayout.ObjectKeys.MULT_AREA))) {
             numMult++;
             numPlus = 0;
             numMin = 0;
             numDiv = 0;
             return tile;
-        } else if (tile.inArea(gamePlayLayout.getScreenArea(GamePlayGameObjectKeys.DIV_AREA))) {
+        } else if (tile.inArea(gamePlayLayout.getScreenArea(GamePlayLayout.ObjectKeys.DIV_AREA))) {
             numDiv++;
             numPlus = 0;
             numMin = 0;
             numMult = 0;
             return tile;
-        } else if (tile.inArea(gamePlayLayout.getScreenArea(GamePlayGameObjectKeys.HEADER_AREA))) {
+        } else if (tile.inArea(gamePlayLayout.getScreenArea(GamePlayLayout.ObjectKeys.HEADER_AREA))) {
             tile.crunch(tilesOnShelf);
             numPlus = 0;
             numMin = 0;
@@ -226,7 +216,7 @@ public class GameplayScene implements SceneInterface {
         double timeFraction = (System.currentTimeMillis() - startTime) / (double) GameUtils.TIMER;
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(16);
-        RectF rect = new RectF(gamePlayLayout.getScreenArea(GamePlayGameObjectKeys.TIMER_AREA).getArea());
+        RectF rect = new RectF(gamePlayLayout.getScreenArea(GamePlayLayout.ObjectKeys.TIMER_AREA).getArea());
         paint.setColor(Color.rgb(80, 80, 80));
         canvas. drawArc(rect, 0, 360, false, paint);
         paint.setColor(Color.rgb((int) (255 * timeFraction), (int) (255 * (1 - timeFraction)), 0));
@@ -289,7 +279,7 @@ public class GameplayScene implements SceneInterface {
     private void runningTouchDragged(MotionEvent event) {
         if (tilePressed != null) {
             if (tilePressed != firstTile) {
-                if (onShelf && !tilePressed.inArea(gamePlayLayout.getScreenArea(GamePlayGameObjectKeys.SHELF_AREA))) {
+                if (onShelf && !tilePressed.inArea(gamePlayLayout.getScreenArea(GamePlayLayout.ObjectKeys.SHELF_AREA))) {
                     onShelf = false;
                     for (Tile tile: tilesOnShelf) {
                         tile.stopAnimation();

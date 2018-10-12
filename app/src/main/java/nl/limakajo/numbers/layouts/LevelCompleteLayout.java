@@ -4,7 +4,6 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 
 import java.util.EnumMap;
-import java.util.HashMap;
 
 import nl.limakajo.numbers.R;
 import nl.limakajo.numbers.gameObjects.GameObject;
@@ -18,7 +17,25 @@ import nl.limakajo.numbers.utils.Attributes;
  */
 public class LevelCompleteLayout {
 
-    private EnumMap<LevelCompleteGameObjectKeys, GameObject> gameObjects;
+    public enum ObjectKeys {
+        FULLSCREEN_AREA,
+        LOGO_AREA,
+        LEVEL_COMPLETE_TEXT_AREA,
+        STAR_AREA,
+        STAR1_AREA,
+        STAR2_AREA,
+        STAR3_AREA,
+        BLUE_AREA,
+        RED_AREA,
+        GREEN_AREA,
+        YELLOW_AREA,
+        LEVEL_COMPLETE_TEXT,
+        STAR1_TEXT,
+        STAR2_TEXT,
+        STAR3_TEXT
+    }
+
+    private EnumMap<ObjectKeys, GameObject> gameObjects;
 
     public LevelCompleteLayout() {
         ScreenArea fullscreen = new ScreenArea (
@@ -120,41 +137,41 @@ public class LevelCompleteLayout {
                 starArea3.getArea(),
                 Attributes.TEXT_BOX_STARS_PAINT);
 
-        gameObjects = new EnumMap<>(LevelCompleteGameObjectKeys.class);
-        gameObjects.put(LevelCompleteGameObjectKeys.FULLSCREEN_AREA, fullscreen);
-        gameObjects.put(LevelCompleteGameObjectKeys.LOGO_AREA, logoArea);
-        gameObjects.put(LevelCompleteGameObjectKeys.LEVEL_COMPLETE_TEXT_AREA, levelCompleteTextArea);
-        gameObjects.put(LevelCompleteGameObjectKeys.STAR_AREA, starsArea);
-        gameObjects.put(LevelCompleteGameObjectKeys.STAR1_AREA, starArea1);
-        gameObjects.put(LevelCompleteGameObjectKeys.STAR2_AREA, starArea2);
-        gameObjects.put(LevelCompleteGameObjectKeys.STAR3_AREA, starArea3);
-        gameObjects.put(LevelCompleteGameObjectKeys.BLUE_AREA, blueArea);
-        gameObjects.put(LevelCompleteGameObjectKeys.RED_AREA, redArea);
-        gameObjects.put(LevelCompleteGameObjectKeys.GREEN_AREA, greenArea);
-        gameObjects.put(LevelCompleteGameObjectKeys.YELLOW_AREA, yellowArea);
-        gameObjects.put(LevelCompleteGameObjectKeys.LEVEL_COMPLETE_TEXT, levelCompleteText);
-        gameObjects.put(LevelCompleteGameObjectKeys.STAR1_TEXT, star1Text);
-        gameObjects.put(LevelCompleteGameObjectKeys.STAR2_TEXT, star2Text);
-        gameObjects.put(LevelCompleteGameObjectKeys.STAR3_TEXT, star3Text);
+        gameObjects = new EnumMap<>(ObjectKeys.class);
+        gameObjects.put(ObjectKeys.FULLSCREEN_AREA, fullscreen);
+        gameObjects.put(ObjectKeys.LOGO_AREA, logoArea);
+        gameObjects.put(ObjectKeys.LEVEL_COMPLETE_TEXT_AREA, levelCompleteTextArea);
+        gameObjects.put(ObjectKeys.STAR_AREA, starsArea);
+        gameObjects.put(ObjectKeys.STAR1_AREA, starArea1);
+        gameObjects.put(ObjectKeys.STAR2_AREA, starArea2);
+        gameObjects.put(ObjectKeys.STAR3_AREA, starArea3);
+        gameObjects.put(ObjectKeys.BLUE_AREA, blueArea);
+        gameObjects.put(ObjectKeys.RED_AREA, redArea);
+        gameObjects.put(ObjectKeys.GREEN_AREA, greenArea);
+        gameObjects.put(ObjectKeys.YELLOW_AREA, yellowArea);
+        gameObjects.put(ObjectKeys.LEVEL_COMPLETE_TEXT, levelCompleteText);
+        gameObjects.put(ObjectKeys.STAR1_TEXT, star1Text);
+        gameObjects.put(ObjectKeys.STAR2_TEXT, star2Text);
+        gameObjects.put(ObjectKeys.STAR3_TEXT, star3Text);
     }
 
-    public ScreenArea getScreenArea(LevelCompleteGameObjectKeys gameOverObjectKey) {
+    public ScreenArea getScreenArea(ObjectKeys gameOverObjectKey) {
         return (ScreenArea) gameObjects.get(gameOverObjectKey);
     }
 
-    public TextBox getTextBox(LevelCompleteGameObjectKeys gameOverObjectKey) {
+    public TextBox getTextBox(ObjectKeys gameOverObjectKey) {
         return (TextBox) gameObjects.get(gameOverObjectKey);
     }
 
     public void draw(Canvas canvas) {
-        gameObjects.get(LevelCompleteGameObjectKeys.FULLSCREEN_AREA).draw(canvas);
-        gameObjects.get(LevelCompleteGameObjectKeys.BLUE_AREA).draw(canvas);
-        gameObjects.get(LevelCompleteGameObjectKeys.RED_AREA).draw(canvas);
-        gameObjects.get(LevelCompleteGameObjectKeys.GREEN_AREA).draw(canvas);
-        gameObjects.get(LevelCompleteGameObjectKeys.YELLOW_AREA).draw(canvas);
-        gameObjects.get(LevelCompleteGameObjectKeys.LEVEL_COMPLETE_TEXT).draw(canvas);
-        gameObjects.get(LevelCompleteGameObjectKeys.STAR1_TEXT).draw(canvas);
-        gameObjects.get(LevelCompleteGameObjectKeys.STAR2_TEXT).draw(canvas);
-        gameObjects.get(LevelCompleteGameObjectKeys.STAR3_TEXT).draw(canvas);
+        gameObjects.get(ObjectKeys.FULLSCREEN_AREA).draw(canvas);
+        gameObjects.get(ObjectKeys.BLUE_AREA).draw(canvas);
+        gameObjects.get(ObjectKeys.RED_AREA).draw(canvas);
+        gameObjects.get(ObjectKeys.GREEN_AREA).draw(canvas);
+        gameObjects.get(ObjectKeys.YELLOW_AREA).draw(canvas);
+        gameObjects.get(ObjectKeys.LEVEL_COMPLETE_TEXT).draw(canvas);
+        gameObjects.get(ObjectKeys.STAR1_TEXT).draw(canvas);
+        gameObjects.get(ObjectKeys.STAR2_TEXT).draw(canvas);
+        gameObjects.get(ObjectKeys.STAR3_TEXT).draw(canvas);
     }
 }

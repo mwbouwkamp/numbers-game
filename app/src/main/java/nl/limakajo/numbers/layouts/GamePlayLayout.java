@@ -19,7 +19,34 @@ import java.util.EnumMap;
 
 public class GamePlayLayout {
 
-	private EnumMap<GamePlayGameObjectKeys, GameObject> gameObjects;
+	public enum ObjectKeys {
+		FULLSCREEN_AREA,
+		PLAY_AREA,
+		HEADER_AREA,
+		TIMER_AREA,
+		NUM_LIVES_AREA,
+		NUM_STARS_AREA,
+		SHELF_AREA,
+		OPERATORS_AREA,
+		PLUS_AREA,
+		PLUS2_AREA,
+		MIN_AREA,
+		MIN2_AREA,
+		MULT_AREA,
+		MULT2_AREA,
+		DIV_AREA,
+		DIV2_AREA,
+		GOAL_TEXT,
+		FOOTER_TEXT,
+		PLUS_TEXT,
+		MIN_TEXT,
+		MULT_TEXT,
+		DIV_TEXT,
+		NUM_LIVES_TEXT,
+		NUM_STARS_TEXT
+	}
+
+	private EnumMap<ObjectKeys, GameObject> gameObjects;
 
 	public GamePlayLayout() {
 		ScreenArea fullscreen = new ScreenArea (
@@ -183,61 +210,60 @@ public class GamePlayLayout {
 				divArea.getArea(),
 				Attributes.TEXT_BOX_OPERATOR_PAINT);
 
-		gameObjects = new EnumMap<>(GamePlayGameObjectKeys.class);
-		gameObjects.put(GamePlayGameObjectKeys.FULLSCREEN_AREA, fullscreen);
-		gameObjects.put(GamePlayGameObjectKeys.PLAY_AREA, playArea);
-		gameObjects.put(GamePlayGameObjectKeys.HEADER_AREA, headerArea);
-		gameObjects.put(GamePlayGameObjectKeys.TIMER_AREA, timerArea);
-		gameObjects.put(GamePlayGameObjectKeys.NUM_LIVES_AREA, numLivesArea);
-		gameObjects.put(GamePlayGameObjectKeys.NUM_STARS_AREA, numStarsArea);
-		gameObjects.put(GamePlayGameObjectKeys.SHELF_AREA, shelfArea);
-		gameObjects.put(GamePlayGameObjectKeys.OPERATORS_AREA, operatorsArea);
-		gameObjects.put(GamePlayGameObjectKeys.PLUS_AREA, plusArea);
-		gameObjects.put(GamePlayGameObjectKeys.PLUS2_AREA, plusArea2);
-		gameObjects.put(GamePlayGameObjectKeys.MIN_AREA, minArea);
-		gameObjects.put(GamePlayGameObjectKeys.MIN2_AREA, minArea2);
-		gameObjects.put(GamePlayGameObjectKeys.MULT_AREA, multArea);
-		gameObjects.put(GamePlayGameObjectKeys.MULT2_AREA, multArea2);
-		gameObjects.put(GamePlayGameObjectKeys.DIV_AREA, divArea);
-		gameObjects.put(GamePlayGameObjectKeys.DIV2_AREA, divArea2);
+		gameObjects = new EnumMap<>(ObjectKeys.class);
+		gameObjects.put(ObjectKeys.FULLSCREEN_AREA, fullscreen);
+		gameObjects.put(ObjectKeys.PLAY_AREA, playArea);
+		gameObjects.put(ObjectKeys.HEADER_AREA, headerArea);
+		gameObjects.put(ObjectKeys.TIMER_AREA, timerArea);
+		gameObjects.put(ObjectKeys.NUM_LIVES_AREA, numLivesArea);
+		gameObjects.put(ObjectKeys.NUM_STARS_AREA, numStarsArea);
+		gameObjects.put(ObjectKeys.SHELF_AREA, shelfArea);
+		gameObjects.put(ObjectKeys.OPERATORS_AREA, operatorsArea);
+		gameObjects.put(ObjectKeys.PLUS_AREA, plusArea);
+		gameObjects.put(ObjectKeys.PLUS2_AREA, plusArea2);
+		gameObjects.put(ObjectKeys.MIN_AREA, minArea);
+		gameObjects.put(ObjectKeys.MIN2_AREA, minArea2);
+		gameObjects.put(ObjectKeys.MULT_AREA, multArea);
+		gameObjects.put(ObjectKeys.MULT2_AREA, multArea2);
+		gameObjects.put(ObjectKeys.DIV_AREA, divArea);
+		gameObjects.put(ObjectKeys.DIV2_AREA, divArea2);
 
-		gameObjects.put(GamePlayGameObjectKeys.GOAL_TEXT, goalText);
-		gameObjects.put(GamePlayGameObjectKeys.FOOTER_TEXT, footerText);
-		gameObjects.put(GamePlayGameObjectKeys.PLUS_TEXT, plusText);
-		gameObjects.put(GamePlayGameObjectKeys.MIN_TEXT, minText);
-		gameObjects.put(GamePlayGameObjectKeys.MULT_TEXT, multText);
-		gameObjects.put(GamePlayGameObjectKeys.DIV_TEXT, divText);
-		gameObjects.put(GamePlayGameObjectKeys.NUM_LIVES_TEXT, numLivesText);
-		gameObjects.put(GamePlayGameObjectKeys.NUM_STARS_TEXT, numStarsText);
+		gameObjects.put(ObjectKeys.GOAL_TEXT, goalText);
+		gameObjects.put(ObjectKeys.FOOTER_TEXT, footerText);
+		gameObjects.put(ObjectKeys.PLUS_TEXT, plusText);
+		gameObjects.put(ObjectKeys.MIN_TEXT, minText);
+		gameObjects.put(ObjectKeys.MULT_TEXT, multText);
+		gameObjects.put(ObjectKeys.DIV_TEXT, divText);
+		gameObjects.put(ObjectKeys.NUM_LIVES_TEXT, numLivesText);
+		gameObjects.put(ObjectKeys.NUM_STARS_TEXT, numStarsText);
 	}
 
-	public ScreenArea getScreenArea(GamePlayGameObjectKeys gameOverObjectKey) {
+	public ScreenArea getScreenArea(ObjectKeys gameOverObjectKey) {
 		return (ScreenArea) gameObjects.get(gameOverObjectKey);
 	}
 
-	public TextBox getTextBox(GamePlayGameObjectKeys gameOverObjectKey) {
+	public TextBox getTextBox(ObjectKeys gameOverObjectKey) {
 		return (TextBox) gameObjects.get(gameOverObjectKey);
 	}
 
 	public void draw(Canvas canvas) {
-		gameObjects.get(GamePlayGameObjectKeys.FULLSCREEN_AREA).draw(canvas);
-		gameObjects.get(GamePlayGameObjectKeys.PLUS_AREA).draw(canvas);
-		gameObjects.get(GamePlayGameObjectKeys.PLUS2_AREA).draw(canvas);
-		gameObjects.get(GamePlayGameObjectKeys.MIN_AREA).draw(canvas);
-		gameObjects.get(GamePlayGameObjectKeys.MIN2_AREA).draw(canvas);
-		gameObjects.get(GamePlayGameObjectKeys.MULT_AREA).draw(canvas);
-		gameObjects.get(GamePlayGameObjectKeys.MULT2_AREA).draw(canvas);
-		gameObjects.get(GamePlayGameObjectKeys.DIV_AREA).draw(canvas);
-		gameObjects.get(GamePlayGameObjectKeys.DIV2_AREA).draw(canvas);
-		gameObjects.get(GamePlayGameObjectKeys.DIV2_AREA).draw(canvas);
-		gameObjects.get(GamePlayGameObjectKeys.GOAL_TEXT).draw(canvas);
-		gameObjects.get(GamePlayGameObjectKeys.FOOTER_TEXT).draw(canvas);
-		gameObjects.get(GamePlayGameObjectKeys.PLUS_TEXT).draw(canvas);
-		gameObjects.get(GamePlayGameObjectKeys.MIN_TEXT).draw(canvas);
-		gameObjects.get(GamePlayGameObjectKeys.MULT_TEXT).draw(canvas);
-		gameObjects.get(GamePlayGameObjectKeys.DIV_TEXT).draw(canvas);
-		gameObjects.get(GamePlayGameObjectKeys.NUM_LIVES_TEXT).draw(canvas);
-		gameObjects.get(GamePlayGameObjectKeys.NUM_STARS_TEXT).draw(canvas);
+		gameObjects.get(ObjectKeys.FULLSCREEN_AREA).draw(canvas);
+		gameObjects.get(ObjectKeys.PLUS_AREA).draw(canvas);
+		gameObjects.get(ObjectKeys.PLUS2_AREA).draw(canvas);
+		gameObjects.get(ObjectKeys.MIN_AREA).draw(canvas);
+		gameObjects.get(ObjectKeys.MIN2_AREA).draw(canvas);
+		gameObjects.get(ObjectKeys.MULT_AREA).draw(canvas);
+		gameObjects.get(ObjectKeys.MULT2_AREA).draw(canvas);
+		gameObjects.get(ObjectKeys.DIV_AREA).draw(canvas);
+		gameObjects.get(ObjectKeys.DIV2_AREA).draw(canvas);
+		gameObjects.get(ObjectKeys.DIV2_AREA).draw(canvas);
+		gameObjects.get(ObjectKeys.GOAL_TEXT).draw(canvas);
+		gameObjects.get(ObjectKeys.FOOTER_TEXT).draw(canvas);
+		gameObjects.get(ObjectKeys.PLUS_TEXT).draw(canvas);
+		gameObjects.get(ObjectKeys.MIN_TEXT).draw(canvas);
+		gameObjects.get(ObjectKeys.MULT_TEXT).draw(canvas);
+		gameObjects.get(ObjectKeys.DIV_TEXT).draw(canvas);
+		gameObjects.get(ObjectKeys.NUM_LIVES_TEXT).draw(canvas);
+		gameObjects.get(ObjectKeys.NUM_STARS_TEXT).draw(canvas);
 	}
-
 }
