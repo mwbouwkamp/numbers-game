@@ -6,7 +6,7 @@ import android.graphics.Rect;
 
 import nl.limakajo.numbers.utils.Attributes;
 
-public class BoardObject {
+public class BoardObject implements GameObject {
     protected final Rect rect;
     protected final Paint paint;
 
@@ -21,5 +21,15 @@ public class BoardObject {
 
     public Paint getPaint() {
         return paint;
+    }
+
+    @Override
+    public void draw(Canvas canvas) {
+
+    }
+
+    @Override
+    public void update() {
+
     }
 }

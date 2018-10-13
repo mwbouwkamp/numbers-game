@@ -12,7 +12,7 @@ import nl.limakajo.numbers.utils.PaintComparator;
  * @author M.W.Bouwkamp
  */
 
-public class TextBox extends BoardObject implements GameObject{
+public class TextBox extends BoardObject {
 
     private String text;
     private final Attributes.TextAllignment alignment;

@@ -2,9 +2,6 @@ package nl.limakajo.numbers.utils;
 
 import android.graphics.Paint;
 import android.text.TextUtils;
-
-import org.w3c.dom.Text;
-
 import java.util.Comparator;
 
 public class PaintComparator implements Comparator<Paint> {
