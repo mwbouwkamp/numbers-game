@@ -111,11 +111,5 @@ public class MenuLayout {
         for (GameObject gameObject: gameObjects.values()) {
             gameObject.draw(canvas);
         }
-//        gameObjects.get(ObjectKeys.FULLSCREEN_AREA).draw(canvas);
-//        gameObjects.get(ObjectKeys.BLUE_AREA).draw(canvas);
-//        gameObjects.get(ObjectKeys.RED_AREA).draw(canvas);
-//        gameObjects.get(ObjectKeys.GREEN_AREA).draw(canvas);
-//        gameObjects.get(ObjectKeys.YELLOW_AREA).draw(canvas);
-//        gameObjects.get(ObjectKeys.LOGO_TEXT).draw(canvas);
     }
 }

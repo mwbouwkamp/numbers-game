@@ -251,23 +251,5 @@ public class GamePlayLayout {
 		for (GameObject gameObject: gameObjects.values()) {
 			gameObject.draw(canvas);
 		}
-//		gameObjects.get(ObjectKeys.FULLSCREEN_AREA).draw(canvas);
-//		gameObjects.get(ObjectKeys.PLUS_AREA).draw(canvas);
-//		gameObjects.get(ObjectKeys.PLUS2_AREA).draw(canvas);
-//		gameObjects.get(ObjectKeys.MIN_AREA).draw(canvas);
-//		gameObjects.get(ObjectKeys.MIN2_AREA).draw(canvas);
-//		gameObjects.get(ObjectKeys.MULT_AREA).draw(canvas);
-//		gameObjects.get(ObjectKeys.MULT2_AREA).draw(canvas);
-//		gameObjects.get(ObjectKeys.DIV_AREA).draw(canvas);
-//		gameObjects.get(ObjectKeys.DIV2_AREA).draw(canvas);
-//		gameObjects.get(ObjectKeys.DIV2_AREA).draw(canvas);
-//		gameObjects.get(ObjectKeys.GOAL_TEXT).draw(canvas);
-//		gameObjects.get(ObjectKeys.FOOTER_TEXT).draw(canvas);
-//		gameObjects.get(ObjectKeys.PLUS_TEXT).draw(canvas);
-//		gameObjects.get(ObjectKeys.MIN_TEXT).draw(canvas);
-//		gameObjects.get(ObjectKeys.MULT_TEXT).draw(canvas);
-//		gameObjects.get(ObjectKeys.DIV_TEXT).draw(canvas);
-//		gameObjects.get(ObjectKeys.NUM_LIVES_TEXT).draw(canvas);
-//		gameObjects.get(ObjectKeys.NUM_STARS_TEXT).draw(canvas);
 	}
 }
