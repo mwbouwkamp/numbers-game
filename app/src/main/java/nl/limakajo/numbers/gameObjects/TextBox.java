@@ -6,28 +6,22 @@ import android.graphics.Point;
 import android.graphics.Rect;
 
 import nl.limakajo.numbers.utils.Attributes;
+import nl.limakajo.numbers.utils.PaintComparator;
 
 /**
  * @author M.W.Bouwkamp
  */
 
-public class TextBox implements GameObject {
+public class TextBox extends BoardObject implements GameObject{
 
     private String text;
     private final Attributes.TextAllignment alignment;
-    private final Rect rect;
-    private final Paint paint;
     private Point textPosition;
 
     public TextBox(String text, Attributes.TextAllignment alignment, Rect rect, Paint paint) {
+        super(paint, rect);
         this.alignment = alignment;
-        this.rect = rect;
-        this.paint = new Paint(paint);
         setText(text);
-    }
-
-    public Rect getArea() {
-        return rect;
     }
 
     public void setText(String text) {
@@ -69,16 +63,14 @@ public class TextBox implements GameObject {
 
     @Override
     public void draw(Canvas canvas) {
-        canvas.drawText(text, textPosition.x, textPosition.y, paint);
+        if (new PaintComparator().compare(paint, Attributes.NO_DRAW) == -1) {
+            canvas.drawText(text, textPosition.x, textPosition.y, paint);
+        }
     }
 
     @Override
     public void update() {
 
-    }
-
-    public Paint getPaint() {
-        return paint;
     }
 }
 

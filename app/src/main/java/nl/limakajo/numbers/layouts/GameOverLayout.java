@@ -3,8 +3,11 @@ package nl.limakajo.numbers.layouts;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 
+import org.xml.sax.helpers.AttributesImpl;
+
 import java.util.EnumMap;
 
+import nl.limakajo.numbers.gameObjects.BoardObject;
 import nl.limakajo.numbers.gameObjects.GameObject;
 import nl.limakajo.numbers.gameObjects.ScreenArea;
 import nl.limakajo.numbers.gameObjects.TextBox;
@@ -51,7 +54,7 @@ public class GameOverLayout {
                         (int) (0.3 * fullscreen.getArea().width()),
                         (int) (fullscreen.getArea().width() - 0.3 * fullscreen.getArea().width()),
                         (int) (0.7 * fullscreen.getArea().width())),
-                Attributes.BG_PAINT);
+                Attributes.NO_DRAW);
         ScreenArea blueArea = new ScreenArea(
                 new Rect(
                         logoArea.getArea().left,
@@ -108,11 +111,14 @@ public class GameOverLayout {
     }
 
     public void draw(Canvas canvas) {
-        gameObjects.get(ObjectKeys.FULLSCREEN_AREA).draw(canvas);
-        gameObjects.get(ObjectKeys.BLUE_AREA).draw(canvas);
-        gameObjects.get(ObjectKeys.RED_AREA).draw(canvas);
-        gameObjects.get(ObjectKeys.GREEN_AREA).draw(canvas);
-        gameObjects.get(ObjectKeys.YELLOW_AREA).draw(canvas);
-        gameObjects.get(ObjectKeys.GAME_OVER_TEXT).draw(canvas);
+        for (GameObject gameObject: gameObjects.values()) {
+            gameObject.draw(canvas);
+        }
+//        gameObjects.get(ObjectKeys.FULLSCREEN_AREA).draw(canvas);
+//        gameObjects.get(ObjectKeys.BLUE_AREA).draw(canvas);
+//        gameObjects.get(ObjectKeys.RED_AREA).draw(canvas);
+//        gameObjects.get(ObjectKeys.GREEN_AREA).draw(canvas);
+//        gameObjects.get(ObjectKeys.YELLOW_AREA).draw(canvas);
+//        gameObjects.get(ObjectKeys.GAME_OVER_TEXT).draw(canvas);
     }
 }

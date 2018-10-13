@@ -4,6 +4,9 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
+import nl.limakajo.numbers.utils.Attributes;
+import nl.limakajo.numbers.utils.PaintComparator;
+
 /**
  * ScreenArea GameObject Class
  * Creates rectangular screen area
@@ -11,23 +14,17 @@ import android.graphics.Rect;
  * @author M.W.Bouwkamp
  */
 
-public class ScreenArea implements GameObject {
-
-    private final Rect rect;
-    private final Paint paint;
+public class ScreenArea extends BoardObject implements GameObject {
 
     public ScreenArea(Rect rect, Paint paint) {
-        this.rect = rect;
-        this.paint = new Paint(paint);
-    }
-
-    public Rect getArea() {
-        return rect;
+        super(paint, rect);
     }
 
     @Override
     public void draw(Canvas canvas) {
-        canvas.drawRect(rect, paint);
+        if (new PaintComparator().compare(paint, Attributes.NO_DRAW) == -1) {
+            canvas.drawRect(rect, paint);
+        }
     }
 
     @Override

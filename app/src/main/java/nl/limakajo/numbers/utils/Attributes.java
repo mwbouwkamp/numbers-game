@@ -43,7 +43,6 @@ public class Attributes {
     public static final int STARS_DARK_ALPHA = 40;
 
     public static final Paint BG_PAINT = getBackGroundPaint();
-    public static final Paint EMPTY_PAINT = new Paint();
     public static final Paint TEXTBOX_LARGE_PAINT = getTextBoxLargeFontPaint();
     public static final Paint TEXTBOX_SMALL_PAINT = getTextBoxSmallFontPaint();
     public static final Paint TEXTBOX_NUMLIVES_PAINT = getTextBoxNumlivesPaint();
@@ -57,6 +56,7 @@ public class Attributes {
     public static final Paint MULT_PAINT_2 = getMult2Paint();
     public static final Paint DIV_PAINT = getDivPaint();
     public static final Paint DIV_PAINT_2 = getDiv2Paint();
+    public static final Paint NO_DRAW = new Paint();
 
     //Tile Attributes
     public static final int[] TILE_COLORS = {
@@ -107,6 +107,7 @@ public class Attributes {
         paint.setColor(Attributes.GOAL_COLOR);
         return paint;
     }
+
 
     @NonNull
     //TODO: Fix hardcoded text size

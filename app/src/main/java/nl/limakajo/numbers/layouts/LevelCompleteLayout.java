@@ -56,7 +56,7 @@ public class LevelCompleteLayout {
                         (int) (0.3 * fullscreen.getArea().width()),
                         (int) (fullscreen.getArea().width() - 0.3 * fullscreen.getArea().width()),
                         (int) (0.7 * fullscreen.getArea().width())),
-                Attributes.BG_PAINT);
+                Attributes.NO_DRAW);
         ScreenArea blueArea = new ScreenArea(
                 new Rect(
                         logoArea.getArea().left,
@@ -153,14 +153,18 @@ public class LevelCompleteLayout {
     }
 
     public void draw(Canvas canvas) {
-        gameObjects.get(ObjectKeys.FULLSCREEN_AREA).draw(canvas);
-        gameObjects.get(ObjectKeys.BLUE_AREA).draw(canvas);
-        gameObjects.get(ObjectKeys.RED_AREA).draw(canvas);
-        gameObjects.get(ObjectKeys.GREEN_AREA).draw(canvas);
-        gameObjects.get(ObjectKeys.YELLOW_AREA).draw(canvas);
-        gameObjects.get(ObjectKeys.LEVEL_COMPLETE_TEXT).draw(canvas);
-        gameObjects.get(ObjectKeys.STAR1_TEXT).draw(canvas);
-        gameObjects.get(ObjectKeys.STAR2_TEXT).draw(canvas);
-        gameObjects.get(ObjectKeys.STAR3_TEXT).draw(canvas);
+        for (GameObject gameObject: gameObjects.values()) {
+            gameObject.draw(canvas);
+        }
+
+//        gameObjects.get(ObjectKeys.FULLSCREEN_AREA).draw(canvas);
+//        gameObjects.get(ObjectKeys.BLUE_AREA).draw(canvas);
+//        gameObjects.get(ObjectKeys.RED_AREA).draw(canvas);
+//        gameObjects.get(ObjectKeys.GREEN_AREA).draw(canvas);
+//        gameObjects.get(ObjectKeys.YELLOW_AREA).draw(canvas);
+//        gameObjects.get(ObjectKeys.LEVEL_COMPLETE_TEXT).draw(canvas);
+//        gameObjects.get(ObjectKeys.STAR1_TEXT).draw(canvas);
+//        gameObjects.get(ObjectKeys.STAR2_TEXT).draw(canvas);
+//        gameObjects.get(ObjectKeys.STAR3_TEXT).draw(canvas);
     }
 }

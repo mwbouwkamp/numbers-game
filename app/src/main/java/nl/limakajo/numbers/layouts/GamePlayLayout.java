@@ -71,7 +71,7 @@ public class GamePlayLayout {
 						Attributes.MARGE,
 						MainActivity.getDevice().getWidth() - Attributes.MARGE,
 						MainActivity.getDevice().getHeight() - Attributes.MARGE),
-				Attributes.EMPTY_PAINT);
+				Attributes.NO_DRAW);
         gameObjects.put(ObjectKeys.PLAY_AREA, playArea);
 
         //Header
@@ -81,7 +81,7 @@ public class GamePlayLayout {
 						playArea.getArea().top,
 						playArea.getArea().right,
 						playArea.getArea().top + Attributes.GOAL_HEIGHT),
-				Attributes.EMPTY_PAINT);
+				Attributes.NO_DRAW);
         TextBox goalText = new TextBox(
                 MainActivity.getContext().getString(R.string.empty_text),
                 Attributes.TextAllignment.XYCENTERED,
@@ -93,7 +93,7 @@ public class GamePlayLayout {
 						headerArea.getArea().top,
 						headerArea.getArea().left + (headerArea.getArea().width() + Attributes.GOAL_HEIGHT) / 2,
 						headerArea.getArea().bottom),
-				Attributes.EMPTY_PAINT);
+				Attributes.NO_DRAW);
         TextBox numStarsText = new TextBox(
                 "A",
                 Attributes.TextAllignment.XLEFT_YCENTERED,
@@ -137,7 +137,7 @@ public class GamePlayLayout {
                         headerArea.getArea().bottom + Attributes.MARGE,
                         playArea.getArea().right,
                         (int) (headerArea.getArea().bottom + 2.0 * Attributes.MARGE + (playArea.getArea().right - playArea.getArea().left - Attributes.MARGE) / GameUtils.NUMTILES) - Attributes.MARGE),
-                Attributes.EMPTY_PAINT);
+                Attributes.NO_DRAW);
         gameObjects.put(ObjectKeys.SHELF_AREA, shelfArea);
 
         //Operators
@@ -147,7 +147,7 @@ public class GamePlayLayout {
                         shelfArea.getArea().bottom + Attributes.MARGE,
                         playArea.getArea().right,
                         footerText.getArea().top - Attributes.MARGE),
-                Attributes.EMPTY_PAINT);
+                Attributes.NO_DRAW);
         ScreenArea plusArea = new ScreenArea(
                 new Rect(
                         operatorsArea.getArea().left,
@@ -248,23 +248,26 @@ public class GamePlayLayout {
 	}
 
 	public void draw(Canvas canvas) {
-		gameObjects.get(ObjectKeys.FULLSCREEN_AREA).draw(canvas);
-		gameObjects.get(ObjectKeys.PLUS_AREA).draw(canvas);
-		gameObjects.get(ObjectKeys.PLUS2_AREA).draw(canvas);
-		gameObjects.get(ObjectKeys.MIN_AREA).draw(canvas);
-		gameObjects.get(ObjectKeys.MIN2_AREA).draw(canvas);
-		gameObjects.get(ObjectKeys.MULT_AREA).draw(canvas);
-		gameObjects.get(ObjectKeys.MULT2_AREA).draw(canvas);
-		gameObjects.get(ObjectKeys.DIV_AREA).draw(canvas);
-		gameObjects.get(ObjectKeys.DIV2_AREA).draw(canvas);
-		gameObjects.get(ObjectKeys.DIV2_AREA).draw(canvas);
-		gameObjects.get(ObjectKeys.GOAL_TEXT).draw(canvas);
-		gameObjects.get(ObjectKeys.FOOTER_TEXT).draw(canvas);
-		gameObjects.get(ObjectKeys.PLUS_TEXT).draw(canvas);
-		gameObjects.get(ObjectKeys.MIN_TEXT).draw(canvas);
-		gameObjects.get(ObjectKeys.MULT_TEXT).draw(canvas);
-		gameObjects.get(ObjectKeys.DIV_TEXT).draw(canvas);
-		gameObjects.get(ObjectKeys.NUM_LIVES_TEXT).draw(canvas);
-		gameObjects.get(ObjectKeys.NUM_STARS_TEXT).draw(canvas);
+		for (GameObject gameObject: gameObjects.values()) {
+			gameObject.draw(canvas);
+		}
+//		gameObjects.get(ObjectKeys.FULLSCREEN_AREA).draw(canvas);
+//		gameObjects.get(ObjectKeys.PLUS_AREA).draw(canvas);
+//		gameObjects.get(ObjectKeys.PLUS2_AREA).draw(canvas);
+//		gameObjects.get(ObjectKeys.MIN_AREA).draw(canvas);
+//		gameObjects.get(ObjectKeys.MIN2_AREA).draw(canvas);
+//		gameObjects.get(ObjectKeys.MULT_AREA).draw(canvas);
+//		gameObjects.get(ObjectKeys.MULT2_AREA).draw(canvas);
+//		gameObjects.get(ObjectKeys.DIV_AREA).draw(canvas);
+//		gameObjects.get(ObjectKeys.DIV2_AREA).draw(canvas);
+//		gameObjects.get(ObjectKeys.DIV2_AREA).draw(canvas);
+//		gameObjects.get(ObjectKeys.GOAL_TEXT).draw(canvas);
+//		gameObjects.get(ObjectKeys.FOOTER_TEXT).draw(canvas);
+//		gameObjects.get(ObjectKeys.PLUS_TEXT).draw(canvas);
+//		gameObjects.get(ObjectKeys.MIN_TEXT).draw(canvas);
+//		gameObjects.get(ObjectKeys.MULT_TEXT).draw(canvas);
+//		gameObjects.get(ObjectKeys.DIV_TEXT).draw(canvas);
+//		gameObjects.get(ObjectKeys.NUM_LIVES_TEXT).draw(canvas);
+//		gameObjects.get(ObjectKeys.NUM_STARS_TEXT).draw(canvas);
 	}
 }
