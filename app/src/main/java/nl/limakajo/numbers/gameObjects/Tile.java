@@ -103,7 +103,6 @@ public class Tile implements GameObject {
 				this.currentPosition = originalPosition;
 			}
 		}
-
 	}
 
 	public void startAnimation() {
@@ -118,15 +117,6 @@ public class Tile implements GameObject {
 		animating = false;
 	}
 
-	/**
-	 * Compares tiles based on value
-	 * 
-	 */
-	public int compareTo(Tile other) {
-		return this.getNumber() - other.getNumber();
-	}
-
-	
 	/**
 	 * Checks if a tile is in a given ScreenArea
 	 * 
@@ -153,7 +143,6 @@ public class Tile implements GameObject {
 	 */
 	@Override
 	public void draw(Canvas canvas) {
-
 		paint.setStyle(Paint.Style.FILL);
 		paint.setColor(getColor());
 		canvas.drawCircle(currentPosition.x, currentPosition.y, Attributes.TILE_WIDTH/2, paint);
@@ -166,7 +155,7 @@ public class Tile implements GameObject {
 	 * @param canvas
 	 * @param numberText
 	 */
-	public void drawCenteredText(Canvas canvas, String numberText) {
+	private void drawCenteredText(Canvas canvas, String numberText) {
 		Rect bounds = new Rect();
 		paint.setTextAlign(Paint.Align.CENTER);
 		paint.getTextBounds(numberText, 0, numberText.length(), bounds);
@@ -208,10 +197,6 @@ public class Tile implements GameObject {
 		return this.number;
 	}
 
-	public Tile[] getComposition() {
-		return this.composition;
-	}
-
 	public int getColor() {
 		return this.color;
 	}
@@ -220,7 +205,7 @@ public class Tile implements GameObject {
 		return this.colorIndex;
 	}
 
-	public Rect getBounds(Point position) {
+	private Rect getBounds(Point position) {
 		return new Rect(position.x - Attributes.TILE_WIDTH / 2, position.y - Attributes.TILE_WIDTH / 2, position.x + Attributes.TILE_WIDTH / 2, position.y + Attributes.TILE_WIDTH /2);
 	}
 
@@ -235,5 +220,4 @@ public class Tile implements GameObject {
 	public Point getOriginalPosition() {
 		return this.originalPosition;
 	}
-
 }

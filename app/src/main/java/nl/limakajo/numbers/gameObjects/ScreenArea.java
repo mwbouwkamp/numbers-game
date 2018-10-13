@@ -26,9 +26,4 @@ public class ScreenArea extends BoardObject {
             canvas.drawRect(rect, paint);
         }
     }
-
-    @Override
-    public void update() {
-
-    }
 }

@@ -67,10 +67,5 @@ public class TextBox extends BoardObject {
             canvas.drawText(text, textPosition.x, textPosition.y, paint);
         }
     }
-
-    @Override
-    public void update() {
-
-    }
 }
 

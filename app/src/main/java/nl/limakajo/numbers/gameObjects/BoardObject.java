@@ -7,10 +7,10 @@ import android.graphics.Rect;
 import nl.limakajo.numbers.utils.Attributes;
 
 public class BoardObject implements GameObject {
-    protected final Rect rect;
-    protected final Paint paint;
+    final Rect rect;
+    final Paint paint;
 
-    public BoardObject(Paint paint, Rect rect) {
+    BoardObject(Paint paint, Rect rect) {
         this.paint = new Paint(paint);
         this.rect = rect;
     }
@@ -25,11 +25,9 @@ public class BoardObject implements GameObject {
 
     @Override
     public void draw(Canvas canvas) {
-
     }
 
     @Override
     public void update() {
-
     }
 }
