@@ -24,12 +24,12 @@ import java.util.Scanner;
  */
 
 public class NetworkUtils {
-    public static final String GET_URL = "http://limakajo.16mb.com/getlevels.php";
-    public static final String SET_URL = "http://limakajo.16mb.com/setlevels.php";
-    public static final String SERVER = "mysql.hostinger.nl";
-    public static final String USER = "u790400871_nmbr";
-    public static final String PASS = "juig448";
-    public static final String DB = "u790400871_nmbr";
+    public static final String GET_URL = "http://limakajo.mygamesonline.org/getlevels.php";
+    public static final String SET_URL = "http://limakajo.mygamesonline.org/setlevels.php";
+    public static final String SERVER = "fdb23.runhosting.com";
+    public static final String USER = "2877361_numbers";
+    public static final String PASS = "Numbersjuig448";
+    public static final String DB = "2877361_numbers";
 
     private static final String TAG = NetworkUtils.class.getName();
 
@@ -120,8 +120,7 @@ public class NetworkUtils {
         URL url;
 
         try {
-            //TODO: Check this logic. Seems that this shold be SET_URL
-            url = new URL(GET_URL);
+            url = new URL(SET_URL);
             Log.i(TAG, "Url created successfully");
             httpURLConnection = (HttpURLConnection)url.openConnection();
 

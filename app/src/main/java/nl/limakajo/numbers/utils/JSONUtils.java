@@ -25,6 +25,7 @@ public class JSONUtils {
             return null;
         }
         try {
+            System.out.println("JSONSTRING:" + jsonString);
             JSONArray jsonArray = new JSONArray(jsonString);
             levels = new LinkedList<>();
             for (int i = 0; i < jsonArray.length(); i++) {
