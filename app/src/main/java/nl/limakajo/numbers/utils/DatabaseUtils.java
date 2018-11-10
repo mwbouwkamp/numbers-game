@@ -18,13 +18,14 @@ import java.util.Objects;
 
 public class DatabaseUtils {
 
+    //TODO: This can be refactored: one queryAll, with switch to see from which table the data needs to be retrieved
     /**
      * Retrieves all levels from SQLite database
      *
      * @param context context
      * @return levels levels
      */
-    public static LinkedList<Level> getLevels(Context context) {
+    public static LinkedList<Level> queryAllLevels(Context context) {
         String[] projection = {
                 NumbersContract.TableLevels.KEY_NUMBERS,
                 NumbersContract.TableLevels.KEY_USER_TIME,
@@ -51,12 +52,39 @@ public class DatabaseUtils {
     }
 
     /**
+     * Retrieves all active levels from SQLite database
+     *
+     * @param context context
+     * @return completed levels
+     */
+    public static LinkedList<Level> queryAllActiveLevels(Context context) {
+        String[] projection = {
+                NumbersContract.TableActiveLevel.KEY_NUMBERS,
+                NumbersContract.TableActiveLevel.KEY_USER_TIME, };
+        Cursor cursor = context.getContentResolver().query(NumbersContract.TableActiveLevel.BASE_CONTENT_URI_ACTIVE_LEVEL, projection, null, null, null, null);
+        String numbersString;
+        LinkedList<Level> levels = new LinkedList<>();
+        if (Objects.requireNonNull(cursor).moveToFirst()){
+            numbersString = cursor.getString(cursor.getColumnIndex(NumbersContract.TableActiveLevel.KEY_NUMBERS));
+            int userTime= Integer.parseInt(cursor.getString(cursor.getColumnIndex(NumbersContract.TableActiveLevel.KEY_USER_TIME)));
+            levels.add(new Level(numbersString, 0, userTime));
+        }
+        while (cursor.moveToNext()) {
+            numbersString = cursor.getString(cursor.getColumnIndex(NumbersContract.TableActiveLevel.KEY_NUMBERS));
+            int userTime= Integer.parseInt(cursor.getString(cursor.getColumnIndex(NumbersContract.TableActiveLevel.KEY_USER_TIME)));
+            levels.add(new Level(numbersString, 0, userTime));
+        }
+        cursor.close();
+        return levels;
+    }
+
+    /**
      * Retrieves all completed levels from SQLite database
      *
      * @param context context
      * @return completed levels
      */
-    public static LinkedList<Level> getCompletedLevels(Context context) {
+    public static LinkedList<Level> queryAllCompletedLevels(Context context) {
         String[] projection = {
                 NumbersContract.TableCompletedLevels.KEY_NUMBERS,
                 NumbersContract.TableCompletedLevels.KEY_USER_TIME, };
@@ -83,7 +111,7 @@ public class DatabaseUtils {
      * @param context context
      * @param levels levels
      */
-    public static void setLevels(Context context, LinkedList<Level> levels) {
+    public static void updateLevels(Context context, LinkedList<Level> levels) {
         String selection = NumbersContract.TableLevels.KEY_NUMBERS + " = ?";
         for (Level level : levels) {
             String[] args = {level.toString()};
@@ -101,11 +129,16 @@ public class DatabaseUtils {
     }
 
 
-    public static Level getLevel(Context context) {
+    /**
+     * Selects a level for which the averageTime is closest to the userAverageTime
+     * @param context
+     * @return
+     */
+    public static Level selectLevel(Context context) {
         Level toReturn = null;
-        LinkedList<Level> levels = getLevels(MainActivity.getContext());
+        LinkedList<Level> levels = queryAllLevels(context);
         //TODO: Refactor userAverageTime: move to Player
-        int userAverageTime = getAverageTime(MainActivity.getContext());
+        int userAverageTime = getAverageTime(context);
         int timeDifferenceSelectedLevel = 999999;
         for (Level level: levels) {
             if (level.getUserTime() == 0) {
@@ -124,7 +157,7 @@ public class DatabaseUtils {
      * @return averageTime
      */
     public static int getAverageTime(Context context) {
-        LinkedList<Level> levels = getLevels(context);
+        LinkedList<Level> levels = queryAllLevels(context);
         int totalTime = 0;
         int numPlayed = 0;
         for (Level level: levels) {
@@ -152,6 +185,7 @@ public class DatabaseUtils {
         String[] args = {level.toString()};
         ContentValues cv = new ContentValues();
         cv.put(NumbersContract.TableLevels.KEY_USER_TIME, userTime);
+        //TODO: All these MainActivity.getContext() can be changed to context (for all methods in this class)
         MainActivity.getContext().getContentResolver().update(
                 NumbersContract.TableLevels.BASE_CONTENT_URI_LEVELS,
                 cv,
@@ -162,16 +196,65 @@ public class DatabaseUtils {
     /**
      * Updates userTime for a level in table levels in SQLite database
      * @param context context
-     * @param level level
      * @param userTime userTime
      */
-    public static void updateTableCompletedLevelsUserTime(Context context, Level level, int userTime) {
-        ContentValues cv = new ContentValues();
-        cv.put(NumbersContract.TableCompletedLevels.KEY_NUMBERS, level.toString());
-        cv.put(NumbersContract.TableCompletedLevels.KEY_USER_TIME, userTime);
-        MainActivity.getContext().getContentResolver().insert(
-                NumbersContract.TableCompletedLevels.BASE_CONTENT_URI_COMPLETED_LEVELS,
-                cv);
+    public static void updateActiveLevelUserTime(Context context, int userTime) {
+        LinkedList<Level> activeLevels = queryAllActiveLevels(context);
+        if (activeLevels.size() > 1) {
+            //Something went wrong apparently (these should be only one active level), so delete all entries
+            for (Level level: activeLevels) {
+                deleteActiveLevels(context);
+            }
+        }
+        else if (activeLevels.size() == 1) {
+            String selection = NumbersContract.TableActiveLevel.KEY_NUMBERS + " = ?";
+            String[] args = {activeLevels.get(0).toString()};
+            ContentValues cv = new ContentValues();
+            cv.put(NumbersContract.TableActiveLevel.KEY_USER_TIME, userTime);
+            MainActivity.getContext().getContentResolver().update(
+                    NumbersContract.TableActiveLevel.BASE_CONTENT_URI_ACTIVE_LEVEL,
+                    cv,
+                    selection,
+                    args);
+        }
     }
 
+    public static void transferActiveLevelToCompletedLevelIfExists(Context context) {
+        LinkedList<Level> activeLevels = queryAllActiveLevels(context);
+        if (activeLevels.size() > 1) {
+            //Something went wrong apparently (these should be only one active level), so delete all entries
+            for (Level level: activeLevels) {
+                deleteActiveLevels(context);
+            }
+        }
+        else if (activeLevels.size() == 1) {
+            insertCompletedLevel(context, activeLevels.get(0));
+            deleteActiveLevels(context);
+        }
+    }
+
+    public static void deleteActiveLevels(Context context) {
+        int numDeleted = context.getContentResolver().delete(NumbersContract.TableActiveLevel.BASE_CONTENT_URI_ACTIVE_LEVEL, null, null);
+    }
+
+    public static void updateActiveLevel(Context context, Level level) {
+
+    }
+
+    public static void insertActiveLevel(Context context, Level level) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(NumbersContract.TableActiveLevel.KEY_NUMBERS, level.toString());
+        contentValues.put(NumbersContract.TableActiveLevel.KEY_USER_TIME, 0);
+        Uri uri = context.getContentResolver().insert(NumbersContract.TableActiveLevel.BASE_CONTENT_URI_ACTIVE_LEVEL, contentValues);
+    }
+
+    public static void insertCompletedLevel(Context context, Level level) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(NumbersContract.TableCompletedLevels.KEY_NUMBERS, level.toString());
+        contentValues.put(NumbersContract.TableCompletedLevels.KEY_USER_TIME, 0);
+        Uri uri = context.getContentResolver().insert(NumbersContract.TableCompletedLevels.BASE_CONTENT_URI_COMPLETED_LEVELS, contentValues);
+    }
 }
+
+
+

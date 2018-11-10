@@ -11,6 +11,7 @@ import nl.limakajo.numbers.gameObjects.Tile;
 import nl.limakajo.numbers.gameObjects.Wave;
 import nl.limakajo.numbers.layouts.GamePlayLayout;
 import nl.limakajo.numbers.main.MainActivity;
+import nl.limakajo.numbers.numbersgame.Level;
 import nl.limakajo.numbers.utils.DatabaseUtils;
 import nl.limakajo.numbers.utils.GameUtils;
 
@@ -71,9 +72,14 @@ public class GameplayScene implements SceneInterface {
         statusBarText = "";
 
         //Construct a level and update the ScreenLayout goal accordingly
-        //TODO: This seems smelly...
-        MainActivity.getGame().setLevel(DatabaseUtils.getLevel(MainActivity.getContext()));
-        //TODO: After selecting a level, immediately set the usertime to the TIMEPENALTY, both in the table levels and completedlevels
+        Level newLevel = DatabaseUtils.selectLevel(MainActivity.getContext());
+        MainActivity.getGame().setLevel(newLevel);
+
+        //Transfer and delete old active level, if exists, and add new active level
+        DatabaseUtils.updateActiveLevelUserTime(MainActivity.getContext(), GameUtils.TIMEPENALTY);
+        DatabaseUtils.transferActiveLevelToCompletedLevelIfExists(MainActivity.getContext());
+        DatabaseUtils.insertActiveLevel(MainActivity.getContext(), newLevel);
+
         tilesOnShelf = new LinkedList<>();
         for (int i = 0; i < GameUtils.NUMTILES; i++) {
             tilesOnShelf.add(new Tile(MainActivity.getGame().getLevel().getHand()[i], i));
@@ -93,7 +99,6 @@ public class GameplayScene implements SceneInterface {
         }
         for (Tile tile: tilesOnShelf) {
             if (tile.getNumber() == MainActivity.getGame().getLevel().getGoal()) {
-                int userTime = (int)(System.currentTimeMillis() - startTime);
                 MainActivity.getGame().getLevel().setUserTime((int)(System.currentTimeMillis() - startTime));
                 sceneManager.setScene(new LevelCompleteScene(sceneManager));
             }

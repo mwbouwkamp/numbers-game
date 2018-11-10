@@ -48,6 +48,15 @@ class NumbersDBHelper extends SQLiteOpenHelper {
 						NumbersContract.TableLevels.KEY_USER_TIME + " INTEGER);";
 		db.execSQL(CREATE_TABLE_LEVELS);
 
+		//Create active level table
+		final String CREATE_TABLE_ACTIVE_LEVEL =
+				"CREATE TABLE " +
+						NumbersContract.TableActiveLevel.TABLE_NAME +
+						"("+
+						NumbersContract.TableActiveLevel.KEY_NUMBERS + " VARCHAR," +
+						NumbersContract.TableActiveLevel.KEY_USER_TIME + " INTEGER);";
+		db.execSQL(CREATE_TABLE_ACTIVE_LEVEL);
+
 		//Create recently completed levels table
 		final String CREATE_TABLE_COMPLETED_LEVELS =
 				"CREATE TABLE " +
@@ -63,6 +72,7 @@ class NumbersDBHelper extends SQLiteOpenHelper {
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		db.execSQL("DROP TABLE IF EXISTS " + NumbersContract.TableLevels.TABLE_NAME);
+		db.execSQL("DROP TABLE IF EXISTS " + NumbersContract.TableActiveLevel.TABLE_NAME);
 		db.execSQL("DROP TABLE IF EXISTS " + NumbersContract.TableCompletedLevels.TABLE_NAME);
 		onCreate(db);
 	}

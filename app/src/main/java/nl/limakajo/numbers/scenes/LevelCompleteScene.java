@@ -31,11 +31,15 @@ public class LevelCompleteScene implements SceneInterface {
 
     @Override
     public void init() {
-        int userTime = MainActivity.getGame().getLevel().getUserTime();
         animating = true;
+        int userTime = MainActivity.getGame().getLevel().getUserTime();
         int averageTime = MainActivity.getGame().getLevel().getAverageTime();
+
+        //Update userTime, insert completed level to table completed levels and delete active levels
         DatabaseUtils.updateTableLevelsUserTime(MainActivity.getContext(), MainActivity.getGame().getLevel(), userTime);
-        DatabaseUtils.updateTableCompletedLevelsUserTime(MainActivity.getContext(), MainActivity.getGame().getLevel(), userTime);
+        DatabaseUtils.insertCompletedLevel(MainActivity.getContext(), MainActivity.getGame().getLevel());
+        DatabaseUtils.deleteActiveLevels(MainActivity.getContext());
+
         MainActivity.launchDownloadService();
         MainActivity.launchUploadService();
 

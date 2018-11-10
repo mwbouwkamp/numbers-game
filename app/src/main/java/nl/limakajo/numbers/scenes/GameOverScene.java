@@ -26,8 +26,9 @@ public class GameOverScene implements SceneInterface {
 
     @Override
     public void init() {
+        //Update levels usertime and transfer active levels
         DatabaseUtils.updateTableLevelsUserTime(MainActivity.getContext(), MainActivity.getGame().getLevel(), GameUtils.TIMEPENALTY);
-        DatabaseUtils.updateTableCompletedLevelsUserTime(MainActivity.getContext(), MainActivity.getGame().getLevel(), GameUtils.TIMEPENALTY);
+        DatabaseUtils.transferActiveLevelToCompletedLevelIfExists(MainActivity.getContext());
         MainActivity.launchDownloadService();
         MainActivity.launchUploadService();
         initiating = false;

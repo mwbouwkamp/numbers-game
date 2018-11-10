@@ -24,7 +24,6 @@ import java.util.Scanner;
  */
 
 public class NetworkUtils {
-
     public static final String GET_URL = "http://limakajo.16mb.com/getlevels.php";
     public static final String SET_URL = "http://limakajo.16mb.com/setlevels.php";
     public static final String SERVER = "mysql.hostinger.nl";
@@ -121,7 +120,7 @@ public class NetworkUtils {
         URL url;
 
         try {
-
+            //TODO: Check this logic. Seems that this shold be SET_URL
             url = new URL(GET_URL);
             Log.i(TAG, "Url created successfully");
             httpURLConnection = (HttpURLConnection)url.openConnection();

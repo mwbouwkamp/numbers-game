@@ -16,6 +16,7 @@ public class NumbersContract {
 
     //Path for specific tables
     public static final String PATH_LEVELS = "levels";
+    public static final String PATH_ACTIVE_LEVEL = "activelevel";
     public static final String PATH_COMPLETED_LEVELS = "completedlevels";
 
     //Path if specific level is required
@@ -41,6 +42,24 @@ public class NumbersContract {
     }
 
     /**
+     * Class with contract for table with information on active level
+     */
+    public final static class TableActiveLevel implements BaseColumns {
+
+        public static final Uri BASE_CONTENT_URI_ACTIVE_LEVEL = Uri.parse("content://" + CONTENT_AUTHORITY + "/" + PATH_ACTIVE_LEVEL);
+        public static final Uri CONTENT_URI = BASE_CONTENT_URI_ACTIVE_LEVEL.buildUpon()
+                .appendPath(PATH_SPECIFIC_LEVEL)
+                .build();
+
+        //Table Name
+        public static final String TABLE_NAME = "activelevel";
+
+        //Column names
+        public static final String KEY_NUMBERS = "numbers";
+        public static final String KEY_USER_TIME = "usertime";
+    }
+
+    /**
      * Class with contract for table with information on recently completed levels
      */
     public final static class TableCompletedLevels implements BaseColumns {
@@ -56,7 +75,6 @@ public class NumbersContract {
         //Column names
         public static final String KEY_NUMBERS = "numbers";
         public static final String KEY_USER_TIME = "usertime";
-
     }
 
 }

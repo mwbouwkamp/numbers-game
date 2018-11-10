@@ -25,8 +25,10 @@ public class NumbersProvider extends ContentProvider {
 
     public static final int CODE_LEVELS = 100;
     public static final int CODE_SPECIFIC_LEVEL = 101;
-    public static final int CODE_COMPLETED_LEVELS = 200;
-    public static final int CODE_SPECIFIC_COMPLETED_LEVEL = 201;
+    public static final int CODE_ACTIVE_LEVEL = 200;
+    public static final int CODE_SPECIFIC_ACTIVE_LEVEL = 201;
+    public static final int CODE_COMPLETED_LEVELS = 300;
+    public static final int CODE_SPECIFIC_COMPLETED_LEVEL = 301;
 
     private static final UriMatcher sUriMatcher = buildUriMatcher();
     private NumbersDBHelper numbersDBHelper;
@@ -40,6 +42,8 @@ public class NumbersProvider extends ContentProvider {
 
         matcher.addURI(authority, NumbersContract.PATH_LEVELS, CODE_LEVELS);
         matcher.addURI(authority, NumbersContract.PATH_LEVELS + "/#", CODE_SPECIFIC_LEVEL);
+        matcher.addURI(authority, NumbersContract.PATH_ACTIVE_LEVEL, CODE_ACTIVE_LEVEL);
+        matcher.addURI(authority, NumbersContract.PATH_ACTIVE_LEVEL + "/#", CODE_SPECIFIC_ACTIVE_LEVEL);
         matcher.addURI(authority, NumbersContract.PATH_COMPLETED_LEVELS, CODE_COMPLETED_LEVELS);
         matcher.addURI(authority, NumbersContract.PATH_COMPLETED_LEVELS + "/#", CODE_SPECIFIC_COMPLETED_LEVEL);
 
@@ -52,6 +56,7 @@ public class NumbersProvider extends ContentProvider {
         return true;
     }
 
+    //TODO: Lot of duplicate code in the following methods. Refactor!
     @Override
     public Cursor query(@NonNull Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         SQLiteDatabase db = numbersDBHelper.getReadableDatabase();
@@ -68,8 +73,29 @@ public class NumbersProvider extends ContentProvider {
                 break;
             }
             case CODE_SPECIFIC_LEVEL: {
-                selection = appendLevelToSelection(selection, uri);
+                selection = appendLevelToSelection(selection, uri, CODE_SPECIFIC_LEVEL);
                 cursorToReturn = db.query(NumbersContract.TableLevels.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder);
+                break;
+            }
+            case CODE_ACTIVE_LEVEL: {
+                cursorToReturn = db.query(NumbersContract.TableActiveLevel.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder);
+                break;
+            }
+            case CODE_SPECIFIC_ACTIVE_LEVEL: {
+                selection = appendLevelToSelection(selection, uri, CODE_SPECIFIC_ACTIVE_LEVEL);
+                cursorToReturn = db.query(NumbersContract.TableActiveLevel.TABLE_NAME,
                         projection,
                         selection,
                         selectionArgs,
@@ -89,7 +115,7 @@ public class NumbersProvider extends ContentProvider {
                 break;
             }
             case CODE_SPECIFIC_COMPLETED_LEVEL: {
-                selection = appendLevelToSelection(selection, uri);
+                selection = appendLevelToSelection(selection, uri, CODE_SPECIFIC_COMPLETED_LEVEL);
                 cursorToReturn = db.query(NumbersContract.TableCompletedLevels.TABLE_NAME,
                         projection,
                         selection,
@@ -116,6 +142,15 @@ public class NumbersProvider extends ContentProvider {
                 long id = db.insert(NumbersContract.TableLevels.TABLE_NAME, null, values);
                 if ( id > 0 ) {
                     uriToReturn = ContentUris.withAppendedId(NumbersContract.TableLevels.CONTENT_URI, id);
+                } else {
+                    throw new android.database.SQLException("Failed to insert row into " + uri);
+                }
+                break;
+            }
+            case CODE_ACTIVE_LEVEL: {
+                long id = db.insert(NumbersContract.TableActiveLevel.TABLE_NAME, null, values);
+                if ( id > 0 ) {
+                    uriToReturn = ContentUris.withAppendedId(NumbersContract.TableActiveLevel.CONTENT_URI, id);
                 } else {
                     throw new android.database.SQLException("Failed to insert row into " + uri);
                 }
@@ -148,6 +183,26 @@ public class NumbersProvider extends ContentProvider {
                 try {
                     for (ContentValues value: values) {
                         long id = db.insert(NumbersContract.TableLevels.TABLE_NAME, null, value);
+                        if (id > 0) {
+                            rowsInserted++;
+                        }
+                    }
+                    db.setTransactionSuccessful();
+                } finally {
+                    db.endTransaction();
+                }
+                if (rowsInserted > 0) {
+                    Objects.requireNonNull(getContext()).getContentResolver().notifyChange(uri, null);
+                }
+                Log.i(TAG, "BulkInsert successfull, inserted : " + rowsInserted);
+                return rowsInserted;
+            }
+            case CODE_ACTIVE_LEVEL: {
+                db.beginTransaction();
+                int rowsInserted = 0;
+                try {
+                    for (ContentValues value: values) {
+                        long id = db.insert(NumbersContract.TableActiveLevel.TABLE_NAME, null, value);
                         if (id > 0) {
                             rowsInserted++;
                         }
@@ -201,35 +256,62 @@ public class NumbersProvider extends ContentProvider {
              * passing "1" for the selection will delete all rows and return the number of rows
              * deleted, which is what the caller of this method expects.
              */
-                if (null == selection) selection = "1";
+                if (null == selection) {
+                    selection = "1";
+                }
                 numRowsDeleted = db.delete(NumbersContract.TableLevels.TABLE_NAME,
                         selection,
                         selectionArgs);
                 break;
             }
             case (CODE_SPECIFIC_LEVEL): {
-                selection = appendLevelToSelection(selection, uri);
+                selection = appendLevelToSelection(selection, uri, CODE_SPECIFIC_LEVEL);
                 numRowsDeleted = db.delete(NumbersContract.TableLevels.TABLE_NAME,
                         selection,
                         selectionArgs);
                 break;
             }
+            case (CODE_ACTIVE_LEVEL): {
+                /*
+                 * If we pass null as the selection to SQLiteDatabase#delete, our entire table will be
+                 * deleted. However, if we do pass null and delete all of the rows in the table, we won't
+                 * know how many rows were deleted. According to the documentation for SQLiteDatabase,
+                 * passing "1" for the selection will delete all rows and return the number of rows
+                 * deleted, which is what the caller of this method expects.
+                 */
+                if (null == selection) {
+                    selection = "1";
+                }
+                numRowsDeleted = db.delete(NumbersContract.TableActiveLevel.TABLE_NAME,
+                        selection,
+                        selectionArgs);
+                break;
+            }
+            case (CODE_SPECIFIC_ACTIVE_LEVEL): {
+                selection = appendLevelToSelection(selection, uri, CODE_SPECIFIC_ACTIVE_LEVEL);
+                numRowsDeleted = db.delete(NumbersContract.TableActiveLevel.TABLE_NAME,
+                        selection,
+                        selectionArgs);
+                break;
+            }
             case (CODE_COMPLETED_LEVELS): {
-            /*
-             * If we pass null as the selection to SQLiteDatabase#delete, our entire table will be
-             * deleted. However, if we do pass null and delete all of the rows in the table, we won't
-             * know how many rows were deleted. According to the documentation for SQLiteDatabase,
-             * passing "1" for the selection will delete all rows and return the number of rows
-             * deleted, which is what the caller of this method expects.
-             */
-                if (null == selection) selection = "1";
+                /*
+                 * If we pass null as the selection to SQLiteDatabase#delete, our entire table will be
+                 * deleted. However, if we do pass null and delete all of the rows in the table, we won't
+                 * know how many rows were deleted. According to the documentation for SQLiteDatabase,
+                 * passing "1" for the selection will delete all rows and return the number of rows
+                 * deleted, which is what the caller of this method expects.
+                 */
+                if (null == selection) {
+                    selection = "1";
+                }
                 numRowsDeleted = db.delete(NumbersContract.TableCompletedLevels.TABLE_NAME,
                         selection,
                         selectionArgs);
                 break;
             }
             case (CODE_SPECIFIC_COMPLETED_LEVEL): {
-                selection = appendLevelToSelection(selection, uri);
+                selection = appendLevelToSelection(selection, uri, CODE_SPECIFIC_COMPLETED_LEVEL);
                 numRowsDeleted = db.delete(NumbersContract.TableCompletedLevels.TABLE_NAME,
                         selection,
                         selectionArgs);
@@ -258,8 +340,23 @@ public class NumbersProvider extends ContentProvider {
                 break;
             }
             case CODE_SPECIFIC_LEVEL: {
-                selection = appendLevelToSelection(selection, uri);
+                selection = appendLevelToSelection(selection, uri, CODE_SPECIFIC_LEVEL);
                 numUpdated = db.update(NumbersContract.TableLevels.TABLE_NAME,
+                        values,
+                        selection,
+                        selectionArgs);
+                break;
+            }
+            case CODE_ACTIVE_LEVEL: {
+                numUpdated = db.update(NumbersContract.TableActiveLevel.TABLE_NAME,
+                        values,
+                        selection,
+                        selectionArgs);
+                break;
+            }
+            case CODE_SPECIFIC_ACTIVE_LEVEL: {
+                selection = appendLevelToSelection(selection, uri, CODE_SPECIFIC_ACTIVE_LEVEL);
+                numUpdated = db.update(NumbersContract.TableActiveLevel.TABLE_NAME,
                         values,
                         selection,
                         selectionArgs);
@@ -273,7 +370,7 @@ public class NumbersProvider extends ContentProvider {
                 break;
             }
             case CODE_SPECIFIC_COMPLETED_LEVEL: {
-                selection = appendLevelToSelection(selection, uri);
+                selection = appendLevelToSelection(selection, uri, CODE_SPECIFIC_COMPLETED_LEVEL);
                 numUpdated = db.update(NumbersContract.TableCompletedLevels.TABLE_NAME,
                         values,
                         selection,
@@ -296,15 +393,39 @@ public class NumbersProvider extends ContentProvider {
         return null;
     }
 
-    private String appendLevelToSelection(String selection, Uri uri) {
+    //TODO: Need refactoring
+    private String appendLevelToSelection(String selection, Uri uri, int table) {
         String selectionToReturn;
         String level = uri.getLastPathSegment();
         if (isValidLevel(level)) {
-            if (TextUtils.isEmpty(selection)) {
-                selectionToReturn = NumbersContract.TableCompletedLevels.KEY_NUMBERS + " = '" + level + "'";
-            }
-            else {
-                selectionToReturn = selection + " AND " + NumbersContract.TableCompletedLevels.KEY_NUMBERS + " = '" + level + "'";
+            switch (table) {
+                case CODE_SPECIFIC_LEVEL:
+                    if (TextUtils.isEmpty(selection)) {
+                        selectionToReturn = NumbersContract.TableLevels.KEY_NUMBERS + " = '" + level + "'";
+                    }
+                    else {
+                        selectionToReturn = selection + " AND " + NumbersContract.TableLevels.KEY_NUMBERS + " = '" + level + "'";
+                    }
+                    break;
+                case CODE_SPECIFIC_ACTIVE_LEVEL:
+                    if (TextUtils.isEmpty(selection)) {
+                        selectionToReturn = NumbersContract.TableActiveLevel.KEY_NUMBERS + " = '" + level + "'";
+                    }
+                    else {
+                        selectionToReturn = selection + " AND " + NumbersContract.TableActiveLevel.KEY_NUMBERS + " = '" + level + "'";
+                    }
+                    break;
+                case CODE_SPECIFIC_COMPLETED_LEVEL:
+                    if (TextUtils.isEmpty(selection)) {
+                        selectionToReturn = NumbersContract.TableCompletedLevels.KEY_NUMBERS + " = '" + level + "'";
+                    }
+                    else {
+                        selectionToReturn = selection + " AND " + NumbersContract.TableCompletedLevels.KEY_NUMBERS + " = '" + level + "'";
+                    }
+                    break;
+                default: {
+                    throw new UnsupportedOperationException("Unsupported Uri: " + uri);
+                }
             }
         } else {
             throw new IllegalArgumentException("Level must be of format 001002003004005006007008");

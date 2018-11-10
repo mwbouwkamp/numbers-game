@@ -36,15 +36,16 @@ public class NumbersSyncTasks {
         String levelsFromServer = NetworkUtils.getLevelsJSONFromServer();
         LinkedList<Level> levels = JSONUtils.getLevelsFromJson(levelsFromServer);
         if (levels != null) {
-            DatabaseUtils.setLevels(context, levels);
+            DatabaseUtils.updateLevels(context, levels);
         }
     }
 
     private static void uploadLevels(Context context) {
-        LinkedList<Level> levels = DatabaseUtils.getCompletedLevels(context);
+        LinkedList<Level> levels = DatabaseUtils.queryAllCompletedLevels(context);
         if (levels != null) {
             NetworkUtils.sendLevelsToServer(context, levels);
         }
+        //TODO: after uploading all levels, completedLevels should be emptied...
     }
 
 

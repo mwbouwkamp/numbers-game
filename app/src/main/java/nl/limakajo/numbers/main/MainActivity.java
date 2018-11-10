@@ -83,6 +83,7 @@ public class MainActivity extends Activity {
 	public static void launchDownloadService() {
 		Intent downloadLevelsIntent = new Intent(MainActivity.getContext(), NumbersSyncIntentService.class);
 		downloadLevelsIntent.setAction(NumbersSyncTasks.ACTION_DOWNLOAD_LEVELS);
+		//TODO: See if MainActivity.getContext() can be replaced by context
 		MainActivity.getContext().startService(downloadLevelsIntent);
 	}
 
