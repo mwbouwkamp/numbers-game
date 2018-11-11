@@ -45,7 +45,6 @@ public class NumbersSyncTasks {
         if (levels != null) {
             NetworkUtils.sendLevelsToServer(context, levels);
         }
-        //TODO: after uploading all levels, completedLevels should be emptied...
     }
 
 

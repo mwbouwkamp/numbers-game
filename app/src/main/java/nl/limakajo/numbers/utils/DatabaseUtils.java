@@ -229,6 +229,7 @@ public class DatabaseUtils {
         }
         else if (activeLevels.size() == 1) {
             insertCompletedLevel(context, activeLevels.get(0));
+            //TODO: For all deletes, like the following, make sure that the action before was successful
             deleteActiveLevels(context);
         }
     }
@@ -242,16 +243,17 @@ public class DatabaseUtils {
     }
 
     public static void insertActiveLevel(Context context, Level level) {
+        //TODO: Refactor creation of contentValues. This is also used in next method
         ContentValues contentValues = new ContentValues();
         contentValues.put(NumbersContract.TableActiveLevel.KEY_NUMBERS, level.toString());
-        contentValues.put(NumbersContract.TableActiveLevel.KEY_USER_TIME, 0);
+        contentValues.put(NumbersContract.TableActiveLevel.KEY_USER_TIME, level.getUserTime());
         Uri uri = context.getContentResolver().insert(NumbersContract.TableActiveLevel.BASE_CONTENT_URI_ACTIVE_LEVEL, contentValues);
     }
 
     public static void insertCompletedLevel(Context context, Level level) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(NumbersContract.TableCompletedLevels.KEY_NUMBERS, level.toString());
-        contentValues.put(NumbersContract.TableCompletedLevels.KEY_USER_TIME, 0);
+        contentValues.put(NumbersContract.TableCompletedLevels.KEY_USER_TIME, level.getUserTime());
         Uri uri = context.getContentResolver().insert(NumbersContract.TableCompletedLevels.BASE_CONTENT_URI_COMPLETED_LEVELS, contentValues);
     }
 }

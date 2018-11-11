@@ -106,7 +106,7 @@ public class NetworkUtils {
     public static void sendLevelsToServer(Context context, LinkedList<Level> levels) {
         for (Level level: levels) {
             String result = executeHttpPost(level.toString(), Integer.toString(level.getUserTime()));
-            if (result.compareTo("-1") != 0) {
+            if (result.equals("successful")) {
                 String selection = NumbersContract.TableLevels.KEY_NUMBERS + " = ?";
                 String[] args = {level.toString()};
                 int numDeleted = context.getContentResolver().delete(NumbersContract.TableCompletedLevels.BASE_CONTENT_URI_COMPLETED_LEVELS, selection, args);

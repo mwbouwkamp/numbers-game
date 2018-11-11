@@ -73,10 +73,11 @@ public class GameplayScene implements SceneInterface {
 
         //Construct a level and update the ScreenLayout goal accordingly
         Level newLevel = DatabaseUtils.selectLevel(MainActivity.getContext());
+        newLevel.setUserTime(GameUtils.TIMEPENALTY);
         MainActivity.getGame().setLevel(newLevel);
 
         //Transfer and delete old active level, if exists, and add new active level
-        DatabaseUtils.updateActiveLevelUserTime(MainActivity.getContext(), GameUtils.TIMEPENALTY);
+        DatabaseUtils.updateTableLevelsUserTime(MainActivity.getContext(), MainActivity.getGame().getLevel(), GameUtils.TIMEPENALTY);
         DatabaseUtils.transferActiveLevelToCompletedLevelIfExists(MainActivity.getContext());
         DatabaseUtils.insertActiveLevel(MainActivity.getContext(), newLevel);
 
@@ -94,7 +95,7 @@ public class GameplayScene implements SceneInterface {
     public void update() {
         gamePlayLayout.getTextBox(GamePlayLayout.ObjectKeys.FOOTER_TEXT).setText(statusBarText);
         if (System.currentTimeMillis() - startTime > GameUtils.TIMER){
-            MainActivity.getGame().getLevel().setUserTime(GameUtils.TIMEPENALTY);
+//            MainActivity.getGame().getLevel().setUserTime(GameUtils.TIMEPENALTY);
             sceneManager.setScene(new GameOverScene(sceneManager));
         }
         for (Tile tile: tilesOnShelf) {

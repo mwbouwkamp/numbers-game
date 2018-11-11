@@ -37,8 +37,8 @@ public class LevelCompleteScene implements SceneInterface {
 
         //Update userTime, insert completed level to table completed levels and delete active levels
         DatabaseUtils.updateTableLevelsUserTime(MainActivity.getContext(), MainActivity.getGame().getLevel(), userTime);
-        DatabaseUtils.insertCompletedLevel(MainActivity.getContext(), MainActivity.getGame().getLevel());
-        DatabaseUtils.deleteActiveLevels(MainActivity.getContext());
+        DatabaseUtils.updateActiveLevelUserTime(MainActivity.getContext(), userTime);
+        DatabaseUtils.transferActiveLevelToCompletedLevelIfExists(MainActivity.getContext());
 
         MainActivity.launchDownloadService();
         MainActivity.launchUploadService();
