@@ -11,6 +11,8 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
 
+import org.w3c.dom.Text;
+
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -56,7 +58,6 @@ public class NumbersProvider extends ContentProvider {
         return true;
     }
 
-    //TODO: Lot of duplicate code in the following methods. Refactor!
     @Override
     public Cursor query(@NonNull Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         SQLiteDatabase db = numbersDBHelper.getReadableDatabase();
@@ -393,35 +394,28 @@ public class NumbersProvider extends ContentProvider {
         return null;
     }
 
-    //TODO: Need refactoring
     private String appendLevelToSelection(String selection, Uri uri, int table) {
-        String selectionToReturn;
+        String selectionToReturn = "";
         String level = uri.getLastPathSegment();
         if (isValidLevel(level)) {
             switch (table) {
                 case CODE_SPECIFIC_LEVEL:
-                    if (TextUtils.isEmpty(selection)) {
-                        selectionToReturn = NumbersContract.TableLevels.KEY_NUMBERS + " = '" + level + "'";
+                    if (!TextUtils.isEmpty(selection)) {
+                        selectionToReturn = selection + " AND ";
                     }
-                    else {
-                        selectionToReturn = selection + " AND " + NumbersContract.TableLevels.KEY_NUMBERS + " = '" + level + "'";
-                    }
+                    selectionToReturn += NumbersContract.TableLevels.KEY_NUMBERS + " = '" + level + "'";
                     break;
                 case CODE_SPECIFIC_ACTIVE_LEVEL:
-                    if (TextUtils.isEmpty(selection)) {
-                        selectionToReturn = NumbersContract.TableActiveLevel.KEY_NUMBERS + " = '" + level + "'";
+                    if (!TextUtils.isEmpty(selection)) {
+                        selectionToReturn = selection + " AND ";
                     }
-                    else {
-                        selectionToReturn = selection + " AND " + NumbersContract.TableActiveLevel.KEY_NUMBERS + " = '" + level + "'";
-                    }
+                    selectionToReturn += NumbersContract.TableActiveLevel.KEY_NUMBERS + " = '" + level + "'";
                     break;
                 case CODE_SPECIFIC_COMPLETED_LEVEL:
-                    if (TextUtils.isEmpty(selection)) {
-                        selectionToReturn = NumbersContract.TableCompletedLevels.KEY_NUMBERS + " = '" + level + "'";
+                    if (!TextUtils.isEmpty(selection)) {
+                        selectionToReturn = selection + " AND ";
                     }
-                    else {
-                        selectionToReturn = selection + " AND " + NumbersContract.TableCompletedLevels.KEY_NUMBERS + " = '" + level + "'";
-                    }
+                    selectionToReturn += NumbersContract.TableCompletedLevels.KEY_NUMBERS + " = '" + level + "'";
                     break;
                 default: {
                     throw new UnsupportedOperationException("Unsupported Uri: " + uri);
