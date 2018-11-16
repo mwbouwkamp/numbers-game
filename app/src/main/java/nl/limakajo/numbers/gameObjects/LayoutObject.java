@@ -6,11 +6,11 @@ import android.graphics.Rect;
 
 import nl.limakajo.numbers.utils.Attributes;
 
-public class BoardObject implements GameObject {
+public class LayoutObject implements GameObject {
     final Rect rect;
     final Paint paint;
 
-    BoardObject(Paint paint, Rect rect) {
+    LayoutObject(Paint paint, Rect rect) {
         this.paint = new Paint(paint);
         this.rect = rect;
     }
