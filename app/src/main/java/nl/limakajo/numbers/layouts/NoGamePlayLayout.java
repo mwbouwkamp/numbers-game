@@ -1,29 +1,21 @@
 package nl.limakajo.numbers.layouts;
 
-import android.graphics.Canvas;
 import android.graphics.Rect;
-
-import java.util.EnumMap;
 
 import nl.limakajo.numbers.gameObjects.LayoutObject;
 import nl.limakajo.numbers.gameObjects.ScreenArea;
-import nl.limakajo.numbers.gameObjects.TextBox;
 import nl.limakajo.numbers.utils.Attributes;
 
 public class NoGamePlayLayout extends BasicLayout {
 
-    private EnumMap<LayoutElements, LayoutObject> layoutObjects;
-
     NoGamePlayLayout() {
-        layoutObjects = new EnumMap<>(super.getLayoutObjects());
-
         //Logo
         LayoutObject logoArea = new ScreenArea (
                 new Rect(
-                        (int) (0.3 * layoutObjects.get(LayoutElements.FULLSCREEN).getArea().width()),
-                        (int) (0.3 * layoutObjects.get(LayoutElements.FULLSCREEN).getArea().width()),
-                        (int) (layoutObjects.get(LayoutElements.FULLSCREEN).getArea().width() - 0.3 * layoutObjects.get(LayoutElements.FULLSCREEN).getArea().width()),
-                        (int) (0.7 * layoutObjects.get(LayoutElements.FULLSCREEN).getArea().width())),
+                        (int) (0.3 * layoutObjects.get(LayoutElementsKeys.FULLSCREEN).getArea().width()),
+                        (int) (0.3 * layoutObjects.get(LayoutElementsKeys.FULLSCREEN).getArea().width()),
+                        (int) (layoutObjects.get(LayoutElementsKeys.FULLSCREEN).getArea().width() - 0.3 * layoutObjects.get(LayoutElementsKeys.FULLSCREEN).getArea().width()),
+                        (int) (0.7 * layoutObjects.get(LayoutElementsKeys.FULLSCREEN).getArea().width())),
                 Attributes.NO_DRAW);
         LayoutObject blueArea = new ScreenArea(
                 new Rect(
@@ -53,25 +45,10 @@ public class NoGamePlayLayout extends BasicLayout {
                         redArea.getArea().right,
                         greenArea.getArea().bottom),
                 Attributes.DIV_PAINT);
-        layoutObjects.put(LayoutElements.LOGO_AREA, logoArea);
-        layoutObjects.put(LayoutElements.BLUE_AREA, blueArea);
-        layoutObjects.put(LayoutElements.RED_AREA, redArea);
-        layoutObjects.put(LayoutElements.GREEN_AREA, greenArea);
-        layoutObjects.put(LayoutElements.YELLOW_AREA, yellowArea);
-    }
-
-    public EnumMap<LayoutElements, LayoutObject> getLayoutObjects() {
-        return layoutObjects;
-    }
-
-    public TextBox getTextBox(LayoutElements layoutElement) {
-        return (TextBox) layoutObjects.get(layoutElement);
-    }
-
-    public void draw(Canvas canvas) {
-        super.draw(canvas);
-        for (LayoutObject layoutObject : layoutObjects.values()) {
-            layoutObject.draw(canvas);
-        }
+        layoutObjects.put(LayoutElementsKeys.LOGO_AREA, logoArea);
+        layoutObjects.put(LayoutElementsKeys.BLUE_AREA, blueArea);
+        layoutObjects.put(LayoutElementsKeys.RED_AREA, redArea);
+        layoutObjects.put(LayoutElementsKeys.GREEN_AREA, greenArea);
+        layoutObjects.put(LayoutElementsKeys.YELLOW_AREA, yellowArea);
     }
 }

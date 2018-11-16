@@ -13,11 +13,10 @@ import nl.limakajo.numbers.utils.Attributes;
 
 public class BasicLayout {
 
-    private EnumMap<LayoutElements, LayoutObject> layoutObjects;
+    protected EnumMap<LayoutElementsKeys, LayoutObject> layoutObjects = new EnumMap<LayoutElementsKeys, LayoutObject>(LayoutElementsKeys.class);
 
     BasicLayout() {
 
-        layoutObjects = new EnumMap<>(LayoutElements.class);
         //Fullscreen
         LayoutObject fullscreen = new ScreenArea (
                 new Rect(
@@ -26,14 +25,14 @@ public class BasicLayout {
                         MainActivity.getDevice().getWidth(),
                         MainActivity.getDevice().getHeight()),
                 Attributes.BG_PAINT);
-        layoutObjects.put(LayoutElements.FULLSCREEN, fullscreen);
+        layoutObjects.put(LayoutElementsKeys.FULLSCREEN, fullscreen);
     }
 
-    public EnumMap<LayoutElements, LayoutObject> getLayoutObjects() {
+    public EnumMap<LayoutElementsKeys, LayoutObject> getLayoutObjects() {
         return layoutObjects;
     }
 
-    public TextBox getTextBox(LayoutElements layoutElement) {
+    public TextBox getTextBox(LayoutElementsKeys layoutElement) {
         return (TextBox) layoutObjects.get(layoutElement);
     }
 
