@@ -1,6 +1,6 @@
 package nl.limakajo.numbers.layouts;
 
-public enum LayoutElements {
+public enum LayoutElementsKeys {
     FULLSCREEN,
     //Logo
     LOGO_AREA,
