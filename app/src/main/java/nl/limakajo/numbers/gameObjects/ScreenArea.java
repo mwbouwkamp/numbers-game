@@ -14,7 +14,7 @@ import nl.limakajo.numbers.utils.PaintComparator;
  * @author M.W.Bouwkamp
  */
 
-public class ScreenArea extends BoardObject {
+public class ScreenArea extends LayoutObject {
 
     public ScreenArea(Rect rect, Paint paint) {
         super(paint, rect);
