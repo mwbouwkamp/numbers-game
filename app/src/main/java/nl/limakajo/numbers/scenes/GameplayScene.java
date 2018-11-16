@@ -231,8 +231,6 @@ public class GameplayScene implements SceneInterface {
 
     @Override
     public void terminate() {
-        //TODO: Figure out what this does..
-        //sceneManager.setScene(GAME_STATE.toString());
     }
 
     @Override

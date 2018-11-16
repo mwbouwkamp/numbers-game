@@ -25,7 +25,7 @@ public class DatabaseUtils {
      * @param context context
      * @return levels levels
      */
-    public static LinkedList<Level> queryAllLevels(Context context) {
+    private static LinkedList<Level> queryAllLevels(Context context) {
         String[] projection = {
                 NumbersContract.TableLevels.KEY_NUMBERS,
                 NumbersContract.TableLevels.KEY_USER_TIME,
@@ -57,7 +57,7 @@ public class DatabaseUtils {
      * @param context context
      * @return completed levels
      */
-    public static LinkedList<Level> queryAllActiveLevels(Context context) {
+    private static LinkedList<Level> queryAllActiveLevels(Context context) {
         String[] projection = {
                 NumbersContract.TableActiveLevel.KEY_NUMBERS,
                 NumbersContract.TableActiveLevel.KEY_USER_TIME, };
@@ -137,8 +137,7 @@ public class DatabaseUtils {
     public static Level selectLevel(Context context) {
         Level toReturn = null;
         LinkedList<Level> levels = queryAllLevels(context);
-        //TODO: Refactor userAverageTime: move to Player
-        int userAverageTime = getAverageTime(context);
+        int userAverageTime = MainActivity.getPlayer().getUserAverageTime();
         int timeDifferenceSelectedLevel = 999999;
         for (Level level: levels) {
             if (level.getUserTime() == 0) {
@@ -234,7 +233,7 @@ public class DatabaseUtils {
         }
     }
 
-    public static void deleteActiveLevels(Context context) {
+    private static void deleteActiveLevels(Context context) {
         int numDeleted = context.getContentResolver().delete(NumbersContract.TableActiveLevel.BASE_CONTENT_URI_ACTIVE_LEVEL, null, null);
     }
 
@@ -250,7 +249,7 @@ public class DatabaseUtils {
         Uri uri = context.getContentResolver().insert(NumbersContract.TableActiveLevel.BASE_CONTENT_URI_ACTIVE_LEVEL, contentValues);
     }
 
-    public static void insertCompletedLevel(Context context, Level level) {
+    private static void insertCompletedLevel(Context context, Level level) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(NumbersContract.TableCompletedLevels.KEY_NUMBERS, level.toString());
         contentValues.put(NumbersContract.TableCompletedLevels.KEY_USER_TIME, level.getUserTime());
