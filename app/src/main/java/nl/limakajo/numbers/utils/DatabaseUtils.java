@@ -184,8 +184,7 @@ public class DatabaseUtils {
         String[] args = {level.toString()};
         ContentValues cv = new ContentValues();
         cv.put(NumbersContract.TableLevels.KEY_USER_TIME, userTime);
-        //TODO: All these MainActivity.getContext() can be changed to context (for all methods in this class)
-        MainActivity.getContext().getContentResolver().update(
+        context.getContentResolver().update(
                 NumbersContract.TableLevels.BASE_CONTENT_URI_LEVELS,
                 cv,
                 selection,
@@ -210,7 +209,7 @@ public class DatabaseUtils {
             String[] args = {activeLevels.get(0).toString()};
             ContentValues cv = new ContentValues();
             cv.put(NumbersContract.TableActiveLevel.KEY_USER_TIME, userTime);
-            MainActivity.getContext().getContentResolver().update(
+            context.getContentResolver().update(
                     NumbersContract.TableActiveLevel.BASE_CONTENT_URI_ACTIVE_LEVEL,
                     cv,
                     selection,
@@ -249,7 +248,7 @@ public class DatabaseUtils {
         Uri uri = context.getContentResolver().insert(NumbersContract.TableActiveLevel.BASE_CONTENT_URI_ACTIVE_LEVEL, contentValues);
     }
 
-    private static void insertCompletedLevel(Context context, Level level) {
+    public static void insertCompletedLevel(Context context, Level level) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(NumbersContract.TableCompletedLevels.KEY_NUMBERS, level.toString());
         contentValues.put(NumbersContract.TableCompletedLevels.KEY_USER_TIME, level.getUserTime());
