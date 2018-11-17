@@ -17,12 +17,10 @@ import java.util.Arrays;
 import java.util.Objects;
 
 /**
- * NumbersProvider Class
- * Takes care of all database related activities
+ * Class that takes care of all database operations
  *
  * @author M.W.Bouwkamp
  */
-
 public class NumbersProvider extends ContentProvider {
 
     public static final int CODE_LEVELS = 100;
@@ -33,8 +31,12 @@ public class NumbersProvider extends ContentProvider {
 
     private static final String TAG = NumbersProvider.class.getName();
 
+    /**
+     * Returns matcher for matching uris
+     *
+     * @return  matcher for matching uris
+     */
     public static UriMatcher buildUriMatcher() {
-
         final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
         final String authority = NumbersContract.CONTENT_AUTHORITY;
 
@@ -45,12 +47,26 @@ public class NumbersProvider extends ContentProvider {
     }
 
     @Override
+    /**
+     * Creates numbersDBHelper and returns true
+     *
+     * @return true after creating numbersDBHelper
+     */
     public boolean onCreate() {
         numbersDBHelper = new NumbersDBHelper(getContext());
         return true;
     }
 
-    @Override
+    /**
+     * Returns cursor after querying database
+     *
+     * @param uri               uri pointing to database
+     * @param projection        database projection
+     * @param selection         filter for selection
+     * @param selectionArgs     arguments for selection filter
+     * @param sortOrder         sort order
+     * @return  cursor with query result
+     */
     public Cursor query(@NonNull Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         SQLiteDatabase db = numbersDBHelper.getReadableDatabase();
         Cursor cursorToReturn;
@@ -85,6 +101,13 @@ public class NumbersProvider extends ContentProvider {
     }
 
     @Override
+    /**
+     * Inserts data from single ContentValues into database and returns uri
+     *
+     * @param uri       uri pointing to database
+     * @param values    values to insert
+     * @return          uri
+     */
     public Uri insert(@NonNull Uri uri, ContentValues values) {
         SQLiteDatabase db = numbersDBHelper.getWritableDatabase();
         Uri uriToReturn;
@@ -107,6 +130,13 @@ public class NumbersProvider extends ContentProvider {
     }
 
     @Override
+    /**
+     * Inserts, in bulk, data from multiple ContentValues into database and returns number of inserted rows
+     *
+     * @param uri       uri pointing to database
+     * @param values    values to insert
+     * @return          number of rows inserted into database
+     */
     public int bulkInsert(@NonNull Uri uri, @NonNull ContentValues[] values) {
         SQLiteDatabase db = numbersDBHelper.getWritableDatabase();
         switch (sUriMatcher.match(uri)) {
@@ -137,6 +167,14 @@ public class NumbersProvider extends ContentProvider {
     }
 
     @Override
+    /**
+     * Deletes data from database and returns number of deleted rows
+     *
+     * @param uri               uri pointing to database
+     * @param selection         filter for selection
+     * @param selectionArgs     arguments for selection filter
+     * @return                  number or rows deleted
+     */
     public int delete(@NonNull Uri uri, String selection, String[] selectionArgs) {
         SQLiteDatabase db = numbersDBHelper.getWritableDatabase();
         int numRowsDeleted;
@@ -175,6 +213,15 @@ public class NumbersProvider extends ContentProvider {
     }
 
     @Override
+    /**
+     * Updates data in database and returns the number of updated rows
+     *
+     * @param uri               uri pointing to database
+     * @param values            values for update
+     * @param selection         filter for selection
+     * @param selectionArgs     arguments for filter
+     * @return                  the number of rows updated
+     */
     public int update(@NonNull Uri uri, ContentValues values, String selection, String[] selectionArgs) {
         int numUpdated;
         SQLiteDatabase db = numbersDBHelper.getWritableDatabase();
@@ -206,10 +253,23 @@ public class NumbersProvider extends ContentProvider {
     }
 
     @Override
+    /**
+     * Returns null
+     */
     public String getType(@NonNull Uri uri) {
         return null;
     }
 
+    /**
+     * Returns selection filter based on existing selection extended with selection for level
+     *
+     * @param selection     orgininal selection
+     * @param uri           uri pointing to database
+     * @param table
+     * @return              selection filter that includes selection for specific level
+     */
+    //TODO: This needs reviewing. Not sure if this works correctly or that you need to change both selection and selectionArgs
+    //TODO: Check if table as an int is ok, or that this needs to be something else
     private String appendLevelToSelection(String selection, Uri uri, int table) {
         String selectionToReturn = "";
         String level = uri.getLastPathSegment();
@@ -232,10 +292,12 @@ public class NumbersProvider extends ContentProvider {
     }
 
     /**
-     * Checks if level is of format 001002003004005006007008
-     * @param level level
-     * @return true if level has the correct format
+     * Returns true if level is of format 001002003004005006007008
+     *
+     * @param level     level that needs checking
+     * @return          true if level has the correct format
      */
+    //TODO: It would be better to switch to a different formatting of levels such as comma separated. This way split can be used.
     private boolean isValidLevel(String level) {
         boolean booleanToReturn = true;
         if (level.length() != 24) {

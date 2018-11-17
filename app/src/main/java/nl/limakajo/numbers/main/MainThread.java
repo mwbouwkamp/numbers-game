@@ -72,10 +72,10 @@ public class MainThread extends Thread {
 //                System.out.println(averageFPS);
             }
 
-            int numNew = DatabaseUtils.getLevelsWithStatus(MainActivity.getContext(), GameUtils.LevelState.NEW).size();
-            int numActive = DatabaseUtils.getLevelsWithStatus(MainActivity.getContext(), GameUtils.LevelState.ACTIVE).size();
-            int numUpload = DatabaseUtils.getLevelsWithStatus(MainActivity.getContext(), GameUtils.LevelState.UPLOAD).size();
-            int numComplete = DatabaseUtils.getLevelsWithStatus(MainActivity.getContext(), GameUtils.LevelState.COMPLETED).size();
+            int numNew = DatabaseUtils.getLevelsWithSpecificStatus(MainActivity.getContext(), GameUtils.LevelState.NEW).size();
+            int numActive = DatabaseUtils.getLevelsWithSpecificStatus(MainActivity.getContext(), GameUtils.LevelState.ACTIVE).size();
+            int numUpload = DatabaseUtils.getLevelsWithSpecificStatus(MainActivity.getContext(), GameUtils.LevelState.UPLOAD).size();
+            int numComplete = DatabaseUtils.getLevelsWithSpecificStatus(MainActivity.getContext(), GameUtils.LevelState.COMPLETED).size();
             System.out.println(
                     "Level status count. NEW: " +
                     Integer.toString(numNew) +

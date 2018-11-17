@@ -8,10 +8,8 @@ import android.graphics.Point;
 import nl.limakajo.numbers.utils.Attributes;
 
 /**
- * Wave class
- * 
- * This mutable data type represents a wave on the board for visual effect
- * 
+ * Class representing a Wave
+ *
  * @author mwbouwkamp
  */
 public class Wave implements GameObject {
@@ -24,9 +22,9 @@ public class Wave implements GameObject {
 	private volatile boolean animating;
 	
 	/**
-	 * Constucts Wave
+	 * Constucts a Wave
 	 * 
-	 * @param position of the wave
+	 * @param position 		Point representing the center of the wave
 	 */
 	public Wave(Point position) {
 		this.position = position;
@@ -41,11 +39,7 @@ public class Wave implements GameObject {
 		animating = true;
 	}
 	
-	/**
-	 * Draws the wave
-	 * 
-	 * @param canvas
-	 */
+	@Override
 	public void draw(Canvas canvas) {
 		canvas.drawCircle(position.x, position.y, radius, this.paint);
 	}

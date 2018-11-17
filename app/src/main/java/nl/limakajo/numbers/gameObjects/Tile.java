@@ -11,12 +11,10 @@ import nl.limakajo.numbers.utils.GameUtils;
 import java.util.LinkedList;
 
 /**
- * Tile GameObject Class
- * Represents a Tile in the game
+ * Class representing a Tile in the game
  *
  * @author M.W.Bouwkamp
  */
-
 public class Tile implements GameObject {
 
 	private final int number;
@@ -33,9 +31,10 @@ public class Tile implements GameObject {
 	/**
 	 * Constructs Tile that is not based on a combination of previous tiles
 	 * 
-	 * @param number the value of the tile
-	 * @param position the position of the tile
+	 * @param number 	the value of the tile
+	 * @param position 	the position of the tile on the shelf
 	 */
+	//TODO: See if we can refactor so that we don't need position anymore. position is used to calculate the originalPosition and the currentPosition. May this can also be done by adding Tile to Shelf after creating the Tile
 	public Tile(int number, int position) {
 		this.number = number;
 		this.composition = new Tile[2];
@@ -50,10 +49,10 @@ public class Tile implements GameObject {
 	/**
 	 * Constructs Tile that is based on a combination of previous tiles
 	 * 
-	 * @param number the value of the tile
-	 * @param position the position of the tile
-	 * @param composition an array containing the Tiles this one is based on
-	 * @param colorIndex the index in the array of tile colors to use
+	 * @param number 		the value of the tile
+	 * @param position 		the position of the tile of the shelf
+	 * @param composition 	an array containing the Tiles this one is based on
+	 * @param colorIndex 	the index in the array of tile colors to use
 	 */
 	public Tile(int number, int position, Tile[] composition, int colorIndex) {
 		this.number = number;
@@ -69,7 +68,7 @@ public class Tile implements GameObject {
 	/**
 	 * Moves Tile to shelf
 	 * 
-	 * @param playHand the Hand to move the Tile to
+	 * @param playHand 		the Hand to move the Tile to
 	 */
 	public void toShelf(LinkedList<Tile> playHand) {
 		playHand.add(this);
@@ -83,6 +82,7 @@ public class Tile implements GameObject {
 	 * 
 	 * @param playHand the Hand to move the Tiles to
 	 */
+	//TODO: See if we want to make playHand into an object and move some of the logic
 	public void crunch(LinkedList<Tile> playHand) {
 		if (this.composition[0] != null) {
 			this.composition[0].toShelf(playHand);
@@ -90,6 +90,49 @@ public class Tile implements GameObject {
 		} else {
 			this.toShelf(playHand);
 		}
+	}
+
+	/**
+	 * Checks if a tile is in a given ScreenArea
+	 * 
+	 * @param screenArea the area to check
+	 * @return true if tile is in screenArea
+	 */
+	public boolean inArea(ScreenArea screenArea) {
+		return screenArea.getArea().contains(getBounds(currentPosition));
+	}
+	
+	/**
+	 * Returns true if the Tile was pressed
+	 * Calculated using the distance between the coordinates pressed and the center of the tile
+	 * 
+	 * @return true if the Tile was pressed
+	 */
+	public boolean isClicked(Point position) {
+		return Math.sqrt((position.x - currentPosition.x) * (position.x - currentPosition.x) + (position.y - currentPosition.y) * (position.y - currentPosition.y)) < Attributes.TILE_WIDTH / 2;
+	}
+
+	@Override
+	public void draw(Canvas canvas) {
+		paint.setStyle(Paint.Style.FILL);
+		paint.setColor(getColor());
+		canvas.drawCircle(currentPosition.x, currentPosition.y, Attributes.TILE_WIDTH/2, paint);
+		String numberText = Integer.toString(getNumber());
+		drawCenteredText(canvas, numberText);
+	}
+
+	/**
+	 * Draws the value in the center of the Tile
+	 * @param canvas		Canvast to draw to
+	 * @param numberText	Text to draw
+	 */
+	private void drawCenteredText(Canvas canvas, String numberText) {
+		Rect bounds = new Rect();
+		paint.setTextAlign(Paint.Align.CENTER);
+		paint.getTextBounds(numberText, 0, numberText.length(), bounds);
+		paint.setTextSize(30);
+		paint.setColor(Attributes.BG_COLOR);
+		canvas.drawText(numberText, currentPosition.x, currentPosition.y + bounds.height() / 2, paint);
 	}
 
 	@Override
@@ -117,53 +160,7 @@ public class Tile implements GameObject {
 		animating = false;
 	}
 
-	/**
-	 * Checks if a tile is in a given ScreenArea
-	 * 
-	 * @param screenArea the area to check
-	 * @return true if tile is in screenArea
-	 */
-	public boolean inArea(ScreenArea screenArea) {
-		return screenArea.getArea().contains(getBounds(currentPosition));
-	}
-	
-	/**
-	 * Calculates the distance of a Tile to the touch position
-	 * 
-	 * @return true if the distance between the center of the tile and the
-	 *         position where the mouse was clicked is smaller than the half of
-	 *         the width of a tile
-	 */
-	public boolean isClicked(Point position) {
-		return Math.sqrt((position.x - currentPosition.x) * (position.x - currentPosition.x) + (position.y - currentPosition.y) * (position.y - currentPosition.y)) < Attributes.TILE_WIDTH / 2;
-	}
-
-	/**
-	 * Draws a tile
-	 */
 	@Override
-	public void draw(Canvas canvas) {
-		paint.setStyle(Paint.Style.FILL);
-		paint.setColor(getColor());
-		canvas.drawCircle(currentPosition.x, currentPosition.y, Attributes.TILE_WIDTH/2, paint);
-		String numberText = Integer.toString(getNumber());
-		drawCenteredText(canvas, numberText);
-	}
-
-	/**
-	 * Draws the value in the center of the Tile
-	 * @param canvas
-	 * @param numberText
-	 */
-	private void drawCenteredText(Canvas canvas, String numberText) {
-		Rect bounds = new Rect();
-		paint.setTextAlign(Paint.Align.CENTER);
-		paint.getTextBounds(numberText, 0, numberText.length(), bounds);
-		paint.setTextSize(30);
-		paint.setColor(Attributes.BG_COLOR);
-		canvas.drawText(numberText, currentPosition.x, currentPosition.y + bounds.height() / 2, paint);
-	}
-		
 	/**
 	 * Converts Tile to String
 	 * 
@@ -187,7 +184,9 @@ public class Tile implements GameObject {
 		return toReturn;
 	}
 
-	//Getters and Setters
+	/**
+	 * Getters and Setters
+	 */
 
 	public void setCurrentPosition(Point position) {
 		this.currentPosition = position;

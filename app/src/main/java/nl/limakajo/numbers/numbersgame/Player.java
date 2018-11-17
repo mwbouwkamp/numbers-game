@@ -63,7 +63,7 @@ public class Player {
 	 * @return int representing the average time it takes a user to finish a level
 	 */
 	public int calcUserAverageTime() {
-		return DatabaseUtils.getAverageTime(MainActivity.getContext());
+		return DatabaseUtils.getAverageTimeFromCompletedLevels(MainActivity.getContext());
 	}
 
 	/**

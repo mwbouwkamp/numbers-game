@@ -8,14 +8,19 @@ import nl.limakajo.numbers.utils.Attributes;
 import nl.limakajo.numbers.utils.PaintComparator;
 
 /**
- * ScreenArea GameObject Class
- * Creates rectangular screen area
+ * Class that represents a rectangular ScreenArea
  *
  * @author M.W.Bouwkamp
  */
 
 public class ScreenArea extends LayoutObject {
 
+    /**
+     * Constructs a ScreenArea
+     *
+     * @param paint     Paint defining the graphical attributes
+     * @param rect      Rect defining the boundaries of the GameObject
+     */
     public ScreenArea(Rect rect, Paint paint) {
         super(paint, rect);
     }

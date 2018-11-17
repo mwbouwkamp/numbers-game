@@ -11,13 +11,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 /**
- * NumbersDBHelper
- * Contains all database operations
- * 
- * Features:
- * - operations to create databases with level information
- * - operations to read/write data from/to the server
- * 
+ * Class that manages database creation and version management
+ *
  * @author M.W.Bouwkamp
  *
  */
@@ -34,7 +29,7 @@ class NumbersDBHelper extends SQLiteOpenHelper {
 
 	/**
 	 * Constructor
-	 * @param context context
+	 * @param context 	application context
 	 */
 	NumbersDBHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -42,6 +37,9 @@ class NumbersDBHelper extends SQLiteOpenHelper {
 	}
 
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public void onCreate(SQLiteDatabase db) {
 		//Create levels table
 		final String CREATE_TABLE_LEVELS =
@@ -58,6 +56,9 @@ class NumbersDBHelper extends SQLiteOpenHelper {
 	}
 
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		db.execSQL("DROP TABLE IF EXISTS " + NumbersContract.TableLevels.TABLE_NAME);
 		onCreate(db);
