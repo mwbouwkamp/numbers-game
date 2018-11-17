@@ -1,6 +1,11 @@
 package nl.limakajo.numbers.data;
 
 import android.content.Context;
+
+import nl.limakajo.numbers.main.MainActivity;
+import nl.limakajo.numbers.utils.DatabaseUtils;
+import nl.limakajo.numbers.utils.GameUtils;
+
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -19,10 +24,10 @@ import android.util.Log;
 class NumbersDBHelper extends SQLiteOpenHelper {
 
 	//Database Name
-    static final String DATABASE_NAME = "numbersgame";
+    private static final String DATABASE_NAME = "numbersgame";
 
 	//Database version
-	static final int DATABASE_VERSION = 1;
+	private static final int DATABASE_VERSION = 2;
 
 	//Logcat tag
 	private static final String TAG = NumbersDBHelper.class.getName();
@@ -31,7 +36,7 @@ class NumbersDBHelper extends SQLiteOpenHelper {
 	 * Constructor
 	 * @param context context
 	 */
-	public NumbersDBHelper(Context context) {
+	NumbersDBHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 		Log.i(TAG, "Database created");
 	}
@@ -45,26 +50,9 @@ class NumbersDBHelper extends SQLiteOpenHelper {
 						"("+
 						NumbersContract.TableLevels.KEY_NUMBERS + " VARCHAR," +
 						NumbersContract.TableLevels.KEY_AVERAGE_TIME + " INTEGER," +
-						NumbersContract.TableLevels.KEY_USER_TIME + " INTEGER);";
+						NumbersContract.TableLevels.KEY_USER_TIME + " INTEGER," +
+						NumbersContract.TableLevels.KEY_LEVEL_STATUS + " VARCHAR );";
 		db.execSQL(CREATE_TABLE_LEVELS);
-
-		//Create active level table
-		final String CREATE_TABLE_ACTIVE_LEVEL =
-				"CREATE TABLE " +
-						NumbersContract.TableActiveLevel.TABLE_NAME +
-						"("+
-						NumbersContract.TableActiveLevel.KEY_NUMBERS + " VARCHAR," +
-						NumbersContract.TableActiveLevel.KEY_USER_TIME + " INTEGER);";
-		db.execSQL(CREATE_TABLE_ACTIVE_LEVEL);
-
-		//Create recently completed levels table
-		final String CREATE_TABLE_COMPLETED_LEVELS =
-				"CREATE TABLE " +
-						NumbersContract.TableCompletedLevels.TABLE_NAME +
-						"("+
-						NumbersContract.TableCompletedLevels.KEY_NUMBERS + " VARCHAR," +
-						NumbersContract.TableCompletedLevels.KEY_USER_TIME + " INTEGER);";
-		db.execSQL(CREATE_TABLE_COMPLETED_LEVELS);
 
 		Log.i(TAG, "Tables created");
 	}
@@ -72,8 +60,6 @@ class NumbersDBHelper extends SQLiteOpenHelper {
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		db.execSQL("DROP TABLE IF EXISTS " + NumbersContract.TableLevels.TABLE_NAME);
-		db.execSQL("DROP TABLE IF EXISTS " + NumbersContract.TableActiveLevel.TABLE_NAME);
-		db.execSQL("DROP TABLE IF EXISTS " + NumbersContract.TableCompletedLevels.TABLE_NAME);
 		onCreate(db);
 	}
 }

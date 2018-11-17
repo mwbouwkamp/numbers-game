@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.util.Log;
 
 import nl.limakajo.numbers.data.NumbersContract;
+import nl.limakajo.numbers.main.MainActivity;
 import nl.limakajo.numbers.numbersgame.Level;
 
 import java.io.BufferedWriter;
@@ -24,12 +25,12 @@ import java.util.Scanner;
  */
 
 public class NetworkUtils {
-    public static final String GET_URL = "http://limakajo.mygamesonline.org/getlevels.php";
-    public static final String SET_URL = "http://limakajo.mygamesonline.org/setlevels.php";
-    public static final String SERVER = "fdb23.runhosting.com";
-    public static final String USER = "2877361_numbers";
-    public static final String PASS = "Numbersjuig448";
-    public static final String DB = "2877361_numbers";
+    private static final String GET_URL = "http://limakajo.mygamesonline.org/getlevels.php";
+    private static final String SET_URL = "http://limakajo.mygamesonline.org/setlevels.php";
+    private static final String SERVER = "fdb23.runhosting.com";
+    private static final String USER = "2877361_numbers";
+    private static final String PASS = "Numbersjuig448";
+    private static final String DB = "2877361_numbers";
 
     private static final String TAG = NetworkUtils.class.getName();
 
@@ -107,14 +108,12 @@ public class NetworkUtils {
         for (Level level: levels) {
             String result = executeHttpPost(level.toString(), Integer.toString(level.getUserTime()));
             if (result.equals("successful")) {
-                String selection = NumbersContract.TableLevels.KEY_NUMBERS + " = ?";
-                String[] args = {level.toString()};
-                int numDeleted = context.getContentResolver().delete(NumbersContract.TableCompletedLevels.BASE_CONTENT_URI_COMPLETED_LEVELS, selection, args);
+                DatabaseUtils.updateTableLevelsLevelStatusForSpecificLevel(MainActivity.getContext(), level, GameUtils.LevelState.COMPLETED);
             }
         }
     }
 
-    public static String executeHttpPost(String numbers, String userTime) {
+    private static String executeHttpPost(String numbers, String userTime) {
 
         HttpURLConnection httpURLConnection = null;
         URL url;

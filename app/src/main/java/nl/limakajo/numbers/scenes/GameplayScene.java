@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.RectF;
+import android.provider.ContactsContract;
 import android.view.MotionEvent;
 
 import nl.limakajo.numbers.gameObjects.Tile;
@@ -76,10 +77,12 @@ public class GameplayScene implements SceneInterface {
         newLevel.setUserTime(GameUtils.TIMEPENALTY);
         MainActivity.getGame().setLevel(newLevel);
 
-        //Transfer and delete old active level, if exists, and add new active level
-        DatabaseUtils.updateTableLevelsUserTime(MainActivity.getContext(), MainActivity.getGame().getLevel(), GameUtils.TIMEPENALTY);
-        DatabaseUtils.transferActiveLevelToCompletedLevelIfExists(MainActivity.getContext());
-        DatabaseUtils.insertActiveLevel(MainActivity.getContext(), newLevel);
+        //Update level usertime to TIMEPENALTY
+        DatabaseUtils.updateTableLevelsUserTime(MainActivity.getContext(), newLevel, GameUtils.TIMEPENALTY);
+
+        //Update status of levels, so that old ACTIVE levels become ready for uploading (UPLOAD) and newLevel becomes the new ACTIVE level
+        DatabaseUtils.updateTableLevelsLevelStatusForSpecificCurrentStatus(MainActivity.getContext(), GameUtils.LevelState.ACTIVE, GameUtils.LevelState.UPLOAD);
+        DatabaseUtils.updateTableLevelsLevelStatusForSpecificLevel(MainActivity.getContext(), newLevel, GameUtils.LevelState.ACTIVE);
 
         tilesOnShelf = new LinkedList<>();
         for (int i = 0; i < GameUtils.NUMTILES; i++) {

@@ -4,6 +4,7 @@ import android.content.Context;
 
 import nl.limakajo.numbers.numbersgame.Level;
 import nl.limakajo.numbers.utils.DatabaseUtils;
+import nl.limakajo.numbers.utils.GameUtils;
 import nl.limakajo.numbers.utils.JSONUtils;
 import nl.limakajo.numbers.utils.NetworkUtils;
 
@@ -19,7 +20,7 @@ public class NumbersSyncTasks {
     public static final String ACTION_UPLOAD_LEVELS = "upload-levels";
     public static final String ACTION_DOWNLOAD_LEVELS = "download-levels";
 
-    synchronized public static void sync(Context context, String action) {
+    synchronized static void sync(Context context, String action) {
         switch (action) {
             case ACTION_DOWNLOAD_LEVELS:
                 downloadLevels(context);
@@ -41,7 +42,7 @@ public class NumbersSyncTasks {
     }
 
     private static void uploadLevels(Context context) {
-        LinkedList<Level> levels = DatabaseUtils.queryAllCompletedLevels(context);
+        LinkedList<Level> levels = DatabaseUtils.getLevelsWithStatus(context, GameUtils.LevelState.UPLOAD);
         if (levels != null) {
             NetworkUtils.sendLevelsToServer(context, levels);
         }
