@@ -1,32 +1,30 @@
 package nl.limakajo.numbers.utils;
 
-import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
-import android.support.annotation.NonNull;
 
 import nl.limakajo.numbers.data.NumbersContract;
 import nl.limakajo.numbers.main.MainActivity;
 import nl.limakajo.numbers.numbersgame.Level;
 
 import java.util.LinkedList;
-import java.util.Objects;
 
 /**
+ * Class that holds all database operations
+ *
  * @author M.W.Bouwkamp
  */
-
 public class DatabaseUtils {
 
     /**
-     * Retrieves all levels from SQLite database
+     * Returns all levels in the SQLite database table TableLevels
      *
-     * @param context context
-     * @return levels levels
+     * @param context   application context
+     * @return          all levels in the SQLite database table TableLevels
      */
-    private static LinkedList<Level> queryAllLevels(Context context) {
+    private static LinkedList<Level> getAllLevels(Context context) {
         String[] projection = {
                 NumbersContract.TableLevels.KEY_NUMBERS,
                 NumbersContract.TableLevels.KEY_USER_TIME,
@@ -35,7 +33,14 @@ public class DatabaseUtils {
         return getLevelsFromCursor(cursor);
     }
 
-    public static LinkedList<Level> getLevelsWithStatus(Context context, GameUtils.LevelState levelState) {
+    /**
+     * Returns all levels in the SQLite database table TableLevels that are listed in a certain LevelState
+     *
+     * @param context       application context
+     * @param levelState    the LevelState of interest
+     * @return              all levels in the SQLite database table TableLevels that match the provided levelState
+     */
+    public static LinkedList<Level> getLevelsWithSpecificStatus(Context context, GameUtils.LevelState levelState) {
         String selection = NumbersContract.TableLevels.KEY_LEVEL_STATUS + " = ?";
         String[] args = {Character.toString(levelState.asChar())};
         String[] projection = {
@@ -46,7 +51,12 @@ public class DatabaseUtils {
         return getLevelsFromCursor(cursor);
     }
 
-    @NonNull
+    /**
+     * Returns all levels in a cursor
+     *
+     * @param cursor    the cursor that contains the level data
+     * @return          all levels in th cursor
+     */
     private static LinkedList<Level> getLevelsFromCursor(Cursor cursor) {
         String numbersString;
         LinkedList<Level> levels = new LinkedList<>();
@@ -65,12 +75,13 @@ public class DatabaseUtils {
     }
 
     /**
-     * Updates levels in SQLite database
+     * Updates averageTime in the SQLite database table TableLevels for all Levels in levels
+     * If a level does is not yet in the SQLite database, the level will be inserted
      *
-     * @param context context
-     * @param levels levels
+     * @param context   application context
+     * @param levels    the levels that need updating
      */
-    public static void updateLevels(Context context, LinkedList<Level> levels) {
+    public static void updateLevelsAverageTimeForSpecificLevels(Context context, LinkedList<Level> levels) {
         String selection = NumbersContract.TableLevels.KEY_NUMBERS + " = ?";
         for (Level level : levels) {
             String[] args = {level.toString()};
@@ -89,13 +100,15 @@ public class DatabaseUtils {
     }
 
     /**
-     * Selects a level for which the averageTime is closest to the userAverageTime
-     * @param context
-     * @return
+     * Returns a level that has not yet been played for which averageTime is closest to the userAverageTime
+     * Difference is calculated by: Math.abs(level.getAverageTime() - userAverageTime))
+     *
+     * @param context   application context
+     * @return          level that has not yet been played for which averageTime is closest to userAverageTime
      */
-    public static Level selectLevel(Context context) {
+    public static Level getLevelWithAverageTimeCloseToUserAverageTime(Context context) {
         Level toReturn = null;
-        LinkedList<Level> levels = getLevelsWithStatus(context, GameUtils.LevelState.NEW);
+        LinkedList<Level> levels = getLevelsWithSpecificStatus(context, GameUtils.LevelState.NEW);
         int userAverageTime = MainActivity.getPlayer().getUserAverageTime();
         int timeDifferenceSelectedLevel = Integer.MAX_VALUE;
         for (Level level: levels) {
@@ -108,12 +121,16 @@ public class DatabaseUtils {
     }
 
     /**
-     * Calculates and returns the averageTime it takes the user to complete levels
-     * @param context context
-     * @return averageTime
+     * Returns the average time it takes the user to complete a level.
+     * The average time is calculated based on levels that have been played.
+     * This means only those levels that are in LevelState COMPLETED or UPLOAD.
+     *
+     * @param context   application context
+     * @return          the average time it takes the user to complete a level
      */
-    public static int getAverageTime(Context context) {
-        LinkedList<Level> levels = queryAllLevels(context);
+    public static int getAverageTimeFromCompletedLevels(Context context) {
+        LinkedList<Level> levels = getLevelsWithSpecificStatus(context, GameUtils.LevelState.COMPLETED);
+        levels.addAll(getLevelsWithSpecificStatus(context, GameUtils.LevelState.UPLOAD));
         int totalTime = 0;
         int numPlayed = 0;
         for (Level level: levels) {
@@ -131,12 +148,15 @@ public class DatabaseUtils {
     }
 
     /**
-     * Updates userTime for a level in table levels in SQLite database
-     * @param context context
-     * @param level level
-     * @param userTime userTime
+     * Updates the user time for a specific level in the SQLite database table TableLevels
+     *
+     * @param context   application context
+     * @param level     level that needs to be updated
+     * @param userTime  new value for user time
      */
-    public static void updateTableLevelsUserTime(Context context, Level level, int userTime) {
+    //TODO: level already contains the userTime, so it is not necessary to include userTime as an argument
+    //TODO: make this more generic so that it also works for multiple levels (taking a LinkedList<Level> as parameter)
+    public static void updateTableLevelsUserTimeForSpecificLevel(Context context, Level level, int userTime) {
         String selection = NumbersContract.TableLevels.KEY_NUMBERS + " = ?";
         String[] args = {level.toString()};
         ContentValues cv = new ContentValues();
@@ -149,11 +169,13 @@ public class DatabaseUtils {
     }
 
     /**
-     * Updates levelStatus for a level in table levels in SQLite database
-     * @param context
-     * @param level
-     * @param newStatus
+     * Updates levelStatus for a level in the SQLite database table TableLevels
+     *
+     * @param context       application context
+     * @param level         level that needs to be updated
+     * @param newStatus     new value for the status of the level
      */
+    //TODO: make this more generic so that it also works for multiple levels (taking a LinkedList<Level> as parameter)
     public static void updateTableLevelsLevelStatusForSpecificLevel(Context context, Level level, GameUtils.LevelState newStatus) {
         String selection = NumbersContract.TableLevels.KEY_NUMBERS + " = ?";
         String[] args = {level.toString()};
@@ -167,15 +189,15 @@ public class DatabaseUtils {
     }
 
     /**
-     * Update levelStatus of levels with a specific current status
-     * @param context
-     * @param oldStatus
-     * @param newStatus
+     * Updates levelStatus for a level in the SQLite database table TableLevels from one status to another
+     *
+     * @param context       application context
+     * @param oldStatus     current status of the levels
+     * @param newStatus     new status for the levels
      */
     public static void updateTableLevelsLevelStatusForSpecificCurrentStatus(Context context, GameUtils.LevelState oldStatus, GameUtils.LevelState newStatus) {
         String selection = NumbersContract.TableLevels.KEY_LEVEL_STATUS + " = ?";
         String[] args = {Character.toString(oldStatus.asChar())};
-        //TODO: Refactor. DRY!
         ContentValues cv = new ContentValues();
         cv.put(NumbersContract.TableLevels.KEY_LEVEL_STATUS, Character.toString(newStatus.asChar()));
         context.getContentResolver().update(
@@ -185,6 +207,4 @@ public class DatabaseUtils {
                 args);
 
     }
-
-
 }

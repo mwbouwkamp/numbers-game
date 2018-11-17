@@ -37,12 +37,12 @@ public class NumbersSyncTasks {
         String levelsFromServer = NetworkUtils.getLevelsJSONFromServer();
         LinkedList<Level> levels = JSONUtils.getLevelsFromJson(levelsFromServer);
         if (levels != null) {
-            DatabaseUtils.updateLevels(context, levels);
+            DatabaseUtils.updateLevelsAverageTimeForSpecificLevels(context, levels);
         }
     }
 
     private static void uploadLevels(Context context) {
-        LinkedList<Level> levels = DatabaseUtils.getLevelsWithStatus(context, GameUtils.LevelState.UPLOAD);
+        LinkedList<Level> levels = DatabaseUtils.getLevelsWithSpecificStatus(context, GameUtils.LevelState.UPLOAD);
         if (levels != null) {
             NetworkUtils.sendLevelsToServer(context, levels);
         }

@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.RectF;
-import android.provider.ContactsContract;
 import android.view.MotionEvent;
 
 import nl.limakajo.numbers.gameObjects.Tile;
@@ -73,12 +72,12 @@ public class GameplayScene implements SceneInterface {
         statusBarText = "";
 
         //Construct a level and update the ScreenLayout goal accordingly
-        Level newLevel = DatabaseUtils.selectLevel(MainActivity.getContext());
+        Level newLevel = DatabaseUtils.getLevelWithAverageTimeCloseToUserAverageTime(MainActivity.getContext());
         newLevel.setUserTime(GameUtils.TIMEPENALTY);
         MainActivity.getGame().setLevel(newLevel);
 
         //Update level usertime to TIMEPENALTY
-        DatabaseUtils.updateTableLevelsUserTime(MainActivity.getContext(), newLevel, GameUtils.TIMEPENALTY);
+        DatabaseUtils.updateTableLevelsUserTimeForSpecificLevel(MainActivity.getContext(), newLevel, GameUtils.TIMEPENALTY);
 
         //Update status of levels, so that old ACTIVE levels become ready for uploading (UPLOAD) and newLevel becomes the new ACTIVE level
         DatabaseUtils.updateTableLevelsLevelStatusForSpecificCurrentStatus(MainActivity.getContext(), GameUtils.LevelState.ACTIVE, GameUtils.LevelState.UPLOAD);
