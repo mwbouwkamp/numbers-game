@@ -11,7 +11,7 @@ import android.provider.BaseColumns;
 public class NumbersContract {
 
     public static final String CONTENT_AUTHORITY = "nl.limakajo.numbers";
-    private static final String PATH_LEVELS = "levels";
+    static final String PATH_LEVELS = "levels";
     private static final String PATH_SPECIFIC_LEVEL = "level";
 
     /**
