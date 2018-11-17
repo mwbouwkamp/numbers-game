@@ -4,24 +4,18 @@ import android.net.Uri;
 import android.provider.BaseColumns;
 
 /**
- * NumbersContract class
- * Contains the contract for the database structure
+ * Class that contains the contract for the database structure
  *
  * @author M.W.Bouwkamp
  */
-
 public class NumbersContract {
 
     public static final String CONTENT_AUTHORITY = "nl.limakajo.numbers";
-
-    //Path for specific tables
-    static final String PATH_LEVELS = "levels";
-
-    //Path if specific level is required
+    private static final String PATH_LEVELS = "levels";
     private static final String PATH_SPECIFIC_LEVEL = "level";
 
     /**
-     * Class with contract for table with level information
+     * Class that contains the contract for table with level information
      */
     public final static class TableLevels implements BaseColumns {
 
