@@ -36,4 +36,22 @@ public class GameUtils {
             }
         }
     }
+
+    //LevelStates
+    public enum LevelState {
+        NEW('N'),
+        ACTIVE('A'),
+        UPLOAD('U'),
+        COMPLETED('C');
+
+        public char asChar() {
+            return asChar;
+        }
+
+        private final char asChar;
+
+        LevelState(char asChar) {
+            this.asChar = asChar;
+        }
+    }
 }

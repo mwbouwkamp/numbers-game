@@ -3,6 +3,9 @@ package nl.limakajo.numbers.main;
 import android.graphics.Canvas;
 import android.view.SurfaceHolder;
 
+import nl.limakajo.numbers.utils.DatabaseUtils;
+import nl.limakajo.numbers.utils.GameUtils;
+
 /**
  * @author M.W.Bouwkamp
  */
@@ -14,7 +17,7 @@ public class MainThread extends Thread {
     private boolean running;
     private static Canvas canvas;
 
-    public MainThread(SurfaceHolder surfaceHolder, GamePanel gamePanel) {
+    MainThread(SurfaceHolder surfaceHolder, GamePanel gamePanel) {
         super();
         this.surfaceHolder = surfaceHolder;
         this.gamePanel = gamePanel;
@@ -68,6 +71,20 @@ public class MainThread extends Thread {
                 totalTime = 0;
 //                System.out.println(averageFPS);
             }
+
+            int numNew = DatabaseUtils.getLevelsWithStatus(MainActivity.getContext(), GameUtils.LevelState.NEW).size();
+            int numActive = DatabaseUtils.getLevelsWithStatus(MainActivity.getContext(), GameUtils.LevelState.ACTIVE).size();
+            int numUpload = DatabaseUtils.getLevelsWithStatus(MainActivity.getContext(), GameUtils.LevelState.UPLOAD).size();
+            int numComplete = DatabaseUtils.getLevelsWithStatus(MainActivity.getContext(), GameUtils.LevelState.COMPLETED).size();
+            System.out.println(
+                    "Level status count. NEW: " +
+                    Integer.toString(numNew) +
+                    ";  ACTIVE" +
+                    Integer.toString(numActive) +
+                    ";  UPLOAD" +
+                    Integer.toString(numUpload) +
+                    ";  COMPLETE" +
+                    Integer.toString(numComplete) );
         }
     }
 
@@ -79,7 +96,7 @@ public class MainThread extends Thread {
         setRunning(true);
     }
 
-    public void setRunning(boolean running) {
+    void setRunning(boolean running) {
         this.running = running;
     }
 }
