@@ -15,7 +15,7 @@ import java.util.LinkedList;
  *
  * @author M.W.Bouwkamp
  */
-public class Tile implements GameObject {
+public class Tile implements GameObjectInterface {
 
 	private final int number;
 	private final Tile[] composition;

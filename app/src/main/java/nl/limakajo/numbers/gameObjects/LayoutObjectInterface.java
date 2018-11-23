@@ -4,24 +4,22 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
-import nl.limakajo.numbers.utils.Attributes;
-
 /**
- * Class that represents a LayoutObject
+ * Class that represents a LayoutObjectInterface
  *
  * @author M.W.Bouwkamp
  */
-public class LayoutObject implements GameObject {
+public class LayoutObjectInterface implements GameObjectInterface {
     final Rect rect;
     final Paint paint;
 
     /**
-     * Constructs a LayoutObject
+     * Constructs a LayoutObjectInterface
      *
      * @param paint     Paint defining the graphical attributes
-     * @param rect      Rect defining the boundaries of the GameObject
+     * @param rect      Rect defining the boundaries of the GameObjectInterface
      */
-    LayoutObject(Paint paint, Rect rect) {
+    LayoutObjectInterface(Paint paint, Rect rect) {
         this.paint = new Paint(paint);
         this.rect = rect;
     }

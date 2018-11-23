@@ -12,7 +12,7 @@ import nl.limakajo.numbers.utils.Attributes;
  *
  * @author mwbouwkamp
  */
-public class Wave implements GameObject {
+public class Wave implements GameObjectInterface {
 
 	private final Point position;
 	private float radius;

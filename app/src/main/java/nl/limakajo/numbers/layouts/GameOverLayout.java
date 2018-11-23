@@ -2,7 +2,7 @@ package nl.limakajo.numbers.layouts;
 
 import android.graphics.Rect;
 
-import nl.limakajo.numbers.gameObjects.LayoutObject;
+import nl.limakajo.numbers.gameObjects.LayoutObjectInterface;
 import nl.limakajo.numbers.gameObjects.TextBox;
 import nl.limakajo.numbers.utils.Attributes;
 
@@ -13,7 +13,7 @@ public class GameOverLayout extends NoGamePlayLayout {
 
     public GameOverLayout() {
         //Game over text
-        LayoutObject gameOverText = new TextBox(
+        LayoutObjectInterface gameOverText = new TextBox(
                 "Out of time",
                 Attributes.TextAllignment.XYCENTERED,
                 new Rect(
