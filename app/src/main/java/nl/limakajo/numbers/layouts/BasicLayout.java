@@ -36,6 +36,10 @@ public class BasicLayout implements LayoutInterface {
         return (TextBox) layoutObjects.get(layoutElement);
     }
 
+    public ScreenArea getScreenArea(LayoutElementsKeys layoutElement) {
+        return (ScreenArea) layoutObjects.get(layoutElement);
+    }
+
     public void draw(Canvas canvas) {
         for (LayoutObject layoutObject : layoutObjects.values()) {
             layoutObject.draw(canvas);
