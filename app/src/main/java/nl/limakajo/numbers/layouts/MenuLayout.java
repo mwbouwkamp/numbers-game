@@ -9,10 +9,15 @@ import nl.limakajo.numbers.main.MainActivity;
 import nl.limakajo.numbers.utils.Attributes;
 
 /**
+ * Class that represents the MenuLayout
+ *
  * @author M.W.Bouwkamp
  */
 public class MenuLayout extends NoGamePlayLayout {
 
+    /**
+     * Constructs a MenuLayout
+     */
     public MenuLayout() {
         //Menu Text
         LayoutObject menuText = new TextBox(

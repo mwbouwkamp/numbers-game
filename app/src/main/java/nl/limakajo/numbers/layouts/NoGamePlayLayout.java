@@ -5,9 +5,16 @@ import android.graphics.Rect;
 import nl.limakajo.numbers.gameObjects.LayoutObject;
 import nl.limakajo.numbers.gameObjects.ScreenArea;
 import nl.limakajo.numbers.utils.Attributes;
-
+/**
+ * Class that represents the basic layout for layouts other then the GamePlayLayout
+ *
+ * @author M.W.Bouwkamp
+ */
 public class NoGamePlayLayout extends BasicLayout {
 
+    /**
+     * Constructs a NoGamePlayLayout
+     */
     NoGamePlayLayout() {
         //Logo
         LayoutObject logoArea = new ScreenArea (

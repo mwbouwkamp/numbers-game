@@ -12,12 +12,17 @@ import nl.limakajo.numbers.main.MainActivity;
 import nl.limakajo.numbers.utils.Attributes;
 
 /**
+ * Class that represents the BasicLayout
  *
+ * @author M.W.Bouwkamp
  */
 public class BasicLayout implements LayoutInterface {
 
     protected EnumMap<LayoutElementsKeys, LayoutObject> layoutObjects = new EnumMap<LayoutElementsKeys, LayoutObject>(LayoutElementsKeys.class);
 
+    /**
+     * Constructs a BasicLayout
+     */
     BasicLayout() {
 
         //Fullscreen
@@ -31,18 +36,27 @@ public class BasicLayout implements LayoutInterface {
         layoutObjects.put(LayoutElementsKeys.FULLSCREEN, fullscreen);
     }
 
-    public EnumMap<LayoutElementsKeys, LayoutObject> getLayoutObjects() {
-        return layoutObjects;
-    }
-
+    /**
+     * Returns a given TextBox
+     *
+     * @param layoutElement     the TextBox to return indicated by LayoutElementsKey
+     * @return                  TextBox
+     */
     public TextBox getTextBox(LayoutElementsKeys layoutElement) {
         return (TextBox) layoutObjects.get(layoutElement);
     }
 
+    /**
+     * Returns a given ScreenArea
+     *
+     * @param layoutElement     the ScreenArea to return indicated by LayoutElementsKey
+     * @return                  ScreenArea
+     */
     public ScreenArea getScreenArea(LayoutElementsKeys layoutElement) {
         return (ScreenArea) layoutObjects.get(layoutElement);
     }
 
+    @Override
     public void draw(Canvas canvas) {
         for (LayoutObject layoutObject : layoutObjects.values()) {
             layoutObject.draw(canvas);

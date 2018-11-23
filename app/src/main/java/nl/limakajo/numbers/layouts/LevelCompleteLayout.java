@@ -10,10 +10,15 @@ import nl.limakajo.numbers.main.MainActivity;
 import nl.limakajo.numbers.utils.Attributes;
 
 /**
+ * Class that represents the LevelCompleteLayout
+ *
  * @author M.W.Bouwkamp
  */
 public class LevelCompleteLayout extends NoGamePlayLayout {
 
+    /**
+     * Constructs a LevelCompleteLayout
+     */
     public LevelCompleteLayout() {
         //Level complete text
         LayoutObject levelCompleteText = new TextBox(

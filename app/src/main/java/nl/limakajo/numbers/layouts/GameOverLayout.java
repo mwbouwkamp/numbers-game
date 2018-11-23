@@ -7,10 +7,15 @@ import nl.limakajo.numbers.gameObjects.TextBox;
 import nl.limakajo.numbers.utils.Attributes;
 
 /**
+ * Class that represents the BasicLayout
+ *
  * @author M.W.Bouwkamp
  */
 public class GameOverLayout extends NoGamePlayLayout {
 
+    /**
+     * Constructs GameOverLayout
+     */
     public GameOverLayout() {
         //Game over text
         LayoutObject gameOverText = new TextBox(

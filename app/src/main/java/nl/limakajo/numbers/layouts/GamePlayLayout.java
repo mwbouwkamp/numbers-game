@@ -11,11 +11,15 @@ import nl.limakajo.numbers.utils.Attributes;
 import nl.limakajo.numbers.utils.GameUtils;
 
 /**
+ * Class that represents the GamePlayLayout
+ *
  * @author M.W.Bouwkamp
  */
-
 public class GamePlayLayout extends BasicLayout {
 
+	/**
+	 * Constructs GamePlayLayout
+	 */
 	public GamePlayLayout() {
 		//Playable area
         LayoutObject playArea = new ScreenArea (

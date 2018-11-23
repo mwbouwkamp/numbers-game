@@ -1,5 +1,10 @@
 package nl.limakajo.numbers.layouts;
 
+/**
+ * Enum with keys for LayoutElements
+ *
+ * @author M.W.Bouwkamp
+ */
 public enum LayoutElementsKeys {
     FULLSCREEN,
     //Logo
