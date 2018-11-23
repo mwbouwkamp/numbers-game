@@ -13,7 +13,7 @@ import nl.limakajo.numbers.utils.PaintComparator;
  *
  * @author M.W.Bouwkamp
  */
-public class TextBox extends LayoutObject {
+public class TextBox extends LayoutObjectInterface {
 
     private String text;
     private final Attributes.TextAllignment alignment;
@@ -24,7 +24,7 @@ public class TextBox extends LayoutObject {
      *
      * @param text          String containing the text
      * @param alignment     Attributes.TextAllignment defining how the text will be aligned in the TextBox
-     * @param rect          Rect defining the boundaries of the GameObject
+     * @param rect          Rect defining the boundaries of the GameObjectInterface
      * @param paint         Paint defining the graphical attributes
      */
     public TextBox(String text, Attributes.TextAllignment alignment, Rect rect, Paint paint) {

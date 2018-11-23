@@ -13,13 +13,13 @@ import nl.limakajo.numbers.utils.PaintComparator;
  * @author M.W.Bouwkamp
  */
 
-public class ScreenArea extends LayoutObject {
+public class ScreenArea extends LayoutObjectInterface {
 
     /**
      * Constructs a ScreenArea
      *
      * @param paint     Paint defining the graphical attributes
-     * @param rect      Rect defining the boundaries of the GameObject
+     * @param rect      Rect defining the boundaries of the GameObjectInterface
      */
     public ScreenArea(Rect rect, Paint paint) {
         super(paint, rect);
