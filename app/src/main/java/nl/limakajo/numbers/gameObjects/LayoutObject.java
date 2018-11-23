@@ -5,21 +5,21 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 
 /**
- * Class that represents a LayoutObjectInterface
+ * Class that represents a LayoutObject
  *
  * @author M.W.Bouwkamp
  */
-public class LayoutObjectInterface implements GameObjectInterface {
+public class LayoutObject implements GameObjectInterface {
     final Rect rect;
     final Paint paint;
 
     /**
-     * Constructs a LayoutObjectInterface
+     * Constructs a LayoutObject
      *
      * @param paint     Paint defining the graphical attributes
      * @param rect      Rect defining the boundaries of the GameObjectInterface
      */
-    LayoutObjectInterface(Paint paint, Rect rect) {
+    LayoutObject(Paint paint, Rect rect) {
         this.paint = new Paint(paint);
         this.rect = rect;
     }

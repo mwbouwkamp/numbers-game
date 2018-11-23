@@ -3,7 +3,7 @@ package nl.limakajo.numbers.layouts;
 import android.graphics.Rect;
 
 import nl.limakajo.numbers.R;
-import nl.limakajo.numbers.gameObjects.LayoutObjectInterface;
+import nl.limakajo.numbers.gameObjects.LayoutObject;
 import nl.limakajo.numbers.gameObjects.TextBox;
 import nl.limakajo.numbers.main.MainActivity;
 import nl.limakajo.numbers.utils.Attributes;
@@ -15,7 +15,7 @@ public class MenuLayout extends NoGamePlayLayout {
 
     public MenuLayout() {
         //Menu Text
-        LayoutObjectInterface menuText = new TextBox(
+        LayoutObject menuText = new TextBox(
                 MainActivity.getContext().getString(R.string.menu_start_text),
                 Attributes.TextAllignment.XYCENTERED,
                 new Rect(

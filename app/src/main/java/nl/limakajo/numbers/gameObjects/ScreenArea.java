@@ -13,7 +13,7 @@ import nl.limakajo.numbers.utils.PaintComparator;
  * @author M.W.Bouwkamp
  */
 
-public class ScreenArea extends LayoutObjectInterface {
+public class ScreenArea extends LayoutObject {
 
     /**
      * Constructs a ScreenArea

@@ -5,20 +5,23 @@ import android.graphics.Rect;
 
 import java.util.EnumMap;
 
-import nl.limakajo.numbers.gameObjects.LayoutObjectInterface;
+import nl.limakajo.numbers.gameObjects.LayoutObject;
 import nl.limakajo.numbers.gameObjects.ScreenArea;
 import nl.limakajo.numbers.gameObjects.TextBox;
 import nl.limakajo.numbers.main.MainActivity;
 import nl.limakajo.numbers.utils.Attributes;
 
+/**
+ *
+ */
 public class BasicLayout implements LayoutInterface {
 
-    protected EnumMap<LayoutElementsKeys, LayoutObjectInterface> layoutObjects = new EnumMap<LayoutElementsKeys, LayoutObjectInterface>(LayoutElementsKeys.class);
+    protected EnumMap<LayoutElementsKeys, LayoutObject> layoutObjects = new EnumMap<LayoutElementsKeys, LayoutObject>(LayoutElementsKeys.class);
 
     BasicLayout() {
 
         //Fullscreen
-        LayoutObjectInterface fullscreen = new ScreenArea (
+        LayoutObject fullscreen = new ScreenArea (
                 new Rect(
                         0,
                         0,
@@ -28,7 +31,7 @@ public class BasicLayout implements LayoutInterface {
         layoutObjects.put(LayoutElementsKeys.FULLSCREEN, fullscreen);
     }
 
-    public EnumMap<LayoutElementsKeys, LayoutObjectInterface> getLayoutObjects() {
+    public EnumMap<LayoutElementsKeys, LayoutObject> getLayoutObjects() {
         return layoutObjects;
     }
 
@@ -41,7 +44,7 @@ public class BasicLayout implements LayoutInterface {
     }
 
     public void draw(Canvas canvas) {
-        for (LayoutObjectInterface layoutObject : layoutObjects.values()) {
+        for (LayoutObject layoutObject : layoutObjects.values()) {
             layoutObject.draw(canvas);
         }
     }
