@@ -148,6 +148,10 @@ public class Tile implements GameObject {
 		}
 	}
 
+	/**
+	 * Starts the animation by setting animating to true and
+	 * recording the initial x-coordinate and the time the animation starts
+	 */
 	public void startAnimation() {
 		if (!animating) {
 			animating = true;
@@ -156,6 +160,9 @@ public class Tile implements GameObject {
 		}
 	}
 
+	/**
+	 * Stops the animation by setting animating to false
+	 */
 	public void stopAnimation() {
 		animating = false;
 	}

@@ -58,6 +58,10 @@ public class Wave implements GameObject {
 		}
 	}
 
+	/**
+	 * GETTERS AND SETTERS
+	 */
+
 	public boolean animates() {
 		return animating;
 	}
