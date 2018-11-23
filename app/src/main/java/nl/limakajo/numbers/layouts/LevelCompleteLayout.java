@@ -3,7 +3,7 @@ package nl.limakajo.numbers.layouts;
 import android.graphics.Rect;
 
 import nl.limakajo.numbers.R;
-import nl.limakajo.numbers.gameObjects.LayoutObjectInterface;
+import nl.limakajo.numbers.gameObjects.LayoutObject;
 import nl.limakajo.numbers.gameObjects.ScreenArea;
 import nl.limakajo.numbers.gameObjects.TextBox;
 import nl.limakajo.numbers.main.MainActivity;
@@ -16,7 +16,7 @@ public class LevelCompleteLayout extends NoGamePlayLayout {
 
     public LevelCompleteLayout() {
         //Level complete text
-        LayoutObjectInterface levelCompleteText = new TextBox(
+        LayoutObject levelCompleteText = new TextBox(
                 MainActivity.getContext().getString(R.string.empty_text),
                 Attributes.TextAllignment.XYCENTERED,
                 new Rect(
@@ -27,14 +27,14 @@ public class LevelCompleteLayout extends NoGamePlayLayout {
                 Attributes.TEXTBOX_LARGE_PAINT);
 
         //Stars
-        LayoutObjectInterface starsArea = new ScreenArea(
+        LayoutObject starsArea = new ScreenArea(
                 new Rect(
                         layoutObjects.get(LayoutElementsKeys.LOGO_AREA).getArea().left,
                         levelCompleteText.getArea().bottom + Attributes.MARGE,
                         layoutObjects.get(LayoutElementsKeys.LOGO_AREA).getArea().right,
                         levelCompleteText.getArea().bottom + 6 * Attributes.MARGE),
                 Attributes.BG_PAINT);
-        LayoutObjectInterface star1Text = new TextBox(
+        LayoutObject star1Text = new TextBox(
                 MainActivity.getContext().getString(R.string.star),
                 Attributes.TextAllignment.XYCENTERED,
                 new Rect(
@@ -43,7 +43,7 @@ public class LevelCompleteLayout extends NoGamePlayLayout {
                         starsArea.getArea().left + starsArea.getArea().width() / 3,
                         starsArea.getArea().bottom),
                 Attributes.TEXT_BOX_STARS_PAINT);
-        LayoutObjectInterface star2Text = new TextBox(
+        LayoutObject star2Text = new TextBox(
                 MainActivity.getContext().getString(R.string.star),
                 Attributes.TextAllignment.XYCENTERED,
                 new Rect(
@@ -52,7 +52,7 @@ public class LevelCompleteLayout extends NoGamePlayLayout {
                         starsArea.getArea().left + 2 * starsArea.getArea().width() / 3,
                         starsArea.getArea().bottom),
                 Attributes.TEXT_BOX_STARS_PAINT);
-        LayoutObjectInterface star3Text = new TextBox(
+        LayoutObject star3Text = new TextBox(
                 MainActivity.getContext().getString(R.string.star),
                 Attributes.TextAllignment.XYCENTERED,
                 new Rect(
