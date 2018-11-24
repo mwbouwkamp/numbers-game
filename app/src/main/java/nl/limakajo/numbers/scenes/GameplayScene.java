@@ -262,24 +262,21 @@ public class GameplayScene implements SceneInterface {
         clickPosition.y = (int) event.getY();
         if (firstTile != null) {
             if (firstTile.isClicked(clickPosition)) {
-                //The following three lines can be extracted in a method
-                tilePressed = firstTile;
-                tileStart = new Point(tilePressed.getCurrentPosition());
-                statusBarText = firstTile.toString();
+                setClicekdTile(firstTile);
             }
         }
         for (Tile tile: shelf.getTilesOnShelf()) {
             if (tile.isClicked(clickPosition)) {
                 tile.stopAnimation();
-                tilePressed = tile;
-                tileStart = new Point(tilePressed.getCurrentPosition());
-                statusBarText = tilePressed.toString();
+                setClicekdTile(tile);
             }
         }
-        //TODO: Check if this is still needed
-        if (tilePressed != null) {
-            tilePressed.stopAnimation();
-        }
+    }
+
+    private void setClicekdTile(Tile tileClicked) {
+        tilePressed = tileClicked;
+        tileStart = new Point(tilePressed.getCurrentPosition());
+        statusBarText = tilePressed.toString();
     }
 
     /**
