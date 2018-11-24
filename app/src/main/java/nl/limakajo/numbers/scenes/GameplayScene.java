@@ -224,7 +224,6 @@ public class GameplayScene implements SceneInterface {
      * @param canvas canvas
      */
     private void drawTimerRound(Canvas canvas){
-        //TODO: Extract Paint and move to Attributes
         Paint paint = new Paint();
         double timeFraction = (System.currentTimeMillis() - startTime) / (double) GameUtils.TIMER;
         paint.setStyle(Paint.Style.STROKE);
