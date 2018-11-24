@@ -33,7 +33,6 @@ public class Tile implements GameObjectInterface {
 	 * 
 	 * @param number 	the value of the tile
 	 */
-	//TODO: See if we can refactor so that we don't need position anymore. position is used to calculate the originalPosition and the currentPosition. May this can also be done by adding Tile to Shelf after creating the Tile
 	public Tile(int number) {
 		this.number = number;
 		this.composition = new Tile[2];
