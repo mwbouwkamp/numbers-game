@@ -32,14 +32,11 @@ public class Tile implements GameObjectInterface {
 	 * Constructs Tile that is not based on a combination of previous tiles
 	 * 
 	 * @param number 	the value of the tile
-	 * @param position 	the position of the tile on the shelf
 	 */
 	//TODO: See if we can refactor so that we don't need position anymore. position is used to calculate the originalPosition and the currentPosition. May this can also be done by adding Tile to Shelf after creating the Tile
-	public Tile(int number, int position) {
+	public Tile(int number) {
 		this.number = number;
 		this.composition = new Tile[2];
-		this.originalPosition = new Point(Attributes.TILE_XCOORDS[position], Attributes.TILE_YCOORD);
-		this.currentPosition = new Point(Attributes.TILE_XCOORDS[position], Attributes.TILE_YCOORD);
 		this.color = Attributes.TILE_COLORS[0];
 		this.colorIndex = 0;
 		paint = new Paint();
@@ -50,15 +47,12 @@ public class Tile implements GameObjectInterface {
 	 * Constructs Tile that is based on a combination of previous tiles
 	 * 
 	 * @param number 		the value of the tile
-	 * @param position 		the position of the tile of the shelf
 	 * @param composition 	an array containing the Tiles this one is based on
 	 * @param colorIndex 	the index in the array of tile colors to use
 	 */
-	public Tile(int number, int position, Tile[] composition, int colorIndex) {
+	public Tile(int number, Tile[] composition, int colorIndex) {
 		this.number = number;
 		this.composition = composition;
-		this.originalPosition = new Point(Attributes.TILE_XCOORDS[position], Attributes.TILE_YCOORD);
-		this.currentPosition = new Point(Attributes.TILE_XCOORDS[position], Attributes.TILE_YCOORD);
 		this.colorIndex = colorIndex;
 		this.color = Attributes.TILE_COLORS[colorIndex];
 		paint = new Paint();
@@ -68,11 +62,10 @@ public class Tile implements GameObjectInterface {
 	/**
 	 * Moves Tile to shelf
 	 * 
-	 * @param playHand 		the Hand to move the Tile to
+	 * @param position 		the position of the Tile on the Shelf
 	 */
-	public void toShelf(LinkedList<Tile> playHand) {
-		playHand.add(this);
-		this.setOriginalPosition(playHand.size());
+	public void toShelf(int position) {
+		this.originalPosition = new Point(Attributes.TILE_XCOORDS[position], Attributes.TILE_YCOORD);
 		this.currentPosition = new Point(Attributes.TILE_XCOORDS[GameUtils.NUMTILES] + Attributes.TILE_WIDTH * 3, Attributes.TILE_YCOORD);
 		startAnimation();
 	}
@@ -80,15 +73,13 @@ public class Tile implements GameObjectInterface {
 	/**
 	 * Decomposes the tile in its constituents
 	 * 
-	 * @param playHand the Hand to move the Tiles to
+	 * @return 		the tiles after crunching
 	 */
-	//TODO: See if we want to make playHand into an object and move some of the logic
-	public void crunch(LinkedList<Tile> playHand) {
+	public Tile[] crunch() {
 		if (this.composition[0] != null) {
-			this.composition[0].toShelf(playHand);
-			this.composition[1].toShelf(playHand);
+			return composition;
 		} else {
-			this.toShelf(playHand);
+			return new Tile[] {this};
 		}
 	}
 
