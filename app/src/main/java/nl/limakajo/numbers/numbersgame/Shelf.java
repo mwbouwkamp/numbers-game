@@ -40,4 +40,11 @@ public class Shelf {
     public void removeTile(Tile tileToRemove) {
         tilesOnShelf.remove(tileToRemove);
     }
+
+    /**
+     * GETTERS
+     */
+    public LinkedList<Tile> getTilesOnShelf() {
+        return tilesOnShelf;
+    }
 }

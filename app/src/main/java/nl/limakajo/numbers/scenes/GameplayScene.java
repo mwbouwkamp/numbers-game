@@ -13,6 +13,7 @@ import nl.limakajo.numbers.layouts.GamePlayLayout;
 import nl.limakajo.numbers.layouts.LayoutElementsKeys;
 import nl.limakajo.numbers.main.MainActivity;
 import nl.limakajo.numbers.numbersgame.Level;
+import nl.limakajo.numbers.numbersgame.Shelf;
 import nl.limakajo.numbers.utils.DatabaseUtils;
 import nl.limakajo.numbers.utils.GameUtils;
 
@@ -36,7 +37,7 @@ public class GameplayScene implements SceneInterface {
     private String statusBarText;
     private long startTime;
     private LinkedList<Wave> waves;
-    private LinkedList<Tile> tilesOnShelf;
+    private Shelf shelf;
 
     private GamePlayLayout gamePlayLayout;
 
@@ -84,9 +85,10 @@ public class GameplayScene implements SceneInterface {
         DatabaseUtils.updateTableLevelsLevelStatusForSpecificCurrentStatus(MainActivity.getContext(), GameUtils.LevelState.ACTIVE, GameUtils.LevelState.UPLOAD);
         DatabaseUtils.updateTableLevelsLevelStatusForSpecificLevel(MainActivity.getContext(), newLevel, GameUtils.LevelState.ACTIVE);
 
-        tilesOnShelf = new LinkedList<>();
+        shelf = new Shelf();
         for (int i = 0; i < GameUtils.NUMTILES; i++) {
-            tilesOnShelf.add(new Tile(MainActivity.getGame().getLevel().getHand()[i], i));
+            Tile tileToAdd = new Tile(MainActivity.getGame().getLevel().getHand()[i]);
+            addTileToShelf(tileToAdd);
         }
         gamePlayLayout.getTextBox(LayoutElementsKeys.GOAL_TEXT).setText(Integer.toString(MainActivity.getGame().getLevel().getGoal()));
         gamePlayLayout.getTextBox(LayoutElementsKeys.NUM_STARS_TEXT).setText("A" + Integer.toString(MainActivity.getPlayer().getNumStars()));
@@ -100,7 +102,7 @@ public class GameplayScene implements SceneInterface {
         if (System.currentTimeMillis() - startTime > GameUtils.TIMER){
             sceneManager.setScene(new GameOverScene(sceneManager));
         }
-        for (Tile tile: tilesOnShelf) {
+        for (Tile tile: shelf.getTilesOnShelf()) {
             if (tile.getNumber() == MainActivity.getGame().getLevel().getGoal()) {
                 MainActivity.getGame().getLevel().setUserTime((int)(System.currentTimeMillis() - startTime));
                 sceneManager.setScene(new LevelCompleteScene(sceneManager));
@@ -108,7 +110,7 @@ public class GameplayScene implements SceneInterface {
         }
         try {
             int i = 0;
-            for (Tile tile : tilesOnShelf) {
+            for (Tile tile : shelf.getTilesOnShelf()) {
                 tile.setOriginalPosition(i);
                 if (tile.getCurrentPosition().x != tile.getOriginalPosition().x && tile != tilePressed) {
                     tile.startAnimation();
@@ -164,14 +166,17 @@ public class GameplayScene implements SceneInterface {
             numMult = 0;
             return tile;
         } else if (tile.inArea(gamePlayLayout.getScreenArea(LayoutElementsKeys.HEADER_AREA))) {
-            tile.crunch(tilesOnShelf);
+            Tile[] tilesAfterCrunching = tile.crunch();
+            for (Tile tileAfterCrunching: tilesAfterCrunching) {
+                addTileToShelf(tileAfterCrunching);
+            }
             numPlus = 0;
             numMin = 0;
             numMult = 0;
             numDiv = 0;
             return null;
         } else {
-            tile.toShelf(tilesOnShelf);
+            addTileToShelf(tile);
             return null;
         }
     }
@@ -202,7 +207,7 @@ public class GameplayScene implements SceneInterface {
      * @param canvas canvas
      */
     private void drawTiles(Canvas canvas) {
-        for (Tile tile: tilesOnShelf) {
+        for (Tile tile: shelf.getTilesOnShelf()) {
             tile.draw(canvas);
         }
         if (firstTile != null) {
@@ -263,7 +268,7 @@ public class GameplayScene implements SceneInterface {
                 statusBarText = firstTile.toString();
             }
         }
-        for (Tile tile: tilesOnShelf) {
+        for (Tile tile: shelf.getTilesOnShelf()) {
             if (tile.isClicked(clickPosition)) {
                 tile.stopAnimation();
                 tilePressed = tile;
@@ -287,17 +292,17 @@ public class GameplayScene implements SceneInterface {
             if (tilePressed != firstTile) {
                 if (onShelf && !tilePressed.inArea(gamePlayLayout.getScreenArea(LayoutElementsKeys.SHELF_AREA))) {
                     onShelf = false;
-                    for (Tile tile: tilesOnShelf) {
+                    for (Tile tile: shelf.getTilesOnShelf()) {
                         tile.stopAnimation();
                     }
                     if (firstTile == null) {
                         firstTile = tilePressed;
-                        tilesOnShelf.remove(tilePressed);
+                        shelf.removeTile(tilePressed);
                     } else {
                         secondTile = tilePressed;
-                        tilesOnShelf.remove(tilePressed);
+                        shelf.removeTile(tilePressed);
                     }
-                    for (Tile tile: tilesOnShelf) {
+                    for (Tile tile: shelf.getTilesOnShelf()) {
                         tile.stopAnimation();
                     }
                 }
@@ -336,7 +341,7 @@ public class GameplayScene implements SceneInterface {
             } else if (numDiv == 2) {
                 calculate('/');
             } else {
-                firstTile.toShelf(tilesOnShelf);
+                addTileToShelf(firstTile);
                 firstTile = secondTile;
                 secondTile = null;
             }
@@ -359,8 +364,8 @@ public class GameplayScene implements SceneInterface {
                     newValue = firstTile.getNumber() - secondTile.getNumber();
                 } else {
                     statusBarText = "Results in negative integer";
-                    firstTile.toShelf(tilesOnShelf);
-                    secondTile.toShelf(tilesOnShelf);
+                    addTileToShelf(firstTile);
+                    addTileToShelf(secondTile);
                     firstTile = null;
                     secondTile = null;
                 }
@@ -373,8 +378,8 @@ public class GameplayScene implements SceneInterface {
                     newValue = firstTile.getNumber() / secondTile.getNumber();
                 } else {
                     statusBarText = "Results in non-integer";
-                    firstTile.toShelf(tilesOnShelf);
-                    secondTile.toShelf(tilesOnShelf);
+                    addTileToShelf(firstTile);
+                    addTileToShelf(secondTile);
                     firstTile = null;
                     secondTile = null;
                 }
@@ -382,8 +387,8 @@ public class GameplayScene implements SceneInterface {
         }
         if (newValue > 0) {
             Tile[] compositionNewTile = {firstTile, secondTile};
-            Tile toAdd = new Tile(newValue, tilesOnShelf.size(), compositionNewTile, firstTile.getColorIndex() + secondTile.getColorIndex() + 1);
-            toAdd.toShelf(tilesOnShelf);
+            Tile toAdd = new Tile(newValue, compositionNewTile, firstTile.getColorIndex() + secondTile.getColorIndex() + 1);
+            addTileToShelf(toAdd);
             firstTile = null;
             secondTile = null;
             numPlus = 0;
@@ -391,6 +396,11 @@ public class GameplayScene implements SceneInterface {
             numMult = 0;
             numDiv = 0;
         }
+    }
+
+    private void addTileToShelf(Tile toAdd) {
+        int position = shelf.addTile(toAdd);
+        toAdd.toShelf(position);
     }
 
     @Override
