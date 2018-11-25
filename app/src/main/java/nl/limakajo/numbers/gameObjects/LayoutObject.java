@@ -20,7 +20,7 @@ public class LayoutObject implements GameObjectInterface {
      * @param rect      Rect defining the boundaries of the GameObjectInterface
      */
     LayoutObject(Paint paint, Rect rect) {
-        this.paint = new Paint(paint);
+        this.paint = paint;
         this.rect = rect;
     }
 

@@ -25,15 +25,12 @@ public class FontScaler {
         yTextSize = startingPaint.getTextSize() * rectToFit.height() / bounds.height();
     }
 
-    /**
-     * GETTERS AND SETTERS
-     */
-
-    public float getXTextSize() {
-        return xTextSize;
-    }
-
-    public float getYTextSize() {
-        return yTextSize;
+    public float getTextSize() {
+        if (xTextSize < yTextSize) {
+            return xTextSize;
+        }
+        else {
+            return yTextSize;
+        }
     }
 }
