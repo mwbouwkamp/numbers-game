@@ -21,11 +21,11 @@ public class LogoWithAreaForTextLayout extends LogoLayout {
         //ScreenAreay for main text of screen
         LayoutObject mainTextArea = new ScreenArea(
                 new Rect(
-                        (int) (0.25 * layoutObjects.get(LayoutElementsKeys.FULLSCREEN).getArea().width()),
+                        (int) (layoutObjects.get(LayoutElementsKeys.FULLSCREEN).getArea().left),
                         layoutObjects.get(LayoutElementsKeys.LOGO_AREA).getArea().bottom + 3 * Attributes.MARGE,
-                        (int) (layoutObjects.get(LayoutElementsKeys.FULLSCREEN).getArea().width() - 0.25 * layoutObjects.get(LayoutElementsKeys.FULLSCREEN).getArea().width()),
-                        //TODO: height (200) is now hardcoded
-                        layoutObjects.get(LayoutElementsKeys.LOGO_AREA).getArea().bottom + 3 * Attributes.MARGE + 200),
+                        (int) (layoutObjects.get(LayoutElementsKeys.FULLSCREEN).getArea().right),
+                        //TODO: height is now hardcoded
+                        layoutObjects.get(LayoutElementsKeys.LOGO_AREA).getArea().bottom + 3 * Attributes.MARGE + 100),
                 Attributes.NO_DRAW);
         layoutObjects.put(LayoutElementsKeys.MAINTEXT_AREA, mainTextArea);
     }
