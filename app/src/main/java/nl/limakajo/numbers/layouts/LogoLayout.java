@@ -10,12 +10,12 @@ import nl.limakajo.numbers.utils.Attributes;
  *
  * @author M.W.Bouwkamp
  */
-public class NoGamePlayLayout extends BasicLayout {
+public class LogoLayout extends BasicLayout {
 
     /**
-     * Constructs a NoGamePlayLayout
+     * Constructs a LogoLayout
      */
-    NoGamePlayLayout() {
+    LogoLayout() {
         //Logo
         LayoutObject logoArea = new ScreenArea (
                 new Rect(

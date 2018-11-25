@@ -14,7 +14,7 @@ import nl.limakajo.numbers.utils.Attributes;
  *
  * @author M.W.Bouwkamp
  */
-public class LevelCompleteLayout extends NoGamePlayLayout {
+public class LevelCompleteLayout extends LogoLayout {
 
     /**
      * Constructs a LevelCompleteLayout

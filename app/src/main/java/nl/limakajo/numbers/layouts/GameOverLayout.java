@@ -11,7 +11,7 @@ import nl.limakajo.numbers.utils.Attributes;
  *
  * @author M.W.Bouwkamp
  */
-public class GameOverLayout extends NoGamePlayLayout {
+public class GameOverLayout extends LogoLayout {
 
     /**
      * Constructs GameOverLayout

@@ -13,7 +13,7 @@ import nl.limakajo.numbers.utils.Attributes;
  *
  * @author M.W.Bouwkamp
  */
-public class MenuLayout extends NoGamePlayLayout {
+public class MenuLayout extends LogoLayout {
 
     /**
      * Constructs a MenuLayout
