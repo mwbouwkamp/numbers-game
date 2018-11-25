@@ -14,6 +14,9 @@ import nl.limakajo.numbers.utils.Attributes;
  */
 public class LogoWithAreaForTextLayout extends LogoLayout {
 
+    /**
+     * Constructs a LogoWithAreaForTextLayout
+     */
     public LogoWithAreaForTextLayout() {
         //ScreenAreay for main text of screen
         LayoutObject mainTextArea = new ScreenArea(

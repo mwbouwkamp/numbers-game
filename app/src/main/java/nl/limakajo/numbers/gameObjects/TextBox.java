@@ -31,7 +31,6 @@ public class TextBox extends LayoutObject {
     public TextBox(String text, Attributes.TextAllignment alignment, Rect rect, Paint paint) {
         super(paint, rect);
         this.alignment = alignment;
-        paint.setTextSize(new FontScaler(text, paint, rect).getTextSize());
         setText(text);
     }
 
@@ -42,6 +41,7 @@ public class TextBox extends LayoutObject {
      */
     public void setText(String text) {
         this.text = text;
+        paint.setTextSize(new FontScaler(text, paint, rect).getTextSize());
         setTextPosition();
     }
 
@@ -65,7 +65,7 @@ public class TextBox extends LayoutObject {
                 break;
             case XLEFT_YCENTERED:
                 paint.setTextAlign(Paint.Align.LEFT);
-                textPosition.x = rect.left + Attributes.MARGE;
+                textPosition.x = rect.left + bounds.width() + Attributes.MARGE;
                 textPosition.y = rect.top + rect.height() / 2 + bounds.height() / 2;
                 break;
             case XRIGHT_YCENTERED:

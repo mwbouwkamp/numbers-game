@@ -13,6 +13,8 @@ public enum LayoutElementsKeys {
     RED_AREA,
     GREEN_AREA,
     YELLOW_AREA,
+    //Area for main text
+    MAINTEXT_AREA,
     //Menu
     MENU_TEXT,
     //Game play

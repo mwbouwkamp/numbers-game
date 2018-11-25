@@ -22,7 +22,13 @@ public class FontScaler {
         Rect bounds = new Rect();
         startingPaint.getTextBounds(text, 0, text.length(), bounds);
         xTextSize = startingPaint.getTextSize() * rectToFit.width() / bounds.width();
+        if (xTextSize < 10 || xTextSize > Float.MAX_VALUE) {
+            xTextSize = 10;
+        }
         yTextSize = startingPaint.getTextSize() * rectToFit.height() / bounds.height();
+        if (yTextSize < 10 || yTextSize > Float.MAX_VALUE) {
+            yTextSize = 10;
+        }
     }
 
     public float getTextSize() {
