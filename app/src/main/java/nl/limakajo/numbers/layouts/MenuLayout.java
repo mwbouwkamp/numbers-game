@@ -24,9 +24,10 @@ public class MenuLayout extends NoGamePlayLayout {
                 MainActivity.getContext().getString(R.string.menu_start_text),
                 Attributes.TextAllignment.XYCENTERED,
                 new Rect(
-                        layoutObjects.get(LayoutElementsKeys.FULLSCREEN).getArea().left,
+                        (int) (0.25 * layoutObjects.get(LayoutElementsKeys.FULLSCREEN).getArea().width()),
                         layoutObjects.get(LayoutElementsKeys.LOGO_AREA).getArea().bottom + 3 * Attributes.MARGE,
-                        layoutObjects.get(LayoutElementsKeys.FULLSCREEN).getArea().right,
+                        (int) (layoutObjects.get(LayoutElementsKeys.FULLSCREEN).getArea().width() - 0.25 * layoutObjects.get(LayoutElementsKeys.FULLSCREEN).getArea().width()),
+                        //TODO: height (200) is now hardcoded
                         layoutObjects.get(LayoutElementsKeys.LOGO_AREA).getArea().bottom + 3 * Attributes.MARGE + 200),
                 Attributes.TEXTBOX_LARGE_PAINT);
         layoutObjects.put(LayoutElementsKeys.MENU_TEXT, menuText);
