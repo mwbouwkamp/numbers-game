@@ -10,8 +10,8 @@ import android.graphics.Rect;
  * @author M.W.Bouwkamp
  */
 public class LayoutObject implements GameObjectInterface {
-    final Rect rect;
-    final Paint paint;
+    Rect rect;
+    Paint paint;
 
     /**
      * Constructs a LayoutObject
@@ -20,8 +20,8 @@ public class LayoutObject implements GameObjectInterface {
      * @param rect      Rect defining the boundaries of the GameObjectInterface
      */
     LayoutObject(Paint paint, Rect rect) {
-        this.paint = paint;
-        this.rect = rect;
+        this.paint = new Paint(paint);
+        this.rect = new Rect(rect);
     }
 
     @Override
