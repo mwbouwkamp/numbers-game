@@ -14,7 +14,7 @@ import nl.limakajo.numbers.utils.Attributes;
  *
  * @author M.W.Bouwkamp
  */
-public class LevelCompleteLayout extends NoGamePlayLayout {
+public class LevelCompleteLayout extends LogoWithAreaForTextLayout {
 
     /**
      * Constructs a LevelCompleteLayout
@@ -24,11 +24,7 @@ public class LevelCompleteLayout extends NoGamePlayLayout {
         LayoutObject levelCompleteText = new TextBox(
                 MainActivity.getContext().getString(R.string.empty_text),
                 Attributes.TextAllignment.XYCENTERED,
-                new Rect(
-                        layoutObjects.get(LayoutElementsKeys.FULLSCREEN).getArea().left,
-                        layoutObjects.get(LayoutElementsKeys.LOGO_AREA).getArea().bottom + 3 * Attributes.MARGE,
-                        layoutObjects.get(LayoutElementsKeys.FULLSCREEN).getArea().right,
-                        layoutObjects.get(LayoutElementsKeys.LOGO_AREA).getArea().bottom + 3 * Attributes.MARGE + 200),
+                layoutObjects.get(LayoutElementsKeys.MAINTEXT_AREA).getArea(),
                 Attributes.TEXTBOX_LARGE_PAINT);
 
         //Stars

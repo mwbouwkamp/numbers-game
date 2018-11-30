@@ -1,11 +1,13 @@
 package nl.limakajo.numbers.gameObjects;
 
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
 
 import nl.limakajo.numbers.utils.Attributes;
+import nl.limakajo.numbers.utils.FontScaler;
 import nl.limakajo.numbers.utils.PaintComparator;
 
 /**
@@ -40,6 +42,7 @@ public class TextBox extends LayoutObject {
      */
     public void setText(String text) {
         this.text = text;
+        paint.setTextSize(new FontScaler(text, paint, rect).getTextSize());
         setTextPosition();
     }
 
@@ -63,7 +66,7 @@ public class TextBox extends LayoutObject {
                 break;
             case XLEFT_YCENTERED:
                 paint.setTextAlign(Paint.Align.LEFT);
-                textPosition.x = rect.left + Attributes.MARGE;
+                textPosition.x = rect.left + bounds.width() + Attributes.MARGE;
                 textPosition.y = rect.top + rect.height() / 2 + bounds.height() / 2;
                 break;
             case XRIGHT_YCENTERED:

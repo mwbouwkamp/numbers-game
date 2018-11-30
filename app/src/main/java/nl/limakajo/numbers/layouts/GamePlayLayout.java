@@ -41,7 +41,11 @@ public class GamePlayLayout extends BasicLayout {
 		LayoutObject goalText = new TextBox(
                 MainActivity.getContext().getString(R.string.empty_text),
                 Attributes.TextAllignment.XYCENTERED,
-                headerArea.getArea(),
+                new Rect(
+                		layoutObjects.get(LayoutElementsKeys.FULLSCREEN).getArea().left,
+						headerArea.getArea().top + headerArea.getArea().height() / 3 + Attributes.MARGE,
+						layoutObjects.get(LayoutElementsKeys.FULLSCREEN).getArea().right,
+						headerArea.getArea().top + 2 * headerArea.getArea().height() / 3 - Attributes.MARGE),
                 Attributes.TEXTBOX_LARGE_PAINT);
 		LayoutObject timerArea = new ScreenArea (
 				new Rect(
@@ -57,7 +61,7 @@ public class GamePlayLayout extends BasicLayout {
                         headerArea.getArea().left,
                         headerArea.getArea().top,
                         timerArea.getArea().left,
-                        headerArea.getArea().top + Attributes.GOAL_HEIGHT / 3),
+                        headerArea.getArea().top + Attributes.GOAL_HEIGHT / 6),
                 Attributes.TEXTBOX_NUMLIVES_PAINT);
 		LayoutObject numLivesText = new TextBox(
                 "B",
@@ -66,10 +70,19 @@ public class GamePlayLayout extends BasicLayout {
                         timerArea.getArea().right,
                         headerArea.getArea().top,
                         headerArea.getArea().right,
-                        headerArea.getArea().top + Attributes.GOAL_HEIGHT / 3),
+                        headerArea.getArea().top + Attributes.GOAL_HEIGHT / 6),
                 Attributes.TEXTBOX_NUMLIVES_PAINT);
 
-        //Footer
+		//Shelf
+		LayoutObject shelfArea = new ScreenArea(
+				new Rect(
+						playArea.getArea().left,
+						headerArea.getArea().bottom + Attributes.MARGE,
+						playArea.getArea().right,
+						headerArea.getArea().bottom + Attributes.MARGE + (playArea.getArea().width() - Attributes.MARGE) / GameUtils.NUMTILES),
+				Attributes.NO_DRAW);
+
+		//Footer
 		LayoutObject footerText = new TextBox(
                 MainActivity.getContext().getString(R.string.empty_text),
                 Attributes.TextAllignment.XYCENTERED,
@@ -79,15 +92,6 @@ public class GamePlayLayout extends BasicLayout {
                         playArea.getArea().right,
                         playArea.getArea().bottom),
                 Attributes.TEXTBOX_SMALL_PAINT);
-
-        //Shelf
-		LayoutObject shelfArea = new ScreenArea(
-                new Rect(
-                        playArea.getArea().left,
-                        headerArea.getArea().bottom + Attributes.MARGE,
-                        playArea.getArea().right,
-                        (int) (headerArea.getArea().bottom + 2.0 * Attributes.MARGE + (playArea.getArea().right - playArea.getArea().left - Attributes.MARGE) / GameUtils.NUMTILES) - Attributes.MARGE),
-                Attributes.NO_DRAW);
 
         //Operators
 		LayoutObject operatorsArea = new ScreenArea(
@@ -107,7 +111,7 @@ public class GamePlayLayout extends BasicLayout {
 		LayoutObject plusArea2 = new ScreenArea(
                 new Rect(
                         plusArea.getArea().left,
-                        plusArea.getArea().top + 10 * (plusArea.getArea().bottom - plusArea.getArea().top)/11,
+                        plusArea.getArea().top + (10 * plusArea.getArea().height()) / 11,
                         plusArea.getArea().right,
                         plusArea.getArea().bottom),
                 Attributes.PLUS_PAINT_2);
@@ -121,7 +125,7 @@ public class GamePlayLayout extends BasicLayout {
 		LayoutObject minArea2 = new ScreenArea(
                 new Rect(
                         minArea.getArea().left,
-                        minArea.getArea().top + 10 * (minArea.getArea().bottom - minArea.getArea().top)/11,
+                        minArea.getArea().top + (10 * minArea.getArea().height()) / 11,
                         minArea.getArea().right,
                         minArea.getArea().bottom),
                 Attributes.MIN_PAINT_2);
@@ -135,7 +139,7 @@ public class GamePlayLayout extends BasicLayout {
 		LayoutObject multArea2 = new ScreenArea(
                 new Rect(
                         multArea.getArea().left,
-                        multArea.getArea().top + 10 * (multArea.getArea().bottom - multArea.getArea().top)/11,
+                        multArea.getArea().top + (10 * multArea.getArea().height()) / 11,
                         multArea.getArea().right,
                         multArea.getArea().bottom),
                 Attributes.MULT_PAINT_2);
@@ -149,29 +153,29 @@ public class GamePlayLayout extends BasicLayout {
 		LayoutObject divArea2 = new ScreenArea(
                 new Rect(
                         divArea.getArea().left,
-                        divArea.getArea().top + 10 * (divArea.getArea().bottom - divArea.getArea().top)/11,
+                        divArea.getArea().top + (10 * divArea.getArea().height()) / 11,
                         divArea.getArea().right,
                         divArea.getArea().bottom),
                 Attributes.DIV_PAINT_2);
 		LayoutObject plusText = new TextBox(
-                MainActivity.getContext().getString(R.string.gameplay_plus_sign),
-                Attributes.TextAllignment.XYCENTERED,
-                plusArea.getArea(),
-                Attributes.TEXT_BOX_OPERATOR_PAINT);
+				MainActivity.getContext().getString(R.string.gameplay_plus_sign),
+				Attributes.TextAllignment.XYCENTERED,
+				resizeRect(plusArea.getArea(), 0.6f),
+				Attributes.TEXT_BOX_OPERATOR_PAINT);
 		LayoutObject minText = new TextBox(
                 MainActivity.getContext().getString(R.string.gameplay_min_sign),
                 Attributes.TextAllignment.XYCENTERED,
-                minArea.getArea(),
+                resizeRect(minArea.getArea(), 0.6f),
                 Attributes.TEXT_BOX_OPERATOR_PAINT);
 		LayoutObject multText = new TextBox(
                 MainActivity.getContext().getString(R.string.gameplay_mult_sign),
                 Attributes.TextAllignment.XYCENTERED,
-                multArea.getArea(),
+                resizeRect(multArea.getArea(), 0.6f),
                 Attributes.TEXT_BOX_OPERATOR_PAINT);
 		LayoutObject divText = new TextBox(
                 MainActivity.getContext().getString(R.string.gameplay_div_sign),
                 Attributes.TextAllignment.XYCENTERED,
-                divArea.getArea(),
+                resizeRect(divArea.getArea(), 0.6f),
                 Attributes.TEXT_BOX_OPERATOR_PAINT);
 
 		layoutObjects.put(LayoutElementsKeys.PLAY_AREA, playArea);
@@ -195,5 +199,14 @@ public class GamePlayLayout extends BasicLayout {
         layoutObjects.put(LayoutElementsKeys.MIN_TEXT, minText);
         layoutObjects.put(LayoutElementsKeys.MULT_TEXT, multText);
         layoutObjects.put(LayoutElementsKeys.DIV_TEXT, divText);
+	}
+
+	private Rect resizeRect(Rect rect, float factor) {
+		Rect toReturn = new Rect(
+				(int) (rect.left + (1 - factor) / 2 * rect.width()),
+				(int) (rect.top + (1 - factor) / 2 * rect.height()),
+				(int) (rect.right - (1 - factor) / 2 * rect.width()),
+				(int) (rect.bottom - (1 - factor) / 2 * rect.height()));
+		return toReturn;
 	}
 }
