@@ -99,10 +99,8 @@ public class Attributes {
     public static final long LEVELCOMPLETE_TIME_BETWEEN_ANIMATIONS = 900;
 
     @NonNull
-    //TODO: Fix hardcoded text size
     private static Paint getTextBoxLargeFontPaint() {
         Paint paint = getStrokePaint();
-        paint.setTextSize(100);
         paint.setTypeface(Attributes.TYPEFACE_CALIBRI);
         paint.setColor(Attributes.GOAL_COLOR);
         return paint;
@@ -110,10 +108,8 @@ public class Attributes {
 
 
     @NonNull
-    //TODO: Fix hardcoded text size
     private static Paint getTextBoxOperatorPaint() {
         Paint paint = getStrokePaint();
-        paint.setTextSize(220);
         paint.setTypeface(Attributes.TYPEFACE_NUMBERSGAME);
         paint.setColor(Attributes.BG_COLOR);
         paint.setStrokeWidth(7);
@@ -124,7 +120,6 @@ public class Attributes {
     //TODO: Fix hardcoded text size
     private static Paint getTextBoxStarsPaint() {
         Paint paint = getStrokePaint();
-        paint.setTextSize(80);
         paint.setColor(Attributes.STARS_COLOR);
         paint.setTextSize(96);
         paint.setTypeface(Attributes.TYPEFACE_NUMBERSGAME);
@@ -137,7 +132,6 @@ public class Attributes {
     private static Paint getTextBoxNumlivesPaint() {
         Paint paint = getStrokePaint();
         paint.setColor(Attributes.GOAL_COLOR);
-        paint.setTextSize(40);
         paint.setTypeface(Attributes.TYPEFACE_NUMBERSGAME);
         paint.setColor(Attributes.GOAL_COLOR);
         return paint;
@@ -147,7 +141,6 @@ public class Attributes {
     //TODO: Fix hardcoded text size
     private static Paint getTextBoxSmallFontPaint() {
         Paint paint = getStrokePaint();
-        paint.setTextSize(32);
         paint.setTypeface(Attributes.TYPEFACE_CALIBRI);
         paint.setColor(Attributes.GOAL_COLOR);
         return paint;
