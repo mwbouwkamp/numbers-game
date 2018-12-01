@@ -5,6 +5,8 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
 
+import org.xml.sax.helpers.AttributesImpl;
+
 import nl.limakajo.numbers.utils.Attributes;
 import nl.limakajo.numbers.utils.GameUtils;
 
@@ -106,7 +108,7 @@ public class Tile implements GameObjectInterface {
 	public void draw(Canvas canvas) {
 		paint.setStyle(Paint.Style.FILL);
 		paint.setColor(getColor());
-		canvas.drawCircle(currentPosition.x, currentPosition.y, Attributes.TILE_WIDTH/2, paint);
+		canvas.drawCircle(currentPosition.x, currentPosition.y, Attributes.TILE_WIDTH / 2, paint);
 		String numberText = Integer.toString(getNumber());
 		drawCenteredText(canvas, numberText);
 	}
@@ -119,8 +121,11 @@ public class Tile implements GameObjectInterface {
 	private void drawCenteredText(Canvas canvas, String numberText) {
 		Rect bounds = new Rect();
 		paint.setTextAlign(Paint.Align.CENTER);
-		paint.getTextBounds(numberText, 0, numberText.length(), bounds);
 		paint.setTextSize(30);
+		paint.getTextBounds(numberText, 0, numberText.length(), bounds);
+		paint.setTextSize((float) (0.6 * paint.getTextSize() * Attributes.TILE_WIDTH / Math.sqrt(bounds.width() * bounds.width() + bounds.height() * bounds.height())));
+		paint.setTextAlign(Paint.Align.CENTER);
+		paint.getTextBounds(numberText, 0, numberText.length(), bounds);
 		paint.setColor(Attributes.BG_COLOR);
 		canvas.drawText(numberText, currentPosition.x, currentPosition.y + bounds.height() / 2, paint);
 	}
