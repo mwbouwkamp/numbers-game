@@ -30,7 +30,7 @@ public class Attributes {
 
     //	Layout Attributes
     public static final int BG_COLOR = RESOURCES.getColor(R.color.colorBackground);
-    private static final int GOAL_COLOR = RESOURCES.getColor(R.color.colorGoal);
+    private static final int FONT_COLOR = RESOURCES.getColor(R.color.colorGoal);
     private static final int PLUS_COLOR = RESOURCES.getColor(R.color.colorPlus);
     private static final int PLUS_COLOR_2 = RESOURCES.getColor(R.color.colorPlus2);
     private static final int MIN_COLOR = RESOURCES.getColor(R.color.colorMin);
@@ -42,20 +42,19 @@ public class Attributes {
     private static final int STARS_COLOR = RESOURCES.getColor(R.color.colorDiv);
     public static final int STARS_DARK_ALPHA = 40;
 
-    public static final Paint BG_PAINT = getBackGroundPaint();
-    public static final Paint TEXTBOX_LARGE_PAINT = getTextBoxLargeFontPaint();
-    public static final Paint TEXTBOX_SMALL_PAINT = getTextBoxSmallFontPaint();
-    public static final Paint TEXTBOX_NUMLIVES_PAINT = getTextBoxNumlivesPaint();
-    public static final Paint TEXT_BOX_OPERATOR_PAINT = getTextBoxOperatorPaint();
-    public static final Paint TEXT_BOX_STARS_PAINT = getTextBoxStarsPaint();
-    public static final Paint PLUS_PAINT = getPlusPaint();
-    public static final Paint PLUS_PAINT_2 = getPlus2Paint();
-    public static final Paint MIN_PAINT = getMinPaint();
-    public static final Paint MIN_PAINT_2 = getMin2Paint();
-    public static final Paint MULT_PAINT = getMultPaint();
-    public static final Paint MULT_PAINT_2 = getMult2Paint();
-    public static final Paint DIV_PAINT = getDivPaint();
-    public static final Paint DIV_PAINT_2 = getDiv2Paint();
+    public static final Paint BG_PAINT = new Paint(getBackGroundPaint());
+    public static final Paint TEXTBOX_NORMAL_PAINT = new Paint(getTextBoxNormalFontPaint());
+    public static final Paint TEXTBOX_NUMLIVES_PAINT = new Paint(getTextBoxNumbersGameFontPaint());
+    public static final Paint TEXT_BOX_OPERATOR_PAINT = new Paint(getTextBoxOperatorPaint());
+    public static final Paint TEXT_BOX_STARS_PAINT = new Paint(getTextBoxStarsPaint());
+    public static final Paint PLUS_PAINT = new Paint(getPlusPaint());
+    public static final Paint PLUS_PAINT_2 = new Paint(getPlus2Paint());
+    public static final Paint MIN_PAINT = new Paint(getMinPaint());
+    public static final Paint MIN_PAINT_2 = new Paint(getMin2Paint());
+    public static final Paint MULT_PAINT = new Paint(getMultPaint());
+    public static final Paint MULT_PAINT_2 = new Paint(getMult2Paint());
+    public static final Paint DIV_PAINT = new Paint(getDivPaint());
+    public static final Paint DIV_PAINT_2 = new Paint(getDiv2Paint());
     public static final Paint NO_DRAW = new Paint();
 
     //Tile Attributes
@@ -99,13 +98,46 @@ public class Attributes {
     public static final long LEVELCOMPLETE_TIME_BETWEEN_ANIMATIONS = 900;
 
     @NonNull
-    private static Paint getTextBoxLargeFontPaint() {
-        Paint paint = getStrokePaint();
-        paint.setTypeface(Attributes.TYPEFACE_CALIBRI);
-        paint.setColor(Attributes.GOAL_COLOR);
+    private static Paint getBasicPaint() {
+        Paint paint = new Paint();
+        paint.setAntiAlias(true);
+        paint.setDither(true);
+        paint.setStrokeJoin(Paint.Join.MITER);
+        paint.setStrokeCap(Paint.Cap.ROUND);
+        paint.setStrokeWidth(3);
+        paint.setAlpha(100);
         return paint;
     }
 
+    @NonNull
+    private static Paint getFillPaint() {
+        Paint paint = getBasicPaint();
+        paint.setStyle(Paint.Style.FILL);
+        return paint;
+    }
+
+    @NonNull
+    private static Paint getStrokePaint() {
+        Paint paint = getBasicPaint();
+        paint.setStyle(Paint.Style.STROKE);
+        return paint;
+    }
+
+    @NonNull
+    private static Paint getTextBoxNormalFontPaint() {
+        Paint paint = getFillPaint();
+        paint.setTypeface(Attributes.TYPEFACE_CALIBRI);
+        paint.setColor(Attributes.FONT_COLOR);
+        return paint;
+    }
+
+    @NonNull
+    private static Paint getTextBoxNumbersGameFontPaint() {
+        Paint paint = getFillPaint();
+        paint.setTypeface(Attributes.TYPEFACE_NUMBERSGAME);
+        paint.setColor(Attributes.FONT_COLOR);
+        return paint;
+    }
 
     @NonNull
     private static Paint getTextBoxOperatorPaint() {
@@ -117,32 +149,11 @@ public class Attributes {
     }
 
     @NonNull
-    //TODO: Fix hardcoded text size
     private static Paint getTextBoxStarsPaint() {
         Paint paint = getStrokePaint();
+        paint.setTypeface(Attributes.TYPEFACE_NUMBERSGAME);
         paint.setColor(Attributes.STARS_COLOR);
-        paint.setTextSize(96);
-        paint.setTypeface(Attributes.TYPEFACE_NUMBERSGAME);
         paint.setAlpha(40);
-        return paint;
-    }
-
-    @NonNull
-    //TODO: Fix hardcoded text size
-    private static Paint getTextBoxNumlivesPaint() {
-        Paint paint = getStrokePaint();
-        paint.setColor(Attributes.GOAL_COLOR);
-        paint.setTypeface(Attributes.TYPEFACE_NUMBERSGAME);
-        paint.setColor(Attributes.GOAL_COLOR);
-        return paint;
-    }
-
-    @NonNull
-    //TODO: Fix hardcoded text size
-    private static Paint getTextBoxSmallFontPaint() {
-        Paint paint = getStrokePaint();
-        paint.setTypeface(Attributes.TYPEFACE_CALIBRI);
-        paint.setColor(Attributes.GOAL_COLOR);
         return paint;
     }
 
@@ -212,32 +223,6 @@ public class Attributes {
     private static Paint getDiv2Paint() {
         Paint paint = getFillPaint();
         paint.setColor(Attributes.DIV_COLOR_2);
-        return paint;
-    }
-
-    @NonNull
-    private static Paint getFillPaint() {
-        Paint paint = new Paint();
-        paint.setAntiAlias(true);
-        paint.setDither(true);
-        paint.setStrokeJoin(Paint.Join.MITER);
-        paint.setStrokeCap(Paint.Cap.ROUND);
-        paint.setStrokeWidth(3);
-        paint.setAlpha(100);
-        paint.setStyle(Paint.Style.FILL);
-        return paint;
-    }
-
-    @NonNull
-    private static Paint getStrokePaint() {
-        Paint paint = new Paint();
-        paint.setAntiAlias(true);
-        paint.setDither(true);
-        paint.setStrokeJoin(Paint.Join.MITER);
-        paint.setStrokeCap(Paint.Cap.ROUND);
-        paint.setStrokeWidth(3);
-        paint.setAlpha(100);
-        paint.setStyle(Paint.Style.STROKE);
         return paint;
     }
 
