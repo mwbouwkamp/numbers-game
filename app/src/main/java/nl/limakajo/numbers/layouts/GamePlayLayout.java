@@ -46,7 +46,7 @@ public class GamePlayLayout extends BasicLayout {
 						headerArea.getArea().top + headerArea.getArea().height() / 3 + Attributes.MARGE,
 						layoutObjects.get(LayoutElementsKeys.FULLSCREEN).getArea().right,
 						headerArea.getArea().top + 2 * headerArea.getArea().height() / 3 - Attributes.MARGE),
-                Attributes.TEXTBOX_LARGE_PAINT);
+                Attributes.TEXTBOX_NORMAL_PAINT);
 		LayoutObject timerArea = new ScreenArea (
 				new Rect(
 						headerArea.getArea().left + (headerArea.getArea().width() - Attributes.GOAL_HEIGHT) / 2,
@@ -91,7 +91,7 @@ public class GamePlayLayout extends BasicLayout {
                         playArea.getArea().bottom - Attributes.FOOTER_HEIGHT,
                         playArea.getArea().right,
                         playArea.getArea().bottom),
-                Attributes.TEXTBOX_SMALL_PAINT);
+                Attributes.TEXTBOX_NORMAL_PAINT);
 
         //Operators
 		LayoutObject operatorsArea = new ScreenArea(

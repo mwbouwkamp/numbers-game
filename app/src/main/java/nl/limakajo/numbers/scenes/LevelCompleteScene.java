@@ -37,7 +37,7 @@ public class LevelCompleteScene implements SceneInterface {
         int averageTime = MainActivity.getGame().getLevel().getAverageTime();
 
         //Update userTime, insert completed level to table completed levels and delete active levels
-        DatabaseUtils.updateTableLevelsUserTimeForSpecificLevel(MainActivity.getContext(), MainActivity.getGame().getLevel(), userTime);
+        DatabaseUtils.updateTableLevelsUserTimeForSpecificLevel(MainActivity.getContext(), MainActivity.getGame().getLevel());
         DatabaseUtils.updateTableLevelsLevelStatusForSpecificLevel(MainActivity.getContext(), MainActivity.getGame().getLevel(), GameUtils.LevelState.UPLOAD);
 
         MainActivity.launchDownloadService();

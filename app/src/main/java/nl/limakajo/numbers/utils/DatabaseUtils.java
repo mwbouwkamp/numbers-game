@@ -19,21 +19,6 @@ import java.util.LinkedList;
 public class DatabaseUtils {
 
     /**
-     * Returns all levels in the SQLite database table TableLevels
-     *
-     * @param context   application context
-     * @return          all levels in the SQLite database table TableLevels
-     */
-    private static LinkedList<Level> getAllLevels(Context context) {
-        String[] projection = {
-                NumbersContract.TableLevels.KEY_NUMBERS,
-                NumbersContract.TableLevels.KEY_USER_TIME,
-                NumbersContract.TableLevels.KEY_AVERAGE_TIME};
-        Cursor cursor = context.getContentResolver().query(NumbersContract.TableLevels.BASE_CONTENT_URI_LEVELS, projection, null, null, null, null);
-        return getLevelsFromCursor(cursor);
-    }
-
-    /**
      * Returns all levels in the SQLite database table TableLevels that are listed in a certain LevelState
      *
      * @param context       application context
@@ -152,15 +137,12 @@ public class DatabaseUtils {
      *
      * @param context   application context
      * @param level     level that needs to be updated
-     * @param userTime  new value for user time
      */
-    //TODO: level already contains the userTime, so it is not necessary to include userTime as an argument
-    //TODO: make this more generic so that it also works for multiple levels (taking a LinkedList<Level> as parameter)
-    public static void updateTableLevelsUserTimeForSpecificLevel(Context context, Level level, int userTime) {
+    public static void updateTableLevelsUserTimeForSpecificLevel(Context context, Level level) {
         String selection = NumbersContract.TableLevels.KEY_NUMBERS + " = ?";
         String[] args = {level.toString()};
         ContentValues cv = new ContentValues();
-        cv.put(NumbersContract.TableLevels.KEY_USER_TIME, userTime);
+        cv.put(NumbersContract.TableLevels.KEY_USER_TIME, level.getUserTime());
         context.getContentResolver().update(
                 NumbersContract.TableLevels.BASE_CONTENT_URI_LEVELS,
                 cv,
@@ -175,7 +157,6 @@ public class DatabaseUtils {
      * @param level         level that needs to be updated
      * @param newStatus     new value for the status of the level
      */
-    //TODO: make this more generic so that it also works for multiple levels (taking a LinkedList<Level> as parameter)
     public static void updateTableLevelsLevelStatusForSpecificLevel(Context context, Level level, GameUtils.LevelState newStatus) {
         String selection = NumbersContract.TableLevels.KEY_NUMBERS + " = ?";
         String[] args = {level.toString()};

@@ -1,8 +1,5 @@
 package nl.limakajo.numbers.layouts;
 
-import android.graphics.Rect;
-import android.util.Log;
-
 import nl.limakajo.numbers.R;
 import nl.limakajo.numbers.gameObjects.LayoutObject;
 import nl.limakajo.numbers.gameObjects.TextBox;
@@ -25,7 +22,7 @@ public class MenuLayout extends LogoWithAreaForTextLayout {
                 MainActivity.getContext().getString(R.string.menu_start_text),
                 Attributes.TextAllignment.XYCENTERED,
                 layoutObjects.get(LayoutElementsKeys.MAINTEXT_AREA).getArea(),
-                Attributes.TEXTBOX_LARGE_PAINT);
+                Attributes.TEXTBOX_NORMAL_PAINT);
         layoutObjects.put(LayoutElementsKeys.MENU_TEXT, menuText);
     }
 }

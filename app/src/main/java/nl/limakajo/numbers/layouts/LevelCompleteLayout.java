@@ -25,7 +25,7 @@ public class LevelCompleteLayout extends LogoWithAreaForTextLayout {
                 MainActivity.getContext().getString(R.string.empty_text),
                 Attributes.TextAllignment.XYCENTERED,
                 layoutObjects.get(LayoutElementsKeys.MAINTEXT_AREA).getArea(),
-                Attributes.TEXTBOX_LARGE_PAINT);
+                Attributes.TEXTBOX_NORMAL_PAINT);
 
         //Stars
         LayoutObject starsArea = new ScreenArea(

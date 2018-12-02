@@ -268,7 +268,6 @@ public class NumbersProvider extends ContentProvider {
      * @param table
      * @return              selection filter that includes selection for specific level
      */
-    //TODO: This needs reviewing. Not sure if this works correctly or that you need to change both selection and selectionArgs
     //TODO: Check if table as an int is ok, or that this needs to be something else
     private String appendLevelToSelection(String selection, Uri uri, int table) {
         String selectionToReturn = "";

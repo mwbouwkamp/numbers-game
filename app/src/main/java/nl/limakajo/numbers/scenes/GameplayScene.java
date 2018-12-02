@@ -79,7 +79,7 @@ public class GameplayScene implements SceneInterface {
         MainActivity.getGame().setLevel(newLevel);
 
         //Update level usertime to TIMEPENALTY
-        DatabaseUtils.updateTableLevelsUserTimeForSpecificLevel(MainActivity.getContext(), newLevel, GameUtils.TIMEPENALTY);
+        DatabaseUtils.updateTableLevelsUserTimeForSpecificLevel(MainActivity.getContext(), newLevel);
 
         //Update status of levels, so that old ACTIVE levels become ready for uploading (UPLOAD) and newLevel becomes the new ACTIVE level
         DatabaseUtils.updateTableLevelsLevelStatusForSpecificCurrentStatus(MainActivity.getContext(), GameUtils.LevelState.ACTIVE, GameUtils.LevelState.UPLOAD);
