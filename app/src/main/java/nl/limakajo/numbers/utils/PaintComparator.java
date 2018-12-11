@@ -16,6 +16,7 @@ public class PaintComparator implements Comparator<Paint> {
         }
     }
 
+    //TODO: this is no longer necessary, it seems. Paint has its own hasEqualAttributes method!
     public boolean hasEqualAttributes(Paint paint1, Paint paint2) {
         return
                 paint1.getColorFilter() == paint2.getColorFilter() &&

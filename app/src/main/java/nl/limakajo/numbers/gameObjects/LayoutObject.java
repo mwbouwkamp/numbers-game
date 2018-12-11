@@ -19,7 +19,7 @@ public class LayoutObject implements GameObjectInterface {
      * @param paint     Paint defining the graphical attributes
      * @param rect      Rect defining the boundaries of the GameObjectInterface
      */
-    LayoutObject(Paint paint, Rect rect) {
+    public LayoutObject(Rect rect, Paint paint) {
         this.paint = new Paint(paint);
         this.rect = new Rect(rect);
     }
