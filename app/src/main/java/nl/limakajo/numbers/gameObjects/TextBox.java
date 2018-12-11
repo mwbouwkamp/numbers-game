@@ -30,7 +30,7 @@ public class TextBox extends LayoutObject {
      * @param paint         Paint defining the graphical attributes
      */
     public TextBox(String text, Attributes.TextAllignment alignment, Rect rect, Paint paint) {
-        super(paint, rect);
+        super(rect, paint);
         this.alignment = alignment;
         setText(text);
     }
@@ -87,5 +87,18 @@ public class TextBox extends LayoutObject {
             canvas.drawText(text, textPosition.x, textPosition.y, paint);
         }
     }
+
+    /**
+     * GETTERS
+     */
+
+    public String getText() {
+        return text;
+    }
+
+    public Attributes.TextAllignment getAlignment() {
+        return alignment;
+    }
+
 }
 

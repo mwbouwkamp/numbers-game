@@ -22,7 +22,7 @@ public class ScreenArea extends LayoutObject {
      * @param rect      Rect defining the boundaries of the GameObjectInterface
      */
     public ScreenArea(Rect rect, Paint paint) {
-        super(paint, rect);
+        super(rect, paint);
     }
 
     @Override
