@@ -5,8 +5,9 @@ import android.content.Context;
 import nl.limakajo.numbers.numbersgame.Level;
 import nl.limakajo.numbers.utils.DatabaseUtils;
 import nl.limakajo.numbers.utils.GameUtils;
+import nl.limakajo.numbers.utils.JDBCNetworkUtils;
 import nl.limakajo.numbers.utils.JSONUtils;
-import nl.limakajo.numbers.utils.NetworkUtils;
+import nl.limakajo.numbers.utils.HTTPNetworkUtils;
 
 import java.security.InvalidParameterException;
 import java.util.LinkedList;
@@ -34,8 +35,7 @@ public class NumbersSyncTasks {
     }
 
     private static void downloadLevels(Context context) {
-        String levelsFromServer = NetworkUtils.getLevelsJSONFromServer();
-        LinkedList<Level> levels = JSONUtils.getLevelsFromJson(levelsFromServer);
+        LinkedList<Level> levels = JDBCNetworkUtils.getLevelsJSONFromServer();
         if (levels != null) {
             DatabaseUtils.updateLevelsAverageTimeForSpecificLevels(context, levels);
         }
@@ -44,7 +44,7 @@ public class NumbersSyncTasks {
     private static void uploadLevels(Context context) {
         LinkedList<Level> levels = DatabaseUtils.getLevelsWithSpecificStatus(context, GameUtils.LevelState.UPLOAD);
         if (levels != null) {
-            NetworkUtils.sendLevelsToServer(context, levels);
+            JDBCNetworkUtils.sendLevelsToServer(levels);
         }
     }
 
