@@ -35,4 +35,7 @@ dependencies {
 //    implementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test:rules:1.0.2'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
+
+    implementation group: 'postgresql', name: 'postgresql', version: '9.0-801.jdbc4'
+
 }

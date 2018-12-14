@@ -4,7 +4,6 @@ import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
 
-import nl.limakajo.numbers.data.NumbersContract;
 import nl.limakajo.numbers.main.MainActivity;
 import nl.limakajo.numbers.numbersgame.Level;
 
@@ -24,7 +23,7 @@ import java.util.Scanner;
  * @author M.W.Bouwkamp
  */
 
-public class NetworkUtils {
+public class HTTPNetworkUtils {
     private static final String GET_URL = "http://limakajo.mygamesonline.org/getlevels.php";
     private static final String SET_URL = "http://limakajo.mygamesonline.org/setlevels.php";
     private static final String SERVER = "fdb23.runhosting.com";
@@ -32,9 +31,9 @@ public class NetworkUtils {
     private static final String PASS = "Numbersjuig448";
     private static final String DB = "2877361_numbers";
 
-    private static final String TAG = NetworkUtils.class.getName();
+    private static final String TAG = HTTPNetworkUtils.class.getName();
 
-    public static String getLevelsJSONFromServer() {
+    public static LinkedList<Level> getLevelsJSONFromServer() {
         HttpURLConnection httpURLConnection = null;
         URL url = null;
         String result = null;
@@ -101,7 +100,7 @@ public class NetworkUtils {
             Log.i(TAG, "HttpURLConnection closed successfully");
         }
         Log.i(TAG, "Levels successfully downloaded from server");
-        return result;
+        return JSONUtils.getLevelsFromJson(result);
     }
 
     public static void sendLevelsToServer(Context context, LinkedList<Level> levels) {
