@@ -10,6 +10,7 @@ import nl.limakajo.numbers.main.MainActivity;
 import nl.limakajo.numbers.utils.Attributes;
 import nl.limakajo.numbers.utils.DatabaseUtils;
 import nl.limakajo.numbers.utils.GameUtils;
+import nl.limakajo.numberslib.GameConstants;
 
 /**
  * @author M.W.Bouwkamp
@@ -67,7 +68,7 @@ public class LevelCompleteScene implements SceneInterface {
      */
     private int calculateNumStarsToAdd(int userTime, int averageTime) {
         int numStarsToAdd = 1;
-        if (userTime < averageTime + (GameUtils.TIMER - averageTime) / 3) {
+        if (userTime < averageTime + (GameConstants.TIMER - averageTime) / 3) {
             numStarsToAdd++;
         }
         if (userTime < averageTime / 2) {

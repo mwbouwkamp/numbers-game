@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import nl.limakajo.numbers.R;
 import nl.limakajo.numbers.numbersgame.Player;
 import nl.limakajo.numbers.utils.GameUtils;
+import nl.limakajo.numberslib.GameConstants;
 
 import java.util.Date;
 
@@ -37,13 +38,13 @@ public class NumLivesThread extends Thread {
 				e.printStackTrace();
 			}
 			long timePassedLastCheckNumLives = new Date().getTime() - lastCheckNumLives.getTime();
-			if (timePassedLastCheckNumLives > GameUtils.TIME_TO_NEW_LIFE) {
-				if (player.getNumLives() < GameUtils.MAX_NUMLIVES) {
+			if (timePassedLastCheckNumLives > GameConstants.TIME_TO_NEW_LIFE) {
+				if (player.getNumLives() < GameConstants.MAX_NUMLIVES) {
 					player.increaseNumLives(1);
-					lastCheckNumLives = new Date(lastCheckNumLives.getTime() + GameUtils.TIME_TO_NEW_LIFE);
+					lastCheckNumLives = new Date(lastCheckNumLives.getTime() + GameConstants.TIME_TO_NEW_LIFE);
 				}
 			}
-			if (player.getNumLives() == GameUtils.MAX_NUMLIVES) {
+			if (player.getNumLives() == GameConstants.MAX_NUMLIVES) {
 				lastCheckNumLives = new Date();
 			}
 			prefs.edit().putLong(context.getString(R.string.prefs_last_update_number_of_lifes_key), lastCheckNumLives.getTime()).apply();

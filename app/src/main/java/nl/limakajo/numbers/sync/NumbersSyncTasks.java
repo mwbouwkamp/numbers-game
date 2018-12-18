@@ -2,12 +2,11 @@ package nl.limakajo.numbers.sync;
 
 import android.content.Context;
 
-import nl.limakajo.numbers.numbersgame.Level;
+import nl.limakajo.numbers.main.MainActivity;
 import nl.limakajo.numbers.utils.DatabaseUtils;
 import nl.limakajo.numbers.utils.GameUtils;
-import nl.limakajo.numbers.utils.JDBCNetworkUtils;
-import nl.limakajo.numbers.utils.JSONUtils;
-import nl.limakajo.numbers.utils.HTTPNetworkUtils;
+import nl.limakajo.numberslib.JDBCNetworkUtils;
+import nl.limakajo.numberslib.Level;
 
 import java.security.InvalidParameterException;
 import java.util.LinkedList;
@@ -44,7 +43,10 @@ public class NumbersSyncTasks {
     private static void uploadLevels(Context context) {
         LinkedList<Level> levels = DatabaseUtils.getLevelsWithSpecificStatus(context, GameUtils.LevelState.UPLOAD);
         if (levels != null) {
-            JDBCNetworkUtils.sendLevelsToServer(levels);
+            LinkedList<Level> succesfullyUploadedLevels = JDBCNetworkUtils.sendLevelsToServer(levels);
+            for (Level level: succesfullyUploadedLevels) {
+                DatabaseUtils.updateTableLevelsLevelStatusForSpecificLevel(MainActivity.getContext(), level, GameUtils.LevelState.COMPLETED);
+            }
         }
     }
 

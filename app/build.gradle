@@ -31,11 +31,10 @@ dependencies {
     implementation 'com.android.support:design:27.1.1'
     implementation 'junit:junit:4.12'
     implementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-//    implementation 'com.android.support.test:runner:1.0.2'
-//    implementation 'com.android.support.test:runner:1.0.2'
+    //    implementation 'com.android.support.test:runner:1.0.2'
+    //    implementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test:rules:1.0.2'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
-
-    implementation group: 'postgresql', name: 'postgresql', version: '9.0-801.jdbc4'
-
+    implementation 'postgresql:postgresql:9.0-801.jdbc4'
+    //    implementation files('libs/numbers-lib.jar')
 }

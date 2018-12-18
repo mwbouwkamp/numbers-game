@@ -5,6 +5,7 @@ import java.util.Date;
 import nl.limakajo.numbers.main.MainActivity;
 import nl.limakajo.numbers.utils.DatabaseUtils;
 import nl.limakajo.numbers.utils.GameUtils;
+import nl.limakajo.numberslib.GameConstants;
 
 /**
  * Player represents a mutable representation of the player 
@@ -47,13 +48,13 @@ public class Player {
 	 * @effects Nothing if the rep is satisfied; otherwise throws exception 
 	 */
 	private void checkRep() {
-		if (numLives < 0 || numLives > GameUtils.MAX_NUMLIVES) {
+		if (numLives < 0 || numLives > GameConstants.MAX_NUMLIVES) {
 			throw new RuntimeException("number of lives out of range");
 		}
 		if (numStars < 0) {
 			throw new RuntimeException("number of stars out of range");
 		}
-		if (userAverageTime < 0 || userAverageTime> GameUtils.TIMEPENALTY) {
+		if (userAverageTime < 0 || userAverageTime> GameConstants.TIMEPENALTY) {
 			throw new RuntimeException("averageTime out of range");
 		}
 	}
@@ -72,8 +73,8 @@ public class Player {
 	 */
 	public synchronized void increaseNumLives(int numLivesToAdd) {
 		numLives += numLivesToAdd;
-		if (numLives > GameUtils.MAX_NUMLIVES) {
-			numLives = GameUtils.MAX_NUMLIVES;
+		if (numLives > GameConstants.MAX_NUMLIVES) {
+			numLives = GameConstants.MAX_NUMLIVES;
 		}
 	}
 

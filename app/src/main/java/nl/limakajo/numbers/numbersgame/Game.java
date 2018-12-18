@@ -1,5 +1,7 @@
 package nl.limakajo.numbers.numbersgame;
 
+import nl.limakajo.numberslib.Level;
+
 public class Game {
 
     private Level level;
