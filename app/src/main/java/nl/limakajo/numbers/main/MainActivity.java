@@ -17,6 +17,7 @@ import nl.limakajo.numbers.numbersgame.Player;
 import nl.limakajo.numbers.sync.NumbersSyncIntentService;
 import nl.limakajo.numbers.sync.NumbersSyncTasks;
 import nl.limakajo.numbers.utils.GameUtils;
+import nl.limakajo.numberslib.GameConstants;
 
 import java.util.Date;
 
@@ -130,7 +131,7 @@ public class MainActivity extends Activity {
 			// it is necessary to download level data. In other words: first time someone
 			// is playing, they need internet access.
 
-	    	player.setNumLives(GameUtils.MAX_NUMLIVES);
+	    	player.setNumLives(GameConstants.MAX_NUMLIVES);
 			player.setLastCheckNumLives(new Date());
 	    } else if (currentVersionCode > savedVersionCode) {
 	    	System.out.println("Upgrade");
@@ -158,21 +159,21 @@ public class MainActivity extends Activity {
 		//Update for elapsed time
 		//Calc numLivesToAdd
 		long timeSinceLastCheck = new Date().getTime() - player.getLastCheckNumLives().getTime();
-		int numLivesToAdd = (int) (timeSinceLastCheck / GameUtils.TIME_TO_NEW_LIFE);
+		int numLivesToAdd = (int) (timeSinceLastCheck / GameConstants.TIME_TO_NEW_LIFE);
 		//player
 		if (numLivesToAdd > 0) {
-            if (numLivesToAdd + player.getNumLives() > GameUtils.MAX_NUMLIVES) {
-                player.setNumLives(GameUtils.MAX_NUMLIVES);
+            if (numLivesToAdd + player.getNumLives() > GameConstants.MAX_NUMLIVES) {
+                player.setNumLives(GameConstants.MAX_NUMLIVES);
             } else {
                 player.setNumLives(player.getNumLives() + numLivesToAdd);
             }
         }
 		//lastCheckNumLives
 		if (numLivesToAdd > 0) {
-            if (numLivesToAdd + player.getNumLives() > GameUtils.MAX_NUMLIVES) {
+            if (numLivesToAdd + player.getNumLives() > GameConstants.MAX_NUMLIVES) {
                 player.setLastCheckNumLives(new Date());
             } else {
-                player.setLastCheckNumLives(new Date(player.getLastCheckNumLives().getTime() + numLivesToAdd * GameUtils.TIME_TO_NEW_LIFE));
+                player.setLastCheckNumLives(new Date(player.getLastCheckNumLives().getTime() + numLivesToAdd * GameConstants.TIME_TO_NEW_LIFE));
             }
         }
 	}

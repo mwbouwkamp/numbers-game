@@ -9,6 +9,7 @@ import org.xml.sax.helpers.AttributesImpl;
 
 import nl.limakajo.numbers.utils.Attributes;
 import nl.limakajo.numbers.utils.GameUtils;
+import nl.limakajo.numberslib.GameConstants;
 
 import java.util.LinkedList;
 
@@ -67,7 +68,7 @@ public class Tile implements GameObjectInterface {
 	 */
 	public void toShelf(int position) {
 		this.originalPosition = new Point(Attributes.TILE_XCOORDS[position], Attributes.TILE_YCOORD);
-		this.currentPosition = new Point(Attributes.TILE_XCOORDS[GameUtils.NUMTILES] + Attributes.TILE_WIDTH * 3, Attributes.TILE_YCOORD);
+		this.currentPosition = new Point(Attributes.TILE_XCOORDS[GameConstants.NUMTILES] + Attributes.TILE_WIDTH * 3, Attributes.TILE_YCOORD);
 		startAnimation();
 	}
 

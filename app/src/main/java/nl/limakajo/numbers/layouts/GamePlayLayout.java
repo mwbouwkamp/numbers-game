@@ -9,6 +9,7 @@ import nl.limakajo.numbers.gameObjects.TextBox;
 import nl.limakajo.numbers.main.MainActivity;
 import nl.limakajo.numbers.utils.Attributes;
 import nl.limakajo.numbers.utils.GameUtils;
+import nl.limakajo.numberslib.GameConstants;
 
 /**
  * Class that represents the GamePlayLayout
@@ -79,7 +80,7 @@ public class GamePlayLayout extends BasicLayout {
 						playArea.getArea().left,
 						headerArea.getArea().bottom + Attributes.MARGE,
 						playArea.getArea().right,
-						headerArea.getArea().bottom + Attributes.MARGE + (playArea.getArea().width() - Attributes.MARGE) / GameUtils.NUMTILES),
+						headerArea.getArea().bottom + Attributes.MARGE + (playArea.getArea().width() - Attributes.MARGE) / GameConstants.NUMTILES),
 				Attributes.NO_DRAW);
 
 		//Footer

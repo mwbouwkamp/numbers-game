@@ -5,11 +5,11 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 
+import java.util.LinkedList;
+
 import nl.limakajo.numbers.data.NumbersContract;
 import nl.limakajo.numbers.main.MainActivity;
-import nl.limakajo.numbers.numbersgame.Level;
-
-import java.util.LinkedList;
+import nl.limakajo.numberslib.Level;
 
 /**
  * Class that holds all database operations

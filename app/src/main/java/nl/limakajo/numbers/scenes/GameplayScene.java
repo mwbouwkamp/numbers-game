@@ -12,10 +12,11 @@ import nl.limakajo.numbers.gameObjects.Wave;
 import nl.limakajo.numbers.layouts.GamePlayLayout;
 import nl.limakajo.numbers.layouts.LayoutElementsKeys;
 import nl.limakajo.numbers.main.MainActivity;
-import nl.limakajo.numbers.numbersgame.Level;
 import nl.limakajo.numbers.numbersgame.Shelf;
 import nl.limakajo.numbers.utils.DatabaseUtils;
 import nl.limakajo.numbers.utils.GameUtils;
+import nl.limakajo.numberslib.GameConstants;
+import nl.limakajo.numberslib.Level;
 
 import java.util.ConcurrentModificationException;
 import java.util.LinkedList;
@@ -75,7 +76,7 @@ public class GameplayScene implements SceneInterface {
 
         //Construct a level and update the ScreenLayout goal accordingly
         Level newLevel = DatabaseUtils.getLevelWithAverageTimeCloseToUserAverageTime(MainActivity.getContext());
-        newLevel.setUserTime(GameUtils.TIMEPENALTY);
+        newLevel.setUserTime(GameConstants.TIMEPENALTY);
         MainActivity.getGame().setLevel(newLevel);
 
         //Update level usertime to TIMEPENALTY
@@ -86,7 +87,7 @@ public class GameplayScene implements SceneInterface {
         DatabaseUtils.updateTableLevelsLevelStatusForSpecificLevel(MainActivity.getContext(), newLevel, GameUtils.LevelState.ACTIVE);
 
         shelf = new Shelf();
-        for (int i = 0; i < GameUtils.NUMTILES; i++) {
+        for (int i = 0; i < GameConstants.NUMTILES; i++) {
             Tile tileToAdd = new Tile(MainActivity.getGame().getLevel().getHand()[i]);
             addTileToShelf(tileToAdd);
         }
@@ -99,7 +100,7 @@ public class GameplayScene implements SceneInterface {
     @Override
     public void update() {
         gamePlayLayout.getTextBox(LayoutElementsKeys.FOOTER_TEXT).setText(statusBarText);
-        if (System.currentTimeMillis() - startTime > GameUtils.TIMER){
+        if (System.currentTimeMillis() - startTime > GameConstants.TIMER){
             sceneManager.setScene(new GameOverScene(sceneManager));
         }
         for (Tile tile: shelf.getTilesOnShelf()) {
@@ -225,7 +226,7 @@ public class GameplayScene implements SceneInterface {
      */
     private void drawTimerRound(Canvas canvas){
         Paint paint = new Paint();
-        double timeFraction = (System.currentTimeMillis() - startTime) / (double) GameUtils.TIMER;
+        double timeFraction = (System.currentTimeMillis() - startTime) / (double) GameConstants.TIMER;
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(16);
         RectF rect = new RectF(gamePlayLayout.getScreenArea(LayoutElementsKeys.TIMER_AREA).getArea());
