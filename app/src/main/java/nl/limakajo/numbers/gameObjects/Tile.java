@@ -5,13 +5,8 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
 
-import org.xml.sax.helpers.AttributesImpl;
-
 import nl.limakajo.numbers.utils.Attributes;
-import nl.limakajo.numbers.utils.GameUtils;
-import nl.limakajo.numberslib.GameConstants;
-
-import java.util.LinkedList;
+import nl.limakajo.numbers.utils.GameConstants;
 
 /**
  * Class representing a Tile in the game

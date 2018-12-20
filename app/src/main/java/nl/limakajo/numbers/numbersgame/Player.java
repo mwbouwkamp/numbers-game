@@ -4,8 +4,7 @@ import java.util.Date;
 
 import nl.limakajo.numbers.main.MainActivity;
 import nl.limakajo.numbers.utils.DatabaseUtils;
-import nl.limakajo.numbers.utils.GameUtils;
-import nl.limakajo.numberslib.GameConstants;
+import nl.limakajo.numbers.utils.GameConstants;
 
 /**
  * Player represents a mutable representation of the player 
