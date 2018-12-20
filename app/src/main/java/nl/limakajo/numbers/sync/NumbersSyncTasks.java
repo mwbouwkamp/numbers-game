@@ -3,10 +3,11 @@ package nl.limakajo.numbers.sync;
 import android.content.Context;
 
 import nl.limakajo.numbers.main.MainActivity;
+import nl.limakajo.numbers.numbersgame.Level;
+import nl.limakajo.numbers.onlineData.JDBCNetworkUtils;
+import nl.limakajo.numbers.onlineData.NumbersContract;
 import nl.limakajo.numbers.utils.DatabaseUtils;
 import nl.limakajo.numbers.utils.GameUtils;
-import nl.limakajo.numberslib.JDBCNetworkUtils;
-import nl.limakajo.numberslib.Level;
 
 import java.security.InvalidParameterException;
 import java.util.LinkedList;
@@ -34,7 +35,7 @@ public class NumbersSyncTasks {
     }
 
     private static void downloadLevels(Context context) {
-        LinkedList<Level> levels = JDBCNetworkUtils.getLevelsJSONFromServer();
+        LinkedList<Level> levels = JDBCNetworkUtils.getLevelsJSONFromServer(NumbersContract.LevelData.TABLE_NAME);
         if (levels != null) {
             DatabaseUtils.updateLevelsAverageTimeForSpecificLevels(context, levels);
         }

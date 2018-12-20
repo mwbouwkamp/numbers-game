@@ -16,8 +16,7 @@ import nl.limakajo.numbers.numbersgame.Game;
 import nl.limakajo.numbers.numbersgame.Player;
 import nl.limakajo.numbers.sync.NumbersSyncIntentService;
 import nl.limakajo.numbers.sync.NumbersSyncTasks;
-import nl.limakajo.numbers.utils.GameUtils;
-import nl.limakajo.numberslib.GameConstants;
+import nl.limakajo.numbers.utils.GameConstants;
 
 import java.util.Date;
 

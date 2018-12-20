@@ -12,11 +12,11 @@ import nl.limakajo.numbers.gameObjects.Wave;
 import nl.limakajo.numbers.layouts.GamePlayLayout;
 import nl.limakajo.numbers.layouts.LayoutElementsKeys;
 import nl.limakajo.numbers.main.MainActivity;
+import nl.limakajo.numbers.numbersgame.Level;
 import nl.limakajo.numbers.numbersgame.Shelf;
 import nl.limakajo.numbers.utils.DatabaseUtils;
+import nl.limakajo.numbers.utils.GameConstants;
 import nl.limakajo.numbers.utils.GameUtils;
-import nl.limakajo.numberslib.GameConstants;
-import nl.limakajo.numberslib.Level;
 
 import java.util.ConcurrentModificationException;
 import java.util.LinkedList;

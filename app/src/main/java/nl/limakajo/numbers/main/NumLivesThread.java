@@ -5,8 +5,7 @@ import android.content.SharedPreferences;
 
 import nl.limakajo.numbers.R;
 import nl.limakajo.numbers.numbersgame.Player;
-import nl.limakajo.numbers.utils.GameUtils;
-import nl.limakajo.numberslib.GameConstants;
+import nl.limakajo.numbers.utils.GameConstants;
 
 import java.util.Date;
 
