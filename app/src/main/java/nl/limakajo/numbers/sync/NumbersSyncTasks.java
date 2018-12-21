@@ -35,7 +35,7 @@ public class NumbersSyncTasks {
     }
 
     private static void downloadLevels(Context context) {
-        LinkedList<Level> levels = JDBCNetworkUtils.getLevelsJSONFromServer(NumbersContract.LevelData.TABLE_NAME);
+        LinkedList<Level> levels = JDBCNetworkUtils.queryLevels(NumbersContract.LevelData.TABLE_NAME);
         if (levels != null) {
             DatabaseUtils.updateLevelsAverageTimeForSpecificLevels(context, levels);
         }
@@ -44,7 +44,7 @@ public class NumbersSyncTasks {
     private static void uploadLevels(Context context) {
         LinkedList<Level> levels = DatabaseUtils.getLevelsWithSpecificStatus(context, GameUtils.LevelState.UPLOAD);
         if (levels != null) {
-            LinkedList<Level> succesfullyUploadedLevels = JDBCNetworkUtils.sendLevelsToServer(levels);
+            LinkedList<Level> succesfullyUploadedLevels = JDBCNetworkUtils.insertLevels(NumbersContract.CompletedLevelData.TABLE_NAME, levels);
             for (Level level: succesfullyUploadedLevels) {
                 DatabaseUtils.updateTableLevelsLevelStatusForSpecificLevel(MainActivity.getContext(), level, GameUtils.LevelState.COMPLETED);
             }
