@@ -11,12 +11,12 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import nl.limakajo.numbers.R;
-import nl.limakajo.numbers.numbersgame.Device;
-import nl.limakajo.numbers.numbersgame.Game;
-import nl.limakajo.numbers.numbersgame.Player;
+import nl.limakajo.numbers.numbersGame.Device;
+import nl.limakajo.numbers.numbersGame.Game;
+import nl.limakajo.numbers.numbersGame.Player;
 import nl.limakajo.numbers.sync.NumbersSyncIntentService;
 import nl.limakajo.numbers.sync.NumbersSyncTasks;
-import nl.limakajo.numbers.utils.GameConstants;
+import nl.limakajo.numberslib.utils.GameConstants;
 
 import java.util.Date;
 

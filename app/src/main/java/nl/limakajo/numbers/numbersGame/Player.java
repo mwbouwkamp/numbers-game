@@ -1,10 +1,10 @@
-package nl.limakajo.numbers.numbersgame;
+package nl.limakajo.numbers.numbersGame;
 
 import java.util.Date;
 
 import nl.limakajo.numbers.main.MainActivity;
 import nl.limakajo.numbers.utils.DatabaseUtils;
-import nl.limakajo.numbers.utils.GameConstants;
+import nl.limakajo.numberslib.utils.GameConstants;
 
 /**
  * Player represents a mutable representation of the player 
