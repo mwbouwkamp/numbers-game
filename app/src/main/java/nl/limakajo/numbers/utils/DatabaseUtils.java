@@ -51,7 +51,11 @@ public class DatabaseUtils {
                     numbersString = cursor.getString(cursor.getColumnIndex(NumbersContract.TableLevels.KEY_NUMBERS));
                     int userTime = Integer.parseInt(cursor.getString(cursor.getColumnIndex(NumbersContract.TableLevels.KEY_USER_TIME)));
                     int averageTime = Integer.parseInt(cursor.getString(cursor.getColumnIndex(NumbersContract.TableLevels.KEY_AVERAGE_TIME)));
-                    levels.add(new Level(numbersString, averageTime, userTime));
+                    Level levelToAdd = new Level.LevelBuilder(numbersString)
+                            .setUserTime(userTime)
+                            .setAverageTime(averageTime)
+                            .build();
+                    levels.add(levelToAdd);
                 } while (cursor.moveToNext());
             }
             cursor.close();
