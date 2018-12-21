@@ -26,16 +26,11 @@ public class JDBCNetworkUtils {
                     ResultSet resultSet = statement.executeQuery(SQL);
                     while (resultSet.next()) {
                         String numbersString = resultSet.getString(1);
-                        int tile1 = Integer.parseInt(numbersString.substring(0, 3));
-                        int tile2 = Integer.parseInt(numbersString.substring(3, 6));
-                        int tile3 = Integer.parseInt(numbersString.substring(6, 9));
-                        int tile4 = Integer.parseInt(numbersString.substring(9, 12));
-                        int tile5 = Integer.parseInt(numbersString.substring(12, 15));
-                        int tile6 = Integer.parseInt(numbersString.substring(15, 18));
-                        int[] hand = {tile1, tile2, tile3, tile4, tile5, tile6};
-                        int goal = Integer.parseInt(numbersString.substring(18, 21));
                         int averageTime = Integer.parseInt(resultSet.getString(2));
-                        toReturn.add(new Level(hand, goal, averageTime));
+                        Level levelToAdd = new Level.LevelBuilder(numbersString)
+                                .setAverageTime(averageTime)
+                                .build();
+                        toReturn.add(levelToAdd);
                     }
                     resultSet.close();
                     statement.close();
