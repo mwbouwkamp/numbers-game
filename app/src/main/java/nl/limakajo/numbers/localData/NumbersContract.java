@@ -1,4 +1,4 @@
-package nl.limakajo.numbers.data;
+package nl.limakajo.numbers.localData;
 
 import android.net.Uri;
 import android.provider.BaseColumns;

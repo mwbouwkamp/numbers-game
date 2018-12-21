@@ -7,7 +7,7 @@ import android.net.Uri;
 
 import java.util.LinkedList;
 
-import nl.limakajo.numbers.data.NumbersContract;
+import nl.limakajo.numbers.localData.NumbersContract;
 import nl.limakajo.numbers.main.MainActivity;
 import nl.limakajo.numbers.numbersgame.Level;
 

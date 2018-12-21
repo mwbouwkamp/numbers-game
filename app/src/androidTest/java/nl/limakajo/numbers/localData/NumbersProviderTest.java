@@ -1,4 +1,4 @@
-package nl.limakajo.numbers.data.data;
+package nl.limakajo.numbers.localData;
 
 import android.content.ContentProvider;
 import android.content.ContentResolver;
@@ -10,8 +10,8 @@ import android.test.ProviderTestCase2;
 
 import java.util.Objects;
 
-import nl.limakajo.numbers.data.NumbersContract;
-import nl.limakajo.numbers.data.NumbersProvider;
+import nl.limakajo.numbers.localData.NumbersContract;
+import nl.limakajo.numbers.localData.NumbersProvider;
 
 /**
  * Created by mwbou on 30-12-2017.

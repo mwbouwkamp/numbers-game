@@ -24,7 +24,7 @@
         </activity>
 
         <provider
-            android:name="nl.limakajo.numbers.data.NumbersProvider"
+            android:name="nl.limakajo.numbers.localData.NumbersProvider"
             android:authorities="nl.limakajo.numbers"
             android:exported="false"
             android:syncable="true"/>

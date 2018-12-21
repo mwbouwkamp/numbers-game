@@ -1,4 +1,4 @@
-package nl.limakajo.numbers.data;
+package nl.limakajo.numbers.localData;
 
 import android.content.ContentProvider;
 import android.content.ContentUris;
@@ -10,8 +10,6 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
-
-import org.w3c.dom.Text;
 
 import java.util.Arrays;
 import java.util.Objects;

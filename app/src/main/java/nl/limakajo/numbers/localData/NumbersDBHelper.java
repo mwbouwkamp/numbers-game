@@ -1,10 +1,6 @@
-package nl.limakajo.numbers.data;
+package nl.limakajo.numbers.localData;
 
 import android.content.Context;
-
-import nl.limakajo.numbers.main.MainActivity;
-import nl.limakajo.numbers.utils.DatabaseUtils;
-import nl.limakajo.numbers.utils.GameUtils;
 
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
