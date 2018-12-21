@@ -1,4 +1,4 @@
-package nl.limakajo.numbers.numbersgame;
+package nl.limakajo.numbers.numbersGame;
 
 import java.util.LinkedList;
 

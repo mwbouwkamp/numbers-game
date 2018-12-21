@@ -3,11 +3,11 @@ package nl.limakajo.numbers.sync;
 import android.content.Context;
 
 import nl.limakajo.numbers.main.MainActivity;
-import nl.limakajo.numbers.numbersgame.Level;
-import nl.limakajo.numbers.onlineData.JDBCNetworkUtils;
-import nl.limakajo.numbers.onlineData.NumbersContract;
 import nl.limakajo.numbers.utils.DatabaseUtils;
 import nl.limakajo.numbers.utils.GameUtils;
+import nl.limakajo.numberslib.numbersGame.Level;
+import nl.limakajo.numberslib.onlineData.JDBCNetworkUtils;
+import nl.limakajo.numberslib.onlineData.NumbersContract;
 
 import java.security.InvalidParameterException;
 import java.util.LinkedList;

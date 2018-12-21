@@ -9,7 +9,7 @@ import java.util.LinkedList;
 
 import nl.limakajo.numbers.localData.NumbersContract;
 import nl.limakajo.numbers.main.MainActivity;
-import nl.limakajo.numbers.numbersgame.Level;
+import nl.limakajo.numberslib.numbersGame.Level;
 
 /**
  * Class that holds all database operations

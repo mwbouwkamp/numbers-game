@@ -9,8 +9,8 @@ import nl.limakajo.numbers.layouts.LevelCompleteLayout;
 import nl.limakajo.numbers.main.MainActivity;
 import nl.limakajo.numbers.utils.Attributes;
 import nl.limakajo.numbers.utils.DatabaseUtils;
-import nl.limakajo.numbers.utils.GameConstants;
 import nl.limakajo.numbers.utils.GameUtils;
+import nl.limakajo.numberslib.utils.GameConstants;
 
 /**
  * @author M.W.Bouwkamp

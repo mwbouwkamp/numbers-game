@@ -8,7 +8,7 @@ import nl.limakajo.numbers.gameObjects.ScreenArea;
 import nl.limakajo.numbers.gameObjects.TextBox;
 import nl.limakajo.numbers.main.MainActivity;
 import nl.limakajo.numbers.utils.Attributes;
-import nl.limakajo.numbers.utils.GameConstants;
+import nl.limakajo.numberslib.utils.GameConstants;
 
 /**
  * Class that represents the GamePlayLayout

@@ -6,7 +6,7 @@ import android.graphics.Point;
 import android.graphics.Rect;
 
 import nl.limakajo.numbers.utils.Attributes;
-import nl.limakajo.numbers.utils.GameConstants;
+import nl.limakajo.numberslib.utils.GameConstants;
 
 /**
  * Class representing a Tile in the game

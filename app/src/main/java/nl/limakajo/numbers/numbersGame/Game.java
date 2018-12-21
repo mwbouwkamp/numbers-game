@@ -1,4 +1,6 @@
-package nl.limakajo.numbers.numbersgame;
+package nl.limakajo.numbers.numbersGame;
+
+import nl.limakajo.numberslib.numbersGame.Level;
 
 public class Game {
 

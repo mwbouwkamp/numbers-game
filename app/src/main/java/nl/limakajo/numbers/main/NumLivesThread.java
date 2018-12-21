@@ -4,8 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import nl.limakajo.numbers.R;
-import nl.limakajo.numbers.numbersgame.Player;
-import nl.limakajo.numbers.utils.GameConstants;
+import nl.limakajo.numbers.numbersGame.Player;
+import nl.limakajo.numberslib.utils.GameConstants;
 
 import java.util.Date;
 
