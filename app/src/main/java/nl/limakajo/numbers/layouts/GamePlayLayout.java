@@ -1,6 +1,8 @@
 package nl.limakajo.numbers.layouts;
 
+import android.graphics.Point;
 import android.graphics.Rect;
+import android.util.Size;
 
 import nl.limakajo.numbers.R;
 import nl.limakajo.numbers.gameObjects.LayoutObject;
@@ -23,159 +25,200 @@ public class GamePlayLayout extends BasicLayout {
 	public GamePlayLayout() {
 		//Playable area
         LayoutObject playArea = new ScreenArea (
-				new Rect(
+				new Point(
 						Attributes.MARGE,
-						Attributes.MARGE,
-						MainActivity.getDevice().getWidth() - Attributes.MARGE,
-						MainActivity.getDevice().getHeight() - Attributes.MARGE),
+						Attributes.MARGE),
+				new Size(
+						MainActivity.getDevice().getWidth() - 2 * Attributes.MARGE,
+						MainActivity.getDevice().getHeight() - 2 * Attributes.MARGE),
 				Attributes.NO_DRAW);
 
         //Header
 		LayoutObject headerArea = new ScreenArea (
-				new Rect(
+				new Point(
 						playArea.getArea().left,
-						playArea.getArea().top,
-						playArea.getArea().right,
-						playArea.getArea().top + Attributes.GOAL_HEIGHT),
+						playArea.getArea().top),
+				new Size(
+						playArea.getArea().width(),
+						Attributes.GOAL_HEIGHT),
 				Attributes.NO_DRAW);
 		LayoutObject goalText = new TextBox(
                 MainActivity.getContext().getString(R.string.empty_text),
                 Attributes.TextAllignment.XYCENTERED,
-                new Rect(
+                new Point(
                 		layoutObjects.get(LayoutElementsKeys.FULLSCREEN).getArea().left,
-						headerArea.getArea().top + headerArea.getArea().height() / 3 + Attributes.MARGE,
-						layoutObjects.get(LayoutElementsKeys.FULLSCREEN).getArea().right,
-						headerArea.getArea().top + 2 * headerArea.getArea().height() / 3 - Attributes.MARGE),
+						headerArea.getArea().top + headerArea.getArea().height() / 3 + Attributes.MARGE),
+				new Size (
+						layoutObjects.get(LayoutElementsKeys.FULLSCREEN).getArea().width(),
+						headerArea.getArea().height() / 3 - 2 * Attributes.MARGE),
                 Attributes.TEXTBOX_NORMAL_PAINT);
 		LayoutObject timerArea = new ScreenArea (
-				new Rect(
+				new Point(
 						headerArea.getArea().left + (headerArea.getArea().width() - Attributes.GOAL_HEIGHT) / 2,
-						headerArea.getArea().top,
-						headerArea.getArea().left + (headerArea.getArea().width() + Attributes.GOAL_HEIGHT) / 2,
-						headerArea.getArea().bottom),
+						headerArea.getArea().top),
+				new Size(
+						Attributes.GOAL_HEIGHT,
+						Attributes.GOAL_HEIGHT),
 				Attributes.NO_DRAW);
 		LayoutObject numStarsText = new TextBox(
                 "A",
                 Attributes.TextAllignment.XLEFT_YCENTERED,
-                new Rect(
+                new Point(
                         headerArea.getArea().left,
-                        headerArea.getArea().top,
-                        timerArea.getArea().left,
-                        headerArea.getArea().top + Attributes.GOAL_HEIGHT / 6),
+                        headerArea.getArea().top),
+				new Size(
+                        timerArea.getArea().left - headerArea.getArea().left,
+                        Attributes.GOAL_HEIGHT / 6),
                 Attributes.TEXTBOX_NUMLIVES_PAINT);
 		LayoutObject numLivesText = new TextBox(
                 "B",
                 Attributes.TextAllignment.XRIGHT_YCENTERED,
-                new Rect(
+                new Point(
                         timerArea.getArea().right,
-                        headerArea.getArea().top,
-                        headerArea.getArea().right,
-                        headerArea.getArea().top + Attributes.GOAL_HEIGHT / 6),
+                        headerArea.getArea().top),
+				new Size(
+                        headerArea.getArea().right - timerArea.getArea().right,
+                        Attributes.GOAL_HEIGHT / 6),
                 Attributes.TEXTBOX_NUMLIVES_PAINT);
 
 		//Shelf
 		LayoutObject shelfArea = new ScreenArea(
-				new Rect(
+				new Point(
 						playArea.getArea().left,
-						headerArea.getArea().bottom + Attributes.MARGE,
-						playArea.getArea().right,
-						headerArea.getArea().bottom + Attributes.MARGE + (playArea.getArea().width() - Attributes.MARGE) / GameConstants.NUMTILES),
+						headerArea.getArea().bottom + Attributes.MARGE),
+				new Size(
+						playArea.getArea().width(),
+						(playArea.getArea().width() - Attributes.MARGE) / GameConstants.NUMTILES),
 				Attributes.NO_DRAW);
 
 		//Footer
 		LayoutObject footerText = new TextBox(
                 MainActivity.getContext().getString(R.string.empty_text),
                 Attributes.TextAllignment.XYCENTERED,
-                new Rect(
+                new Point(
                         playArea.getArea().left,
-                        playArea.getArea().bottom - Attributes.FOOTER_HEIGHT,
-                        playArea.getArea().right,
-                        playArea.getArea().bottom),
+                        playArea.getArea().bottom - Attributes.FOOTER_HEIGHT),
+				new Size(
+                        playArea.getArea().width(),
+                        Attributes.FOOTER_HEIGHT),
                 Attributes.TEXTBOX_NORMAL_PAINT);
 
         //Operators
 		LayoutObject operatorsArea = new ScreenArea(
-                new Rect(
+                new Point(
                         playArea.getArea().left,
-                        shelfArea.getArea().bottom + Attributes.MARGE,
-                        playArea.getArea().right,
-                        footerText.getArea().top - Attributes.MARGE),
+                        shelfArea.getArea().bottom + Attributes.MARGE),
+				new Size(
+                        playArea.getArea().width(),
+                        footerText.getArea().top - shelfArea.getArea().bottom - 2 * Attributes.MARGE),
                 Attributes.NO_DRAW);
 		LayoutObject plusArea = new ScreenArea(
-                new Rect(
+                new Point(
                         operatorsArea.getArea().left,
-                        operatorsArea.getArea().top,
-                        operatorsArea.getArea().width() / 2 + Attributes.MARGE / 2,
-                        operatorsArea.getArea().top + operatorsArea.getArea().height() / 2 - Attributes.MARGE / 2),
+                        operatorsArea.getArea().top),
+				new Size(
+						(operatorsArea.getArea().width() - Attributes.MARGE) / 2,
+						(operatorsArea.getArea().height() - Attributes.MARGE) / 2),
                 Attributes.PLUS_PAINT);
 		LayoutObject plusArea2 = new ScreenArea(
-                new Rect(
+                new Point(
                         plusArea.getArea().left,
-                        plusArea.getArea().top + (10 * plusArea.getArea().height()) / 11,
-                        plusArea.getArea().right,
-                        plusArea.getArea().bottom),
+                        plusArea.getArea().top + (10 * plusArea.getArea().height()) / 11),
+				new Size(
+                        plusArea.getArea().width(),
+						plusArea.getArea().height() / 11),
                 Attributes.PLUS_PAINT_2);
 		LayoutObject minArea = new ScreenArea(
-                new Rect(
+                new Point(
                         plusArea.getArea().right + Attributes.MARGE,
-                        operatorsArea.getArea().top,
-                        operatorsArea.getArea().right,
-                        plusArea.getArea().bottom),
+                        operatorsArea.getArea().top),
+				new Size(
+						plusArea.getArea().width(),
+						plusArea.getArea().height()),
                 Attributes.MIN_PAINT);
 		LayoutObject minArea2 = new ScreenArea(
-                new Rect(
+                new Point(
                         minArea.getArea().left,
-                        minArea.getArea().top + (10 * minArea.getArea().height()) / 11,
-                        minArea.getArea().right,
-                        minArea.getArea().bottom),
+                        minArea.getArea().top + (10 * minArea.getArea().height()) / 11),
+				new Size(
+						plusArea.getArea().width(),
+						plusArea.getArea().height() / 11),
                 Attributes.MIN_PAINT_2);
 		LayoutObject multArea = new ScreenArea(
-                new Rect(
+                new Point(
                         plusArea.getArea().left,
-                        plusArea.getArea().bottom + Attributes.MARGE,
-                        plusArea.getArea().right,
-                        operatorsArea.getArea().bottom),
+                        plusArea.getArea().bottom + Attributes.MARGE),
+				new Size(
+						plusArea.getArea().width(),
+						plusArea.getArea().height()),
                 Attributes.MULT_PAINT);
 		LayoutObject multArea2 = new ScreenArea(
-                new Rect(
+                new Point(
                         multArea.getArea().left,
-                        multArea.getArea().top + (10 * multArea.getArea().height()) / 11,
-                        multArea.getArea().right,
-                        multArea.getArea().bottom),
+                        multArea.getArea().top + (10 * multArea.getArea().height()) / 11),
+				new Size(
+						plusArea.getArea().width(),
+						plusArea.getArea().height() / 11),
                 Attributes.MULT_PAINT_2);
 		LayoutObject divArea = new ScreenArea(
-                new Rect(
+                new Point(
                         minArea.getArea().left,
-                        multArea.getArea().top,
-                        minArea.getArea().right,
-                        multArea.getArea().bottom),
+                        multArea.getArea().top),
+				new Size(
+						plusArea.getArea().width(),
+						plusArea.getArea().height()),
                 Attributes.DIV_PAINT);
 		LayoutObject divArea2 = new ScreenArea(
-                new Rect(
+                new Point(
                         divArea.getArea().left,
-                        divArea.getArea().top + (10 * divArea.getArea().height()) / 11,
-                        divArea.getArea().right,
-                        divArea.getArea().bottom),
+                        divArea.getArea().top + (10 * divArea.getArea().height()) / 11),
+				new Size(
+						plusArea.getArea().width(),
+						plusArea.getArea().height() / 11),
                 Attributes.DIV_PAINT_2);
+		Rect plusTextRect = getRelativeRect(plusArea.getArea(), 0.6f);
 		LayoutObject plusText = new TextBox(
 				MainActivity.getContext().getString(R.string.gameplay_plus_sign),
 				Attributes.TextAllignment.XYCENTERED,
-				resizeRect(plusArea.getArea(), 0.6f),
+				new Point(
+						plusTextRect.left,
+						plusTextRect.top),
+				new Size(
+						plusTextRect.width(),
+						plusTextRect.height()),
 				Attributes.TEXT_BOX_OPERATOR_PAINT);
+		Rect minTextRect = getRelativeRect(minArea.getArea(), 0.6f);
 		LayoutObject minText = new TextBox(
                 MainActivity.getContext().getString(R.string.gameplay_min_sign),
                 Attributes.TextAllignment.XYCENTERED,
-                resizeRect(minArea.getArea(), 0.6f),
+				new Point(
+						minTextRect.left,
+						minTextRect.top),
+				new Size(
+						minTextRect.width(),
+						minTextRect.height()),
                 Attributes.TEXT_BOX_OPERATOR_PAINT);
+		Rect multTextRect = getRelativeRect(multArea.getArea(), 0.6f);
 		LayoutObject multText = new TextBox(
                 MainActivity.getContext().getString(R.string.gameplay_mult_sign),
                 Attributes.TextAllignment.XYCENTERED,
-                resizeRect(multArea.getArea(), 0.6f),
+				new Point(
+						multTextRect.left,
+						multTextRect.top),
+				new Size(
+						multTextRect.width(),
+						multTextRect.height()),
                 Attributes.TEXT_BOX_OPERATOR_PAINT);
+		Rect divTextRect = getRelativeRect(divArea.getArea(), 0.6f);
 		LayoutObject divText = new TextBox(
                 MainActivity.getContext().getString(R.string.gameplay_div_sign),
                 Attributes.TextAllignment.XYCENTERED,
-                resizeRect(divArea.getArea(), 0.6f),
+				new Point(
+						divTextRect.left,
+						divTextRect.top),
+				new Size(
+						divTextRect.width(),
+						divTextRect.height()),
                 Attributes.TEXT_BOX_OPERATOR_PAINT);
 
 		layoutObjects.put(LayoutElementsKeys.PLAY_AREA, playArea);
@@ -201,7 +244,7 @@ public class GamePlayLayout extends BasicLayout {
         layoutObjects.put(LayoutElementsKeys.DIV_TEXT, divText);
 	}
 
-	private Rect resizeRect(Rect rect, float factor) {
+	private Rect getRelativeRect(Rect rect, float factor) {
 		Rect toReturn = new Rect(
 				(int) (rect.left + (1 - factor) / 2 * rect.width()),
 				(int) (rect.top + (1 - factor) / 2 * rect.height()),

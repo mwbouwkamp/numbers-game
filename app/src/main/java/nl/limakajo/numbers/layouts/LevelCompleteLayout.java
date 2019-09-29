@@ -1,6 +1,8 @@
 package nl.limakajo.numbers.layouts;
 
+import android.graphics.Point;
 import android.graphics.Rect;
+import android.util.Size;
 
 import nl.limakajo.numbers.R;
 import nl.limakajo.numbers.gameObjects.LayoutObject;
@@ -24,43 +26,53 @@ public class LevelCompleteLayout extends LogoWithAreaForTextLayout {
         LayoutObject levelCompleteText = new TextBox(
                 MainActivity.getContext().getString(R.string.empty_text),
                 Attributes.TextAllignment.XYCENTERED,
-                layoutObjects.get(LayoutElementsKeys.MAINTEXT_AREA).getArea(),
+                new Point(
+                        layoutObjects.get(LayoutElementsKeys.MAINTEXT_AREA).getArea().left,
+                        layoutObjects.get(LayoutElementsKeys.MAINTEXT_AREA).getArea().top),
+                new Size(
+                        layoutObjects.get(LayoutElementsKeys.MAINTEXT_AREA).getArea().width(),
+                        layoutObjects.get(LayoutElementsKeys.MAINTEXT_AREA).getArea().height()
+                ),
                 Attributes.TEXTBOX_NORMAL_PAINT);
 
         //Stars
         LayoutObject starsArea = new ScreenArea(
-                new Rect(
+                new Point(
                         layoutObjects.get(LayoutElementsKeys.LOGO_AREA).getArea().left,
-                        levelCompleteText.getArea().bottom + Attributes.MARGE,
-                        layoutObjects.get(LayoutElementsKeys.LOGO_AREA).getArea().right,
-                        levelCompleteText.getArea().bottom + 6 * Attributes.MARGE),
+                        levelCompleteText.getArea().bottom + Attributes.MARGE),
+                new Size(
+                        layoutObjects.get(LayoutElementsKeys.LOGO_AREA).getArea().width(),
+                        5 * Attributes.MARGE),
                 Attributes.BG_PAINT);
         LayoutObject star1Text = new TextBox(
                 MainActivity.getContext().getString(R.string.star),
                 Attributes.TextAllignment.XYCENTERED,
-                new Rect(
+                new Point(
                         starsArea.getArea().left,
-                        starsArea.getArea().top,
-                        starsArea.getArea().left + starsArea.getArea().width() / 3,
-                        starsArea.getArea().bottom),
+                        starsArea.getArea().top),
+                new Size(
+                        starsArea.getArea().width() / 3,
+                        starsArea.getArea().height()),
                 Attributes.TEXT_BOX_STARS_PAINT);
         LayoutObject star2Text = new TextBox(
                 MainActivity.getContext().getString(R.string.star),
                 Attributes.TextAllignment.XYCENTERED,
-                new Rect(
+                new Point(
                         starsArea.getArea().left + starsArea.getArea().width() / 3,
-                        starsArea.getArea().top,
-                        starsArea.getArea().left + 2 * starsArea.getArea().width() / 3,
-                        starsArea.getArea().bottom),
+                        starsArea.getArea().top),
+                new Size(
+                        starsArea.getArea().width() / 3,
+                        starsArea.getArea().height()),
                 Attributes.TEXT_BOX_STARS_PAINT);
         LayoutObject star3Text = new TextBox(
                 MainActivity.getContext().getString(R.string.star),
                 Attributes.TextAllignment.XYCENTERED,
-                new Rect(
+                new Point(
                         starsArea.getArea().left + 2 * starsArea.getArea().width() / 3,
-                        starsArea.getArea().top,
-                        starsArea.getArea().right,
-                        starsArea.getArea().bottom),
+                        starsArea.getArea().top),
+                new Size(
+                        starsArea.getArea().width() / 3,
+                        starsArea.getArea().height()),
                 Attributes.TEXT_BOX_STARS_PAINT);
         layoutObjects.put(LayoutElementsKeys.LEVELCOMPLETE_TEXT, levelCompleteText);
         layoutObjects.put(LayoutElementsKeys.STARS_AREA, starsArea);

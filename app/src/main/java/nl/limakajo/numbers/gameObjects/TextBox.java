@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.util.Size;
 
 import nl.limakajo.numbers.utils.Attributes;
 import nl.limakajo.numbers.utils.FontScaler;
@@ -26,11 +27,12 @@ public class TextBox extends LayoutObject {
      *
      * @param text          String containing the text
      * @param alignment     Attributes.TextAllignment defining how the text will be aligned in the TextBox
-     * @param rect          Rect defining the boundaries of the GameObjectInterface
+     * @param position  Top-left position of the Layoutobject
+     * @param size      Size of the LayoutObject
      * @param paint         Paint defining the graphical attributes
      */
-    public TextBox(String text, Attributes.TextAllignment alignment, Rect rect, Paint paint) {
-        super(rect, paint);
+    public TextBox(String text, Attributes.TextAllignment alignment, Point position, Size size, Paint paint) {
+        super(position, size, paint);
         this.alignment = alignment;
         setText(text);
     }
@@ -42,7 +44,7 @@ public class TextBox extends LayoutObject {
      */
     public void setText(String text) {
         this.text = text;
-        paint.setTextSize(new FontScaler(text, paint, rect).getTextSize());
+        paint.setTextSize(new FontScaler(text, paint, getArea()).getTextSize());
         setTextPosition();
     }
 
@@ -56,28 +58,28 @@ public class TextBox extends LayoutObject {
         switch (alignment) {
             case XYCENTERED:
                 paint.setTextAlign(Paint.Align.CENTER);
-                textPosition.x = rect.left + rect.width() / 2;
-                textPosition.y = rect.top + rect.height() / 2 + bounds.height() / 2;
+                textPosition.x = getArea().left + getArea().width() / 2;
+                textPosition.y = getArea().top + getArea().height() / 2 + bounds.height() / 2;
                 break;
             case XCENTERED_YTOP:
                 paint.setTextAlign(Paint.Align.CENTER);
-                textPosition.x = rect.left + rect.width() / 2;
-                textPosition.y = rect.top + Attributes.MARGE;
+                textPosition.x = getArea().left + getArea().width() / 2;
+                textPosition.y = getArea().top + Attributes.MARGE;
                 break;
             case XLEFT_YCENTERED:
                 paint.setTextAlign(Paint.Align.LEFT);
-                textPosition.x = rect.left + bounds.width() + Attributes.MARGE;
-                textPosition.y = rect.top + rect.height() / 2 + bounds.height() / 2;
+                textPosition.x = getArea().left + bounds.width() + Attributes.MARGE;
+                textPosition.y = getArea().top + getArea().height() / 2 + bounds.height() / 2;
                 break;
             case XRIGHT_YCENTERED:
                 paint.setTextAlign(Paint.Align.RIGHT);
-                textPosition.x = rect.right - Attributes.MARGE;
-                textPosition.y = rect.top + rect.height() / 2 + bounds.height() / 2;
+                textPosition.x = getArea().right - Attributes.MARGE;
+                textPosition.y = getArea().top + getArea().height() / 2 + bounds.height() / 2;
                 break;
             default:
                 paint.setTextAlign(Paint.Align.LEFT);
-                textPosition.x = rect.left + Attributes.MARGE;
-                textPosition.y = rect.top + Attributes.MARGE;
+                textPosition.x = getArea().left + Attributes.MARGE;
+                textPosition.y = getArea().top + Attributes.MARGE;
         }
     }
 

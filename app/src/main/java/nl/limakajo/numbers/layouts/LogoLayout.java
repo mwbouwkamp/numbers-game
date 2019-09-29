@@ -1,6 +1,8 @@
 package nl.limakajo.numbers.layouts;
 
+import android.graphics.Point;
 import android.graphics.Rect;
+import android.util.Size;
 
 import nl.limakajo.numbers.gameObjects.LayoutObject;
 import nl.limakajo.numbers.gameObjects.ScreenArea;
@@ -18,39 +20,44 @@ public class LogoLayout extends BasicLayout {
     LogoLayout() {
         //Logo
         LayoutObject logoArea = new ScreenArea (
-                new Rect(
+                new Point(
                         (int) (0.3 * layoutObjects.get(LayoutElementsKeys.FULLSCREEN).getArea().width()),
-                        (int) (0.3 * layoutObjects.get(LayoutElementsKeys.FULLSCREEN).getArea().width()),
-                        (int) (layoutObjects.get(LayoutElementsKeys.FULLSCREEN).getArea().width() - 0.3 * layoutObjects.get(LayoutElementsKeys.FULLSCREEN).getArea().width()),
-                        (int) (0.7 * layoutObjects.get(LayoutElementsKeys.FULLSCREEN).getArea().width())),
+                        (int) (0.3 * layoutObjects.get(LayoutElementsKeys.FULLSCREEN).getArea().width())),
+                new Size(
+                        (int) (0.4 * layoutObjects.get(LayoutElementsKeys.FULLSCREEN).getArea().width()),
+                        (int) (0.4 * layoutObjects.get(LayoutElementsKeys.FULLSCREEN).getArea().width())),
                 Attributes.NO_DRAW);
         LayoutObject blueArea = new ScreenArea(
-                new Rect(
+                new Point(
                         logoArea.getArea().left,
-                        logoArea.getArea().top,
-                        logoArea.getArea().left + logoArea.getArea().width() / 2 - Attributes.MARGE / 2,
-                        logoArea.getArea().top + logoArea.getArea().height() / 2 - Attributes.MARGE / 2),
+                        logoArea.getArea().top),
+                new Size(
+                        (logoArea.getArea().width() - Attributes.MARGE) / 2,
+                        (logoArea.getArea().height() - Attributes.MARGE) / 2),
                 Attributes.PLUS_PAINT);
         LayoutObject redArea = new ScreenArea(
-                new Rect(
+                new Point(
                         blueArea.getArea().right + Attributes.MARGE,
-                        logoArea.getArea().top,
-                        logoArea.getArea().right,
-                        blueArea.getArea().bottom),
+                        logoArea.getArea().top),
+                new Size(
+                        (logoArea.getArea().width() - Attributes.MARGE) / 2,
+                        (logoArea.getArea().height() - Attributes.MARGE) / 2),
                 Attributes.MIN_PAINT);
         LayoutObject greenArea = new ScreenArea(
-                new Rect(
+                new Point(
                         blueArea.getArea().left,
-                        blueArea.getArea().bottom + Attributes.MARGE,
-                        blueArea.getArea().right,
-                        logoArea.getArea().bottom),
+                        blueArea.getArea().bottom + Attributes.MARGE),
+                new Size(
+                        (logoArea.getArea().width() - Attributes.MARGE) / 2,
+                        (logoArea.getArea().height() - Attributes.MARGE) / 2),
                 Attributes.MULT_PAINT);
         LayoutObject yellowArea = new ScreenArea(
-                new Rect(
+                new Point(
                         redArea.getArea().left,
-                        greenArea.getArea().top,
-                        redArea.getArea().right,
-                        greenArea.getArea().bottom),
+                        greenArea.getArea().top),
+                new Size(
+                        (logoArea.getArea().width() - Attributes.MARGE) / 2,
+                        (logoArea.getArea().height() - Attributes.MARGE) / 2),
                 Attributes.DIV_PAINT);
         layoutObjects.put(LayoutElementsKeys.LOGO_AREA, logoArea);
         layoutObjects.put(LayoutElementsKeys.BLUE_AREA, blueArea);
