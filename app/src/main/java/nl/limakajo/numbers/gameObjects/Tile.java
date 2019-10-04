@@ -164,6 +164,23 @@ public class Tile extends GameObject {
 	}
 
 	/**
+	 * Adds the Tile to a shelf and return an Animator that is required to animate the Tile to the correct position
+	 *
+	 * @param shelf		the Shelf to add the Tile to
+	 * @return			the Animator required to animate the Tile to the correct position on the shelf
+	 */
+	public Animator addToShelf(Shelf shelf) {
+		int positionOnShelf = shelf.addTile(this);
+		position = new Point(Attributes.TILE_XCOORDS[GameConstants.NUMTILES] + Attributes.TILE_WIDTH * 3, Attributes.TILE_YCOORD);
+		animator = new Animator(Attributes.TILE_ANIMATION_TIME);
+		animator.initPositionAnimation(
+				position,
+				new Point(Attributes.TILE_XCOORDS[positionOnShelf], Attributes.TILE_YCOORD));
+		return animator;
+	}
+
+
+	/**
 	 * Getters and Setters
 	 */
 
@@ -193,16 +210,6 @@ public class Tile extends GameObject {
 
 	public Animator getAnimator() {
 		return this.animator;
-	}
-
-	public Animator addToShelf(Shelf shelf) {
-		int positionOnShelf = shelf.addTile(this);
-		position = new Point(Attributes.TILE_XCOORDS[GameConstants.NUMTILES] + Attributes.TILE_WIDTH * 3, Attributes.TILE_YCOORD);
-		animator = new Animator(Attributes.TILE_ANIMATION_TIME);
-		animator.initPositionAnimation(
-				position,
-				new Point(Attributes.TILE_XCOORDS[positionOnShelf], Attributes.TILE_YCOORD));
-		return animator;
 	}
 
 	public void setAnimator(Animator animator) {

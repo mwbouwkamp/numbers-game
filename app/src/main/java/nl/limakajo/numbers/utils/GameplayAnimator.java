@@ -60,6 +60,11 @@ public class GameplayAnimator extends Thread {
         animators.add(animator);
     }
 
+    public void addAll(List<Animator> animators) {
+        this.animators.addAll(animators);
+        System.out.println("ANIMATOR num animators added: " + animators.size());
+    }
+
     public void setRunning(boolean running) {
         this.running = running;
     }
@@ -68,8 +73,4 @@ public class GameplayAnimator extends Thread {
         animators.remove(animator);
     }
 
-    public void addAll(List<Animator> animators) {
-        this.animators.addAll(animators);
-        System.out.println("ANIMATOR num animators added: " + animators.size());
-    }
 }

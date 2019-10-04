@@ -42,6 +42,11 @@ public class Shelf {
         }
     }
 
+    /**
+     * populates and returns a list of Animators for the tiles that need to start animating because they are not on their respective correct positions on the shelf
+     *
+     * @return      List of Animators for the required animations
+     */
     public List<Animator> startAnimating() {
         List<Animator> animators = new LinkedList<>();
         int i = 0;
@@ -52,11 +57,9 @@ public class Shelf {
                 animatorToAdd.initPositionAnimation(tile.getPosition(), targetPosition);
                 animators.add(animatorToAdd);
                 tile.setAnimator(animatorToAdd);
-                System.out.println("ANIMATOR added with position: " + animatorToAdd.getCurrentPosition() + " and target " + animatorToAdd.getTargetPosition());
             }
             i++;
         }
-        System.out.println("ANIMATORS added: " + animators.size());
         return animators;
     }
 
@@ -70,6 +73,17 @@ public class Shelf {
     }
 
     /**
+     * Adds a tile to the shelf and returns the position of that Tile of the shelf
+     *
+     * @param tile      the Tile to add
+     * @return          the position of the added Tile on the shelf
+     */
+    public int addTile(Tile tile) {
+        tilesOnShelf.add(tile);
+        return tilesOnShelf.size() - 1;
+    }
+
+    /**
      * GETTERS
      */
     public LinkedList<Tile> getTilesOnShelf() {
@@ -80,8 +94,4 @@ public class Shelf {
         return tilesOnShelf.size();
     }
 
-    public int addTile(Tile tile) {
-        tilesOnShelf.add(tile);
-        return tilesOnShelf.size() - 1;
-    }
 }
