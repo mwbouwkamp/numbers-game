@@ -18,7 +18,6 @@ public class MainThread extends Thread {
     private static Canvas canvas;
 
     MainThread(SurfaceHolder surfaceHolder, GamePanel gamePanel) {
-        super();
         this.surfaceHolder = surfaceHolder;
         this.gamePanel = gamePanel;
     }

@@ -12,9 +12,8 @@ import nl.limakajo.numbers.utils.Attributes;
  *
  * @author mwbouwkamp
  */
-public class Wave implements GameObjectInterface {
+public class Wave extends GameObject {
 
-	private final Point position;
 	private float radius;
 	private final Paint paint;
 	private final long animationStart;

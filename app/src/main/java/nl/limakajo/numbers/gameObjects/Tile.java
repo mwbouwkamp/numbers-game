@@ -5,6 +5,8 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
 
+import nl.limakajo.numbers.numbersGame.Shelf;
+import nl.limakajo.numbers.utils.Animator;
 import nl.limakajo.numbers.utils.Attributes;
 import nl.limakajo.numberslib.utils.GameConstants;
 
@@ -13,18 +15,13 @@ import nl.limakajo.numberslib.utils.GameConstants;
  *
  * @author M.W.Bouwkamp
  */
-public class Tile implements GameObjectInterface {
+public class Tile extends GameObject {
 
 	private final int number;
 	private final Tile[] composition;
-	private Point originalPosition;
-	private Point currentPosition;
 	private final int color;
 	private final int colorIndex;
-	private final Paint paint;
-	private boolean animating;
-	private long animationStart;
-	private int animateXInit;
+	private Animator animator;
 
 	/**
 	 * Constructs Tile that is not based on a combination of previous tiles
@@ -36,8 +33,8 @@ public class Tile implements GameObjectInterface {
 		this.composition = new Tile[2];
 		this.color = Attributes.TILE_COLORS[0];
 		this.colorIndex = 0;
-		paint = new Paint();
-		animating = false;
+		this.paint = new Paint();
+		this.animator = new Animator(Attributes.TILE_ANIMATION_TIME);
 	}
 
 	/**
@@ -52,19 +49,28 @@ public class Tile implements GameObjectInterface {
 		this.composition = composition;
 		this.colorIndex = colorIndex;
 		this.color = Attributes.TILE_COLORS[colorIndex];
-		paint = new Paint();
-		animating = false;
+		this.paint = new Paint();
+		this.animator = new Animator(Attributes.TILE_ANIMATION_TIME);
 	}
 
 	/**
 	 * Moves Tile to shelf
-	 * 
+	 *
 	 * @param position 		the position of the Tile on the Shelf
 	 */
 	public void toShelf(int position) {
-		this.originalPosition = new Point(Attributes.TILE_XCOORDS[position], Attributes.TILE_YCOORD);
-		this.currentPosition = new Point(Attributes.TILE_XCOORDS[GameConstants.NUMTILES] + Attributes.TILE_WIDTH * 3, Attributes.TILE_YCOORD);
-		startAnimation();
+		this.position = new Point(Attributes.TILE_XCOORDS[GameConstants.NUMTILES] + Attributes.TILE_WIDTH * 3, Attributes.TILE_YCOORD);
+		startPositionAnimation(this.position, new Point(Attributes.TILE_XCOORDS[position], Attributes.TILE_YCOORD));
+	}
+
+	/**
+	 * Starts animation based on Position
+	 *
+	 * @param startPoint	the starting Point of the animation
+	 * @param endPoint		the ending Point of the animation
+	 */
+	public void startPositionAnimation(Point startPoint, Point endPoint) {
+		animator.initPositionAnimation(startPoint, endPoint);
 	}
 
 	/**
@@ -87,7 +93,7 @@ public class Tile implements GameObjectInterface {
 	 * @return true if tile is in screenArea
 	 */
 	public boolean inArea(ScreenArea screenArea) {
-		return screenArea.getArea().contains(getBounds(currentPosition));
+		return screenArea.getArea().contains(getBounds(position));
 	}
 	
 	/**
@@ -97,14 +103,14 @@ public class Tile implements GameObjectInterface {
 	 * @return true if the Tile was pressed
 	 */
 	public boolean isClicked(Point position) {
-		return Math.sqrt((position.x - currentPosition.x) * (position.x - currentPosition.x) + (position.y - currentPosition.y) * (position.y - currentPosition.y)) < Attributes.TILE_WIDTH / 2;
+		return Math.sqrt((position.x - this.position.x) * (position.x - this.position.x) + (position.y - this.position.y) * (position.y - this.position.y)) < Attributes.TILE_WIDTH / 2;
 	}
 
 	@Override
 	public void draw(Canvas canvas) {
 		paint.setStyle(Paint.Style.FILL);
 		paint.setColor(getColor());
-		canvas.drawCircle(currentPosition.x, currentPosition.y, Attributes.TILE_WIDTH / 2, paint);
+		canvas.drawCircle(position.x, position.y, Attributes.TILE_WIDTH / 2, paint);
 		String numberText = Integer.toString(getNumber());
 		drawCenteredText(canvas, numberText);
 	}
@@ -123,39 +129,14 @@ public class Tile implements GameObjectInterface {
 		paint.setTextAlign(Paint.Align.CENTER);
 		paint.getTextBounds(numberText, 0, numberText.length(), bounds);
 		paint.setColor(Attributes.BG_COLOR);
-		canvas.drawText(numberText, currentPosition.x, currentPosition.y + bounds.height() / 2, paint);
+		canvas.drawText(numberText, position.x, position.y + bounds.height() / 2, paint);
 	}
 
 	@Override
 	public void update() {
-		if (animating) {
-			float timePassed  = (System.nanoTime() - animationStart) / 1000000;
-			float factor = timePassed /(float) (Attributes.TILE_ANIMATION_TIME);
-			this.currentPosition = new Point((int) (animateXInit * (1-factor) + originalPosition.x * factor), currentPosition.y);
-			if (timePassed >= Attributes.TILE_ANIMATION_TIME || currentPosition.x < originalPosition.x) {
-				stopAnimation();
-				this.currentPosition = originalPosition;
-			}
-		}
-	}
-
-	/**
-	 * Starts the animation by setting animating to true and
-	 * recording the initial x-coordinate and the time the animation starts
-	 */
-	public void startAnimation() {
-		if (!animating) {
-			animating = true;
-			animationStart = System.nanoTime();
-			animateXInit = currentPosition.x;
-		}
-	}
-
-	/**
-	 * Stops the animation by setting animating to false
-	 */
-	public void stopAnimation() {
-		animating = false;
+		position = animator.getCurrentPosition();
+//		paint = animator.getCurrentPaint();
+//		scale = animator.getCurrentScale();
 	}
 
 	@Override
@@ -186,8 +167,8 @@ public class Tile implements GameObjectInterface {
 	 * Getters and Setters
 	 */
 
-	public void setCurrentPosition(Point position) {
-		this.currentPosition = position;
+	public void setPosition(Point position) {
+		this.position = position;
 	}
 
 	public int getNumber() {
@@ -206,15 +187,25 @@ public class Tile implements GameObjectInterface {
 		return new Rect(position.x - Attributes.TILE_WIDTH / 2, position.y - Attributes.TILE_WIDTH / 2, position.x + Attributes.TILE_WIDTH / 2, position.y + Attributes.TILE_WIDTH /2);
 	}
 
-	public Point getCurrentPosition() {
-		return this.currentPosition;
+	public Point getPosition() {
+		return this.position;
 	}
-	
-	public void setOriginalPosition(int position) {
-		this.originalPosition = new Point(Attributes.TILE_XCOORDS[position], Attributes.TILE_YCOORD);
+
+	public Animator getAnimator() {
+		return this.animator;
 	}
-	
-	public Point getOriginalPosition() {
-		return this.originalPosition;
+
+	public Animator addToShelf(Shelf shelf) {
+		int positionOnShelf = shelf.addTile(this);
+		position = new Point(Attributes.TILE_XCOORDS[GameConstants.NUMTILES] + Attributes.TILE_WIDTH * 3, Attributes.TILE_YCOORD);
+		animator = new Animator(Attributes.TILE_ANIMATION_TIME);
+		animator.initPositionAnimation(
+				position,
+				new Point(Attributes.TILE_XCOORDS[positionOnShelf], Attributes.TILE_YCOORD));
+		return animator;
+	}
+
+	public void setAnimator(Animator animator) {
+		this.animator = animator;
 	}
 }

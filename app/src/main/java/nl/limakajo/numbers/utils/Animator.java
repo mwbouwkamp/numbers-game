@@ -3,43 +3,117 @@ package nl.limakajo.numbers.utils;
 import android.graphics.Paint;
 import android.graphics.Point;
 
-import nl.limakajo.numbers.gameObjects.GameObjectInterface;
+import nl.limakajo.numbers.gameObjects.GameObject;
 
 public class Animator {
+    private long animationTime;
     private long startingTime;
-    private int animationTime;
+    private boolean animatePosition;
+    private Point startingPosition;
     private Point currentPosition;
     private Point targetPosition;
+    private boolean animatePaint;
+    private Paint startingPaint;
     private Paint currentPaint;
     private Paint targetPaint;
-    private double currentScale;
-    private double targetScale;
+    private boolean animateScale;
+    private float startingScale;
+    private float currentScale;
+    private float targetScale;
 
-    public Animator(long startingTime, int animationTime, Point currentPosition, Point targetPosition, Paint currentPaint, Paint targetPaint, double currentScale, double targetScale) {
-        this.startingTime = startingTime;
+    public Animator(long animationTime) {
         this.animationTime = animationTime;
-        this.currentPosition = currentPosition;
-        this.targetPosition = targetPosition;
-        this.currentPaint = currentPaint;
-        this.targetPaint = targetPaint;
-        this.currentScale = currentScale;
-        this.targetScale = targetScale;
     }
 
-    public class AnimatorBuilder {
-        private long startingTime;
-        private int animationTime;
-        private Point currentPosition;
-        private Point targetPosition;
-        private Paint currentPaint;
-        private Paint targetPaint;
-        private double currentScale;
-        private double targetScale;
+    public void initPositionAnimation(Point startingPosition, Point targetPosition) {
+        this.startingPosition = startingPosition;
+        this.currentPosition = startingPosition;
+        this.targetPosition = targetPosition;
+        animatePosition = true;
+        startingTime = System.nanoTime();
+    }
 
-        public AnimatorBuilder(GameObjectInterface gameObject, long startingTime, int animationTime) {
-            this.startingTime = startingTime;
-            this.animationTime = animationTime;
-//            this.currentPosition =
-        }
+    public void initPaintAnimation(Paint startingPaint, Paint targetPaint) {
+        this.startingPaint = startingPaint;
+        this.currentPaint = startingPaint;
+        this.targetPaint = targetPaint;
+        this.animatePaint = true;
+        startingTime = System.nanoTime();
+    }
+
+    public void initScaleAnimation(float startingScale, float targetScale) {
+        this.startingScale = startingScale;
+        this.currentScale = startingScale;
+        this.targetScale = targetScale;
+        this.animateScale = true;
+        startingTime = System.nanoTime();
+    }
+
+    public long getAnimationTime() {
+        return animationTime;
+    }
+
+    public long getStartingTime() {
+        return startingTime;
+    }
+
+    public boolean animatePosition() {
+        return animatePosition;
+    }
+
+    public Point getStartingPosition() {
+        return startingPosition;
+    }
+
+    public  Point getCurrentPosition() {
+        return currentPosition;
+    }
+
+    public Point getTargetPosition() {
+        return targetPosition;
+    }
+
+    public boolean animatePaint() {
+        return animatePaint;
+    }
+
+    public Paint getStartingPaint() {
+        return startingPaint;
+    }
+
+    public Paint getCurrentPaint() {
+        return currentPaint;
+    }
+
+    public Paint getTargetPaint() {
+        return targetPaint;
+    }
+
+    public boolean animateScale() {
+        return animateScale;
+    }
+
+    public float getStartingScale() {
+        return startingScale;
+    }
+
+    public float getCurrentScale() {
+        return currentScale;
+    }
+
+    public float getTargetScale() {
+        return targetScale;
+    }
+
+    public void setCurrentPosition(Point currentPosition) {
+        this.currentPosition = currentPosition;
+    }
+
+    public void setCurrentPaint(Paint currentPaint) {
+        this.currentPaint = currentPaint;
+    }
+
+    public void setCurrentScale(float currentScale) {
+        this.currentScale = currentScale;
     }
 }
