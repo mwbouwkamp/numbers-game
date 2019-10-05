@@ -7,6 +7,7 @@ import android.graphics.Point;
 import android.graphics.RectF;
 import android.view.MotionEvent;
 
+import nl.limakajo.numbers.animators.PaintAnimator;
 import nl.limakajo.numbers.animators.ScaleAnimator;
 import nl.limakajo.numbers.gameObjects.Tile;
 import nl.limakajo.numbers.gameObjects.Wave;
@@ -22,8 +23,8 @@ import nl.limakajo.numbers.animators.GameplayAnimatorThread;
 import nl.limakajo.numberslib.numbersGame.Level;
 import nl.limakajo.numberslib.utils.GameConstants;
 
-import java.util.ConcurrentModificationException;
-import java.util.NoSuchElementException;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author M.W.Bouwkamp
@@ -321,10 +322,21 @@ public class GameplayScene implements SceneInterface {
     private void createWave(Point position) {
         Wave waveToAdd = new Wave(position);
         ScaleAnimator scaleAnimatorToAdd = new ScaleAnimator(Attributes.WAVE_ANIMATION_TIME);
+        scaleAnimatorToAdd.init(waveToAdd, 10.0f);
         waveToAdd.setScaleAnimator(scaleAnimatorToAdd);
-        scaleAnimatorToAdd.initAnimationParameters(waveToAdd, 10.0f);
-        wavePool.add(waveToAdd);
+        scaleAnimatorToAdd.startAnimation();
         gameplayAnimatorThread.add(scaleAnimatorToAdd);
+        PaintAnimator paintAnimatorToAdd = new PaintAnimator(Attributes.WAVE_ANIMATION_TIME);
+        paintAnimatorToAdd.init(waveToAdd, Attributes.WAVE_PAINT_END);
+        List<PaintAnimator.PaintAnimatorParams> paintAnimatorParams = Arrays.asList(
+                PaintAnimator.PaintAnimatorParams.ALPHA,
+                PaintAnimator.PaintAnimatorParams.STROKE_WIDTH
+        );
+        paintAnimatorToAdd.setPaintAnimatorParams(paintAnimatorParams);
+        waveToAdd.setPaintAnimator(paintAnimatorToAdd);
+        paintAnimatorToAdd.startAnimation();
+        gameplayAnimatorThread.add(paintAnimatorToAdd);
+        wavePool.add(waveToAdd);
     }
 
     /**

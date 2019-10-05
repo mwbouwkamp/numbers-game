@@ -113,7 +113,9 @@ public class Tile extends GameObject {
 
 	@Override
 	public void update() {
-		position = positionAnimator.getCurrentPosition();
+		if (positionAnimator.isAnimating() || position != positionAnimator.getCurrentPosition()) {
+			position = positionAnimator.getCurrentPosition();
+		}
 	}
 
 	@Override
@@ -150,9 +152,10 @@ public class Tile extends GameObject {
 		int positionOnShelf = tilePool.add(this);
 		position = new Point(Attributes.TILE_XCOORDS[GameConstants.NUMTILES] + Attributes.TILE_WIDTH * 3, Attributes.TILE_YCOORD);
 		positionAnimator = new PositionAnimator(Attributes.TILE_ANIMATION_TIME);
-		positionAnimator.initAnimationParameters(
+		positionAnimator.init(
 				this,
 				new Point(Attributes.TILE_XCOORDS[positionOnShelf], Attributes.TILE_YCOORD));
+		positionAnimator.startAnimation();
 		return positionAnimator;
 	}
 

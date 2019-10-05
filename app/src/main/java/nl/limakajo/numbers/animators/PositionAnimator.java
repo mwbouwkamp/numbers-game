@@ -20,20 +20,18 @@ public class PositionAnimator extends Animator<Point>{
      * @param targetPosition        The target Position of the gameObject
      */
     @Override
-    public void initAnimationParameters(GameObject gameObject, Point targetPosition) {
+    public void init(GameObject gameObject, Point targetPosition) {
         this.startingPosition = gameObject.getPosition();
         this.currentPosition = gameObject.getPosition();
         this.targetPosition = targetPosition;
-        this.animating = true;
-        startingTime = System.nanoTime();
     }
 
     public  Point getCurrentPosition() {
-        return currentPosition;
+        return new Point(currentPosition);
     }
 
     @Override
-    public void adjustAnimatorParameters(float factor) {
+    public void update(float factor) {
         currentPosition = new Point(
                 (int) (targetPosition.x * (1 - factor) + startingPosition.x * factor),
                 (int) (targetPosition.y * (1 - factor) + startingPosition.y * factor));
@@ -41,7 +39,7 @@ public class PositionAnimator extends Animator<Point>{
     }
 
     @Override
-    public void setAnimatorParametersToTarget() {
+    public void setToTarget() {
         currentPosition = targetPosition;
     }
 }

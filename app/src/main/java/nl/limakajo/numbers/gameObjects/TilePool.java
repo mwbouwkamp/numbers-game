@@ -37,7 +37,8 @@ public class TilePool extends GameObjectPool<Tile> {
             Point targetPosition = new Point(Attributes.TILE_XCOORDS[i], Attributes.TILE_YCOORD);
             if (!tile.getPosition().equals(targetPosition)) {
                 PositionAnimator positionAnimatorToAdd = new PositionAnimator(Attributes.TILE_ANIMATION_TIME);
-                positionAnimatorToAdd.initAnimationParameters(tile, targetPosition);
+                positionAnimatorToAdd.init(tile, targetPosition);
+                positionAnimatorToAdd.startAnimation();
                 positionAnimators.add(positionAnimatorToAdd);
                 tile.setPositionAnimator(positionAnimatorToAdd);
             }

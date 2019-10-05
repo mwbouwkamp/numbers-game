@@ -89,9 +89,29 @@ public class Attributes {
     public static final int WAVE_GREEN = 200;
     public static final int WAVE_BLUE = 200;
     public static final int WAVE_ALPHA_START = 180;
+    public static final int WAVE_ALPHA_END = 0;
     public static final int WAVE_STROKE_START = 3;
     public static final int WAVE_STROKE_END = 60;
     public static final int WAVE_ANIMATION_TIME = 300;
+    public static final Paint WAVE_PAINT_START = initStartingWavePaint();
+    public static final Paint WAVE_PAINT_END = initEndWavePaint();
+    public static Paint initStartingWavePaint() {
+        Paint paint = new Paint();
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setColor(Color.WHITE);
+        paint.setARGB(Attributes.WAVE_ALPHA_START, Attributes.WAVE_RED, Attributes.WAVE_GREEN, Attributes.WAVE_BLUE);
+        paint.setStrokeWidth(Attributes.WAVE_STROKE_START);
+        return paint;
+    }
+    public static Paint initEndWavePaint() {
+
+        Paint paint = new Paint();
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setColor(Color.WHITE);
+        paint.setARGB(Attributes.WAVE_ALPHA_END, Attributes.WAVE_RED, Attributes.WAVE_GREEN, Attributes.WAVE_BLUE);
+        paint.setStrokeWidth(Attributes.WAVE_STROKE_END);
+        return paint;
+    }
 
     //LevelCompleteScene Attributes
     public static final long LEVELCOMPLETE_ANIMATION_TIME = 1000;

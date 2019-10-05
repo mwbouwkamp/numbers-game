@@ -7,14 +7,19 @@ public abstract class Animator<T> {
     protected long startingTime;
     protected boolean animating;
 
-    public abstract void adjustAnimatorParameters(float factor);
+    public abstract void update(float factor);
 
-    public abstract void setAnimatorParametersToTarget();
+    public abstract void setToTarget();
 
-    public abstract void initAnimationParameters(GameObject gameObject, T targetParameter);
+    public abstract void init(GameObject gameObject, T targetParameter);
 
     public long getStartingTime() {
         return startingTime;
+    }
+
+    public void startAnimation() {
+        this.animating = true;
+        startingTime = System.nanoTime();
     }
 
     public boolean isAnimating() {

@@ -21,7 +21,7 @@ public class ScaleAnimator extends Animator<Float> {
      * @param targetScale       The target Position of the gameObject
      */
     @Override
-    public void initAnimationParameters(GameObject gameObject, Float targetScale) {
+    public void init(GameObject gameObject, Float targetScale) {
         this.startingScale = gameObject.getScale();
         this.currentScale = gameObject.getScale();
         this.targetScale = targetScale;
@@ -34,12 +34,12 @@ public class ScaleAnimator extends Animator<Float> {
     }
 
     @Override
-    public void adjustAnimatorParameters(float factor) {
+    public void update(float factor) {
         currentScale = targetScale * (1 - factor) + startingScale * factor;
     }
 
     @Override
-    public void setAnimatorParametersToTarget() {
+    public void setToTarget() {
         currentScale = targetScale;
     }
 }

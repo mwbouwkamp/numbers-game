@@ -5,8 +5,10 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 
+import nl.limakajo.numbers.animators.PaintAnimator;
 import nl.limakajo.numbers.animators.ScaleAnimator;
 import nl.limakajo.numbers.utils.Attributes;
+import nl.limakajo.numbers.utils.PaintComparator;
 
 /**
  * Class representing a Wave
@@ -16,8 +18,8 @@ import nl.limakajo.numbers.utils.Attributes;
 public class Wave extends GameObject {
 
 	private float radius;
-	private final Paint paint;
 	private ScaleAnimator scaleAnimator;
+	private PaintAnimator paintAnimator;
 	
 	/**
 	 * Constucts a Wave
@@ -26,13 +28,11 @@ public class Wave extends GameObject {
 	 */
 	public Wave(Point position) {
 		this.position = position;
-		radius = Attributes.TILE_WIDTH / 2;
-		paint = new Paint();
-		paint.setColor(Color.WHITE);
-		paint.setARGB(Attributes.WAVE_ALPHA_START, Attributes.WAVE_RED, Attributes.WAVE_GREEN, Attributes.WAVE_BLUE);
-		paint.setStyle(Paint.Style.STROKE);
-		paint.setStrokeWidth(Attributes.WAVE_STROKE_START);
+		this.paint = new Paint(Attributes.WAVE_PAINT_START);
+		this.scale = 1;
+		this.radius = Attributes.TILE_WIDTH / 2;
 		this.scaleAnimator = new ScaleAnimator(Attributes.WAVE_ANIMATION_TIME);
+		this.paintAnimator = new PaintAnimator(Attributes.WAVE_ANIMATION_TIME);
 	}
 	
 	@Override
@@ -42,11 +42,12 @@ public class Wave extends GameObject {
 
 	@Override
 	public void update() {
-		scale = scaleAnimator.getCurrentScale();
-//		int alpha = (int) (Attributes.WAVE_ALPHA_START * (1 - factor));
-//		int stroke = (int) (Attributes.WAVE_STROKE_START + (factor) * (Attributes.WAVE_STROKE_END - Attributes.WAVE_STROKE_START));
-//		paint.setStrokeWidth(scaleAnimator.getCurrentStrokeWidth());
-//		paint.setARGB(alpha, Attributes.WAVE_RED, Attributes.WAVE_GREEN, Attributes.WAVE_BLUE);
+		if (scaleAnimator.isAnimating() || scale != scaleAnimator.getCurrentScale()) {
+			scale = scaleAnimator.getCurrentScale();
+		}
+		if (paintAnimator.isAnimating() || new PaintComparator().compare(paint, paintAnimator.getCurrentPaint()) == -1) {
+			paint = paintAnimator.getCurrentPaint();
+		}
 	}
 
 	/**
@@ -57,7 +58,15 @@ public class Wave extends GameObject {
 		return scaleAnimator;
 	}
 
+	public PaintAnimator getPaintAnimator() {
+		return paintAnimator;
+	}
+
 	public void setScaleAnimator(ScaleAnimator scaleAnimator) {
 		this.scaleAnimator = scaleAnimator;
+	}
+
+	public void setPaintAnimator(PaintAnimator paintAnimator) {
+		this.paintAnimator = paintAnimator;
 	}
 }
