@@ -6,7 +6,6 @@ import android.graphics.Point;
 import android.graphics.Rect;
 
 import nl.limakajo.numbers.animators.PositionAnimator;
-import nl.limakajo.numbers.numbersGame.Shelf;
 import nl.limakajo.numbers.utils.Attributes;
 import nl.limakajo.numberslib.utils.GameConstants;
 
@@ -56,22 +55,13 @@ public class Tile extends GameObject {
 	/**
 	 * Moves Tile to shelf
 	 *
-	 * @param position 		the position of the Tile on the Shelf
+	 * @param position 		the position of the Tile on the TilePool
 	 */
 	public void toShelf(int position) {
 		this.position = new Point(Attributes.TILE_XCOORDS[GameConstants.NUMTILES] + Attributes.TILE_WIDTH * 3, Attributes.TILE_YCOORD);
-		startPositionAnimation(this.position, new Point(Attributes.TILE_XCOORDS[position], Attributes.TILE_YCOORD));
+		positionAnimator.initAnimationParameters(this, new Point(Attributes.TILE_XCOORDS[position], Attributes.TILE_YCOORD));
 	}
 
-	/**
-	 * Starts animation based on Position
-	 *
-	 * @param startPoint	the starting Point of the animation
-	 * @param endPoint		the ending Point of the animation
-	 */
-	public void startPositionAnimation(Point startPoint, Point endPoint) {
-		positionAnimator.initPositionAnimation(startPoint, endPoint);
-	}
 
 	/**
 	 * Decomposes the tile in its constituents
@@ -135,8 +125,6 @@ public class Tile extends GameObject {
 	@Override
 	public void update() {
 		position = positionAnimator.getCurrentPosition();
-//		paint = positionAnimator.getCurrentPaint();
-//		scale = positionAnimator.getCurrentScale();
 	}
 
 	@Override
@@ -164,17 +152,17 @@ public class Tile extends GameObject {
 	}
 
 	/**
-	 * Adds the Tile to a shelf and return an PositionAnimator that is required to animating the Tile to the correct position
+	 * Adds the Tile to a tilePool and return an PositionAnimator that is required to animating the Tile to the correct position
 	 *
-	 * @param shelf		the Shelf to add the Tile to
-	 * @return			the PositionAnimator required to animating the Tile to the correct position on the shelf
+	 * @param tilePool		the TilePool to add the Tile to
+	 * @return			the PositionAnimator required to animating the Tile to the correct position on the tilePool
 	 */
-	public PositionAnimator addToShelf(Shelf shelf) {
-		int positionOnShelf = shelf.addTile(this);
+	public PositionAnimator addToShelf(TilePool tilePool) {
+		int positionOnShelf = tilePool.add(this);
 		position = new Point(Attributes.TILE_XCOORDS[GameConstants.NUMTILES] + Attributes.TILE_WIDTH * 3, Attributes.TILE_YCOORD);
 		positionAnimator = new PositionAnimator(Attributes.TILE_ANIMATION_TIME);
-		positionAnimator.initPositionAnimation(
-				position,
+		positionAnimator.initAnimationParameters(
+				this,
 				new Point(Attributes.TILE_XCOORDS[positionOnShelf], Attributes.TILE_YCOORD));
 		return positionAnimator;
 	}

@@ -1,11 +1,17 @@
 package nl.limakajo.numbers.animators;
 
+import android.graphics.Paint;
 import android.graphics.Point;
 
-public class ScaleAnimator extends Animator {
+import nl.limakajo.numbers.gameObjects.GameObject;
+
+public class ScaleAnimator extends Animator<Float> {
     private float startingScale;
     private float currentScale;
     private float targetScale;
+    private float startingStrokeWidth;
+    private float currentStrokeWidth;
+    private float targetStrokeWidth;
 
     public ScaleAnimator(long animationTime) {
         this.animationTime = animationTime;
@@ -14,13 +20,17 @@ public class ScaleAnimator extends Animator {
     /**
      * Initializes the ScaleAnimator for animation of the scale of the GameObject
      *
-     * @param startingScale      The starting Position of the GameObject
-     * @param targetScale        The target Position of the gameObject
+     * @param gameObject        The starting GameObject
+     * @param targetScale       The target Position of the gameObject
      */
-    public void initPositionAnimation(float startingScale, float targetScale) {
-        this.startingScale = startingScale;
-        this.currentScale = startingScale;
+    @Override
+    public void initAnimationParameters(GameObject gameObject, Float targetScale) {
+        this.startingScale = gameObject.getScale();
+        this.currentScale = gameObject.getScale();
         this.targetScale = targetScale;
+        this.startingStrokeWidth = gameObject.getPaint().getStrokeWidth();
+        this.currentStrokeWidth = startingStrokeWidth;
+        this.targetStrokeWidth = startingStrokeWidth * targetScale;
         startingTime = System.nanoTime();
     }
 
@@ -28,10 +38,13 @@ public class ScaleAnimator extends Animator {
         return currentScale;
     }
 
+    public float getCurrentStrokeWidth() {
+        return currentStrokeWidth;
+    }
     @Override
     public void adjustAnimatorParameters(float factor) {
         currentScale = targetScale * (1 - factor) + startingScale * factor;
-
+        currentStrokeWidth = targetStrokeWidth * (1 - factor) + startingStrokeWidth * factor;
     }
 
     @Override

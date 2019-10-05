@@ -2,7 +2,9 @@ package nl.limakajo.numbers.animators;
 
 import android.graphics.Point;
 
-public class PositionAnimator extends Animator {
+import nl.limakajo.numbers.gameObjects.GameObject;
+
+public class PositionAnimator extends Animator<Point>{
     private Point startingPosition;
     private Point currentPosition;
     private Point targetPosition;
@@ -14,12 +16,13 @@ public class PositionAnimator extends Animator {
     /**
      * Initializes the PositionAnimator for animation of the Position of the GameObject
      *
-     * @param startingPosition      The starting Position of the GameObject
+     * @param gameObject            The GameObject
      * @param targetPosition        The target Position of the gameObject
      */
-    public void initPositionAnimation(Point startingPosition, Point targetPosition) {
-        this.startingPosition = startingPosition;
-        this.currentPosition = startingPosition;
+    @Override
+    public void initAnimationParameters(GameObject gameObject, Point targetPosition) {
+        this.startingPosition = gameObject.getPosition();
+        this.currentPosition = gameObject.getPosition();
         this.targetPosition = targetPosition;
         startingTime = System.nanoTime();
     }

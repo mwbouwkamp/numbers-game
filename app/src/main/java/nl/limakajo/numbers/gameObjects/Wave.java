@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 
+import nl.limakajo.numbers.animators.ScaleAnimator;
 import nl.limakajo.numbers.utils.Attributes;
 
 /**
@@ -19,6 +20,7 @@ public class Wave extends GameObject {
 	private final long animationStart;
 	private final int animateTime;
 	private volatile boolean animating;
+	private ScaleAnimator scaleAnimator;
 	
 	/**
 	 * Constucts a Wave
@@ -40,17 +42,19 @@ public class Wave extends GameObject {
 	
 	@Override
 	public void draw(Canvas canvas) {
-		canvas.drawCircle(position.x, position.y, radius, this.paint);
+		canvas.drawCircle(position.x, position.y, radius * scale, this.paint);
 	}
 
 	@Override
 	public void update() {
 		float timePassed  = (System.nanoTime() - animationStart) / 1000000;
 		float factor = timePassed /(float) (animateTime);
-		radius = (int) (500 * factor + Attributes.TILE_WIDTH * (1-factor) / 2);
+//		radius = (int) (500 * factor + Attributes.TILE_WIDTH * (1-factor) / 2);
+		scale = scaleAnimator.getCurrentScale();
 		int alpha = (int) (Attributes.WAVE_ALPHA_START * (1 - factor));
 		int stroke = (int) (Attributes.WAVE_STROKE_START + (factor) * (Attributes.WAVE_STROKE_END - Attributes.WAVE_STROKE_START));
-		paint.setStrokeWidth(stroke);
+//		paint.setStrokeWidth(stroke);
+		scaleAnimator.getCurrentStrokeWidth();
 		paint.setARGB(alpha, Attributes.WAVE_RED, Attributes.WAVE_GREEN, Attributes.WAVE_BLUE);
 		if (timePassed >= animateTime) {
 			animating = false;
@@ -63,5 +67,9 @@ public class Wave extends GameObject {
 
 	public boolean animates() {
 		return animating;
+	}
+
+	public ScaleAnimator getScaleAnimator() {
+		return scaleAnimator;
 	}
 }

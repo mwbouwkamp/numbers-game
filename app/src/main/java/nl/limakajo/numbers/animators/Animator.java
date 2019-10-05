@@ -1,6 +1,8 @@
 package nl.limakajo.numbers.animators;
 
-public abstract class Animator {
+import nl.limakajo.numbers.gameObjects.GameObject;
+
+public abstract class Animator<T> {
     protected long animationTime;
     protected long startingTime;
     protected boolean animating;
@@ -8,6 +10,8 @@ public abstract class Animator {
     public abstract void adjustAnimatorParameters(float factor);
 
     public abstract void setAnimatorParametersToTarget();
+
+    public abstract void initAnimationParameters(GameObject gameObject, T targetParameter);
 
     public long getStartingTime() {
         return startingTime;

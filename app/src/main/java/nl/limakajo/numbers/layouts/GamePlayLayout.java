@@ -81,7 +81,7 @@ public class GamePlayLayout extends BasicLayout {
                         Attributes.GOAL_HEIGHT / 6),
                 Attributes.TEXTBOX_NUMLIVES_PAINT);
 
-		//Shelf
+		//TilePool
 		LayoutObject shelfArea = new ScreenArea(
 				new Point(
 						playArea.getArea().left,

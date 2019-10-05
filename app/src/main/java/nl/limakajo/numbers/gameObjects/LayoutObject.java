@@ -35,6 +35,7 @@ public class LayoutObject extends GameObject {
     public void update() {
     }
 
+
     /**
      * GETTERS
      */
