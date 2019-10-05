@@ -9,9 +9,6 @@ public class ScaleAnimator extends Animator<Float> {
     private float startingScale;
     private float currentScale;
     private float targetScale;
-    private float startingStrokeWidth;
-    private float currentStrokeWidth;
-    private float targetStrokeWidth;
 
     public ScaleAnimator(long animationTime) {
         this.animationTime = animationTime;
@@ -28,9 +25,7 @@ public class ScaleAnimator extends Animator<Float> {
         this.startingScale = gameObject.getScale();
         this.currentScale = gameObject.getScale();
         this.targetScale = targetScale;
-        this.startingStrokeWidth = gameObject.getPaint().getStrokeWidth();
-        this.currentStrokeWidth = startingStrokeWidth;
-        this.targetStrokeWidth = startingStrokeWidth * targetScale;
+        this.animating = true;
         startingTime = System.nanoTime();
     }
 
@@ -38,13 +33,9 @@ public class ScaleAnimator extends Animator<Float> {
         return currentScale;
     }
 
-    public float getCurrentStrokeWidth() {
-        return currentStrokeWidth;
-    }
     @Override
     public void adjustAnimatorParameters(float factor) {
         currentScale = targetScale * (1 - factor) + startingScale * factor;
-        currentStrokeWidth = targetStrokeWidth * (1 - factor) + startingStrokeWidth * factor;
     }
 
     @Override

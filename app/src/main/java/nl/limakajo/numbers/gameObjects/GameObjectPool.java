@@ -1,5 +1,7 @@
 package nl.limakajo.numbers.gameObjects;
 
+import android.graphics.Canvas;
+
 import java.util.List;
 
 public abstract class GameObjectPool<GameObject> {
@@ -20,4 +22,6 @@ public abstract class GameObjectPool<GameObject> {
     }
 
     public abstract void update();
+
+    public abstract void draw(Canvas canvas);
 }

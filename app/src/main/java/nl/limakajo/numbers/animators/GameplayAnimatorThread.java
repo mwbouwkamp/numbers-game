@@ -27,35 +27,34 @@ public class GameplayAnimatorThread extends Thread {
                 while (animatorIterator.hasNext()) {
                     Animator animator = animatorIterator.next();
                     float timePassed = (System.nanoTime() - animator.getStartingTime()) / 1000000;
-                    float factor = 1 - timePassed / (float) (Attributes.TILE_ANIMATION_TIME);
-                    if (animator.isAnimating()) {
-                            animator.adjustAnimatorParameters(factor);
-                    }
-                    if (timePassed >= Attributes.TILE_ANIMATION_TIME) {
+                    float factor = 1 - timePassed / (float) (animator.animationTime);
+                    animator.adjustAnimatorParameters(factor);
+                    if (timePassed >= animator.animationTime) {
                         animator.setAnimatorParametersToTarget();
+                        animator.stopAnimating();
                         animatorIterator.remove();
                     }
                 }
-            } catch (ConcurrentModificationException e) {
+            } catch (ConcurrentModificationException | NullPointerException e) {
                 e.printStackTrace();
             }
         }
     }
 
-    public void add(PositionAnimator positionAnimator) {
-        animators.add(positionAnimator);
+    public void add(Animator animator) {
+        animators.add(animator);
     }
 
-    public void addAll(List<PositionAnimator> positionAnimators) {
-        this.animators.addAll(positionAnimators);
+    public void addAll(List<Animator> animators) {
+        this.animators.addAll(animators);
     }
 
     public void setRunning(boolean running) {
         this.running = running;
     }
 
-    public void remove(PositionAnimator positionAnimator) {
-        animators.remove(positionAnimator);
+    public void remove(Animator animator) {
+        animators.remove(animator);
     }
 
 }

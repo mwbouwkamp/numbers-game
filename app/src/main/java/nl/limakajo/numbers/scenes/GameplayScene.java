@@ -7,12 +7,15 @@ import android.graphics.Point;
 import android.graphics.RectF;
 import android.view.MotionEvent;
 
+import nl.limakajo.numbers.animators.ScaleAnimator;
 import nl.limakajo.numbers.gameObjects.Tile;
 import nl.limakajo.numbers.gameObjects.Wave;
+import nl.limakajo.numbers.gameObjects.WavePool;
 import nl.limakajo.numbers.layouts.GamePlayLayout;
 import nl.limakajo.numbers.layouts.LayoutElementsKeys;
 import nl.limakajo.numbers.main.MainActivity;
 import nl.limakajo.numbers.gameObjects.TilePool;
+import nl.limakajo.numbers.utils.Attributes;
 import nl.limakajo.numbers.utils.DatabaseUtils;
 import nl.limakajo.numbers.utils.GameUtils;
 import nl.limakajo.numbers.animators.GameplayAnimatorThread;
@@ -20,7 +23,6 @@ import nl.limakajo.numberslib.numbersGame.Level;
 import nl.limakajo.numberslib.utils.GameConstants;
 
 import java.util.ConcurrentModificationException;
-import java.util.LinkedList;
 import java.util.NoSuchElementException;
 
 /**
@@ -38,7 +40,7 @@ public class GameplayScene implements SceneInterface {
     private int numPlus, numMin, numMult, numDiv;
     private String statusBarText;
     private long startTime;
-    private LinkedList<Wave> waves;
+    private WavePool wavePool;
     private TilePool tilePool;
 
     private GamePlayLayout gamePlayLayout;
@@ -66,7 +68,7 @@ public class GameplayScene implements SceneInterface {
         MainActivity.getPlayer().decreaseNumLives();
 
         //Initialize variables
-        waves = new LinkedList<>();
+        wavePool = new WavePool();
         tilePressed = null;
         firstTile = null;
         secondTile = null;
@@ -114,16 +116,7 @@ public class GameplayScene implements SceneInterface {
             }
         }
         tilePool.update();
-        try {
-            for (Wave wave : waves) {
-                wave.update();
-                if (!wave.animates()) {
-                    waves.remove(wave);
-                }
-            }
-        } catch (ConcurrentModificationException | NoSuchElementException | NullPointerException e) {
-            e.printStackTrace();
-        }
+        wavePool.update();
     }
 
 
@@ -177,21 +170,9 @@ public class GameplayScene implements SceneInterface {
     @Override
     public void draw(Canvas canvas) {
         gamePlayLayout.draw(canvas);
-        drawWaves(canvas);
+        wavePool.draw(canvas);
         drawTiles(canvas);
         drawTimerRound(canvas);
-    }
-
-    /**
-     * Draw Waves onto the canvas
-     * @param canvas canvas
-     */
-    private void drawWaves(Canvas canvas) {
-        for (Wave wave: waves) {
-            if (wave != null) {
-                wave.draw(canvas);
-            }
-        }
     }
 
     /**
@@ -200,9 +181,7 @@ public class GameplayScene implements SceneInterface {
      * @param canvas canvas
      */
     private void drawTiles(Canvas canvas) {
-        for (Tile tile: tilePool.getGameObjects()) {
-            tile.draw(canvas);
-        }
+        tilePool.draw(canvas);
         if (firstTile != null) {
             firstTile.draw(canvas);
         }
@@ -304,7 +283,7 @@ public class GameplayScene implements SceneInterface {
     private void runningTouchUp(MotionEvent event) {
         statusBarText = "";
         if (tilePressed != null) {
-            waves.add(new Wave(tilePressed.getPosition()));
+            createWave(tilePressed.getPosition());
             if (firstTile == null && secondTile == null) {
                 //TODO: Make this logic work again!
 //                tilePressed.setPosition(tilePressed.getOriginalPosition());
@@ -332,6 +311,20 @@ public class GameplayScene implements SceneInterface {
                 secondTile = null;
             }
         }
+    }
+
+    /**
+     * Creates a Wave and its WaveAnimator and adds them to the WavePool and Animators in the gamePlayAnimatorThread, respectively
+     *
+     * @param position      the Position of the wave
+     */
+    private void createWave(Point position) {
+        Wave waveToAdd = new Wave(position);
+        ScaleAnimator scaleAnimatorToAdd = new ScaleAnimator(Attributes.WAVE_ANIMATION_TIME);
+        waveToAdd.setScaleAnimator(scaleAnimatorToAdd);
+        scaleAnimatorToAdd.initAnimationParameters(waveToAdd, 10.0f);
+        wavePool.add(waveToAdd);
+        gameplayAnimatorThread.add(scaleAnimatorToAdd);
     }
 
     /**

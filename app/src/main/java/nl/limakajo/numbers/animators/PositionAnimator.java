@@ -24,6 +24,7 @@ public class PositionAnimator extends Animator<Point>{
         this.startingPosition = gameObject.getPosition();
         this.currentPosition = gameObject.getPosition();
         this.targetPosition = targetPosition;
+        this.animating = true;
         startingTime = System.nanoTime();
     }
 

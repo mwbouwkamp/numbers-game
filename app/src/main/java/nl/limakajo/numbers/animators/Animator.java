@@ -21,4 +21,8 @@ public abstract class Animator<T> {
         return animating;
     }
 
+    public void stopAnimating() {
+        animating = false;
+    }
+
 }

@@ -1,10 +1,12 @@
 package nl.limakajo.numbers.gameObjects;
 
+import android.graphics.Canvas;
 import android.graphics.Point;
 
 import java.util.LinkedList;
 import java.util.List;
 
+import nl.limakajo.numbers.animators.Animator;
 import nl.limakajo.numbers.animators.PositionAnimator;
 import nl.limakajo.numbers.utils.Attributes;
 
@@ -28,8 +30,8 @@ public class TilePool extends GameObjectPool<Tile> {
      *
      * @return      List of Animators for the required animations
      */
-    public List<PositionAnimator> startAnimating() {
-        List<PositionAnimator> positionAnimators = new LinkedList<>();
+    public List<Animator> startAnimating() {
+        List<Animator> positionAnimators = new LinkedList<>();
         int i = 0;
         for (Tile tile: gameObjectPool) {
             Point targetPosition = new Point(Attributes.TILE_XCOORDS[i], Attributes.TILE_YCOORD);
@@ -50,6 +52,14 @@ public class TilePool extends GameObjectPool<Tile> {
             tile.update();
         }
     }
+
+    @Override
+    public void draw(Canvas canvas) {
+        for (Tile tile: gameObjectPool) {
+            tile.draw(canvas);
+        }
+    }
+
 
     /**
      * GETTERS

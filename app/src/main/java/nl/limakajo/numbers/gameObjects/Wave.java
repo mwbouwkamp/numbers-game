@@ -17,9 +17,6 @@ public class Wave extends GameObject {
 
 	private float radius;
 	private final Paint paint;
-	private final long animationStart;
-	private final int animateTime;
-	private volatile boolean animating;
 	private ScaleAnimator scaleAnimator;
 	
 	/**
@@ -35,9 +32,7 @@ public class Wave extends GameObject {
 		paint.setARGB(Attributes.WAVE_ALPHA_START, Attributes.WAVE_RED, Attributes.WAVE_GREEN, Attributes.WAVE_BLUE);
 		paint.setStyle(Paint.Style.STROKE);
 		paint.setStrokeWidth(Attributes.WAVE_STROKE_START);
-		animateTime = Attributes.WAVE_ANIMATION_TIME;
-		animationStart = System.nanoTime();
-		animating = true;
+		this.scaleAnimator = new ScaleAnimator(Attributes.WAVE_ANIMATION_TIME);
 	}
 	
 	@Override
@@ -47,29 +42,22 @@ public class Wave extends GameObject {
 
 	@Override
 	public void update() {
-		float timePassed  = (System.nanoTime() - animationStart) / 1000000;
-		float factor = timePassed /(float) (animateTime);
-//		radius = (int) (500 * factor + Attributes.TILE_WIDTH * (1-factor) / 2);
 		scale = scaleAnimator.getCurrentScale();
-		int alpha = (int) (Attributes.WAVE_ALPHA_START * (1 - factor));
-		int stroke = (int) (Attributes.WAVE_STROKE_START + (factor) * (Attributes.WAVE_STROKE_END - Attributes.WAVE_STROKE_START));
-//		paint.setStrokeWidth(stroke);
-		scaleAnimator.getCurrentStrokeWidth();
-		paint.setARGB(alpha, Attributes.WAVE_RED, Attributes.WAVE_GREEN, Attributes.WAVE_BLUE);
-		if (timePassed >= animateTime) {
-			animating = false;
-		}
+//		int alpha = (int) (Attributes.WAVE_ALPHA_START * (1 - factor));
+//		int stroke = (int) (Attributes.WAVE_STROKE_START + (factor) * (Attributes.WAVE_STROKE_END - Attributes.WAVE_STROKE_START));
+//		paint.setStrokeWidth(scaleAnimator.getCurrentStrokeWidth());
+//		paint.setARGB(alpha, Attributes.WAVE_RED, Attributes.WAVE_GREEN, Attributes.WAVE_BLUE);
 	}
 
 	/**
 	 * GETTERS AND SETTERS
 	 */
 
-	public boolean animates() {
-		return animating;
-	}
-
 	public ScaleAnimator getScaleAnimator() {
 		return scaleAnimator;
+	}
+
+	public void setScaleAnimator(ScaleAnimator scaleAnimator) {
+		this.scaleAnimator = scaleAnimator;
 	}
 }
