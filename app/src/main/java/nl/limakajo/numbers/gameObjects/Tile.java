@@ -53,17 +53,6 @@ public class Tile extends GameObject {
 	}
 
 	/**
-	 * Moves Tile to shelf
-	 *
-	 * @param position 		the position of the Tile on the TilePool
-	 */
-	public void toShelf(int position) {
-		this.position = new Point(Attributes.TILE_XCOORDS[GameConstants.NUMTILES] + Attributes.TILE_WIDTH * 3, Attributes.TILE_YCOORD);
-		positionAnimator.initAnimationParameters(this, new Point(Attributes.TILE_XCOORDS[position], Attributes.TILE_YCOORD));
-	}
-
-
-	/**
 	 * Decomposes the tile in its constituents
 	 * 
 	 * @return 		the tiles after crunching

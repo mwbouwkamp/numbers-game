@@ -12,7 +12,7 @@ import nl.limakajo.numbers.utils.Attributes;
 
 public class GameplayAnimatorThread extends Thread {
 
-    List<Animator> animators;
+    private List<Animator> animators;
     boolean running;
 
     public GameplayAnimatorThread() {
@@ -22,22 +22,22 @@ public class GameplayAnimatorThread extends Thread {
     @Override
     public void run() {
         while (running) {
-            Iterator<Animator> animatorIterator = animators.iterator();
-            while (animatorIterator.hasNext()) {
-                Animator animator = animatorIterator.next();
-                float timePassed = (System.nanoTime() - animator.getStartingTime()) / 1000000;
-                float factor = 1 - timePassed / (float) (Attributes.TILE_ANIMATION_TIME);
-                if (animator.isAnimating()) {
-                    try {
-                        animator.adjustAnimatorParameters(factor);
-                    } catch (ConcurrentModificationException e) {
-                        e.printStackTrace();
+            try {
+                Iterator<Animator> animatorIterator = animators.iterator();
+                while (animatorIterator.hasNext()) {
+                    Animator animator = animatorIterator.next();
+                    float timePassed = (System.nanoTime() - animator.getStartingTime()) / 1000000;
+                    float factor = 1 - timePassed / (float) (Attributes.TILE_ANIMATION_TIME);
+                    if (animator.isAnimating()) {
+                            animator.adjustAnimatorParameters(factor);
+                    }
+                    if (timePassed >= Attributes.TILE_ANIMATION_TIME) {
+                        animator.setAnimatorParametersToTarget();
+                        animatorIterator.remove();
                     }
                 }
-                if (timePassed >= Attributes.TILE_ANIMATION_TIME) {
-                    animator.setAnimatorParametersToTarget();
-                    animatorIterator.remove();
-                }
+            } catch (ConcurrentModificationException e) {
+                e.printStackTrace();
             }
         }
     }
