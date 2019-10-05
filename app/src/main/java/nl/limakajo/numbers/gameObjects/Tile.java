@@ -5,8 +5,8 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
 
+import nl.limakajo.numbers.animators.PositionAnimator;
 import nl.limakajo.numbers.numbersGame.Shelf;
-import nl.limakajo.numbers.utils.Animator;
 import nl.limakajo.numbers.utils.Attributes;
 import nl.limakajo.numberslib.utils.GameConstants;
 
@@ -21,7 +21,7 @@ public class Tile extends GameObject {
 	private final Tile[] composition;
 	private final int color;
 	private final int colorIndex;
-	private Animator animator;
+	private PositionAnimator positionAnimator;
 
 	/**
 	 * Constructs Tile that is not based on a combination of previous tiles
@@ -34,7 +34,7 @@ public class Tile extends GameObject {
 		this.color = Attributes.TILE_COLORS[0];
 		this.colorIndex = 0;
 		this.paint = new Paint();
-		this.animator = new Animator(Attributes.TILE_ANIMATION_TIME);
+		this.positionAnimator = new PositionAnimator(Attributes.TILE_ANIMATION_TIME);
 	}
 
 	/**
@@ -50,7 +50,7 @@ public class Tile extends GameObject {
 		this.colorIndex = colorIndex;
 		this.color = Attributes.TILE_COLORS[colorIndex];
 		this.paint = new Paint();
-		this.animator = new Animator(Attributes.TILE_ANIMATION_TIME);
+		this.positionAnimator = new PositionAnimator(Attributes.TILE_ANIMATION_TIME);
 	}
 
 	/**
@@ -70,7 +70,7 @@ public class Tile extends GameObject {
 	 * @param endPoint		the ending Point of the animation
 	 */
 	public void startPositionAnimation(Point startPoint, Point endPoint) {
-		animator.initPositionAnimation(startPoint, endPoint);
+		positionAnimator.initPositionAnimation(startPoint, endPoint);
 	}
 
 	/**
@@ -134,9 +134,9 @@ public class Tile extends GameObject {
 
 	@Override
 	public void update() {
-		position = animator.getCurrentPosition();
-//		paint = animator.getCurrentPaint();
-//		scale = animator.getCurrentScale();
+		position = positionAnimator.getCurrentPosition();
+//		paint = positionAnimator.getCurrentPaint();
+//		scale = positionAnimator.getCurrentScale();
 	}
 
 	@Override
@@ -164,19 +164,19 @@ public class Tile extends GameObject {
 	}
 
 	/**
-	 * Adds the Tile to a shelf and return an Animator that is required to animate the Tile to the correct position
+	 * Adds the Tile to a shelf and return an PositionAnimator that is required to animating the Tile to the correct position
 	 *
 	 * @param shelf		the Shelf to add the Tile to
-	 * @return			the Animator required to animate the Tile to the correct position on the shelf
+	 * @return			the PositionAnimator required to animating the Tile to the correct position on the shelf
 	 */
-	public Animator addToShelf(Shelf shelf) {
+	public PositionAnimator addToShelf(Shelf shelf) {
 		int positionOnShelf = shelf.addTile(this);
 		position = new Point(Attributes.TILE_XCOORDS[GameConstants.NUMTILES] + Attributes.TILE_WIDTH * 3, Attributes.TILE_YCOORD);
-		animator = new Animator(Attributes.TILE_ANIMATION_TIME);
-		animator.initPositionAnimation(
+		positionAnimator = new PositionAnimator(Attributes.TILE_ANIMATION_TIME);
+		positionAnimator.initPositionAnimation(
 				position,
 				new Point(Attributes.TILE_XCOORDS[positionOnShelf], Attributes.TILE_YCOORD));
-		return animator;
+		return positionAnimator;
 	}
 
 
@@ -208,11 +208,11 @@ public class Tile extends GameObject {
 		return this.position;
 	}
 
-	public Animator getAnimator() {
-		return this.animator;
+	public PositionAnimator getPositionAnimator() {
+		return this.positionAnimator;
 	}
 
-	public void setAnimator(Animator animator) {
-		this.animator = animator;
+	public void setPositionAnimator(PositionAnimator positionAnimator) {
+		this.positionAnimator = positionAnimator;
 	}
 }

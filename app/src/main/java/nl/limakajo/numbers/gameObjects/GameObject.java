@@ -1,10 +1,7 @@
 package nl.limakajo.numbers.gameObjects;
 
-import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
-
-import nl.limakajo.numbers.utils.Animator;
 
 public abstract class GameObject implements GameObjectInterface {
     protected Point position;

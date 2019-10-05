@@ -7,8 +7,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import nl.limakajo.numbers.animators.PositionAnimator;
 import nl.limakajo.numbers.gameObjects.Tile;
-import nl.limakajo.numbers.utils.Animator;
 import nl.limakajo.numbers.utils.Attributes;
 
 
@@ -47,20 +47,20 @@ public class Shelf {
      *
      * @return      List of Animators for the required animations
      */
-    public List<Animator> startAnimating() {
-        List<Animator> animators = new LinkedList<>();
+    public List<PositionAnimator> startAnimating() {
+        List<PositionAnimator> positionAnimators = new LinkedList<>();
         int i = 0;
         for (Tile tile: tilesOnShelf) {
             Point targetPosition = new Point(Attributes.TILE_XCOORDS[i], Attributes.TILE_YCOORD);
             if (!tile.getPosition().equals(targetPosition)) {
-                Animator animatorToAdd = new Animator(Attributes.TILE_ANIMATION_TIME);
-                animatorToAdd.initPositionAnimation(tile.getPosition(), targetPosition);
-                animators.add(animatorToAdd);
-                tile.setAnimator(animatorToAdd);
+                PositionAnimator positionAnimatorToAdd = new PositionAnimator(Attributes.TILE_ANIMATION_TIME);
+                positionAnimatorToAdd.initPositionAnimation(tile.getPosition(), targetPosition);
+                positionAnimators.add(positionAnimatorToAdd);
+                tile.setPositionAnimator(positionAnimatorToAdd);
             }
             i++;
         }
-        return animators;
+        return positionAnimators;
     }
 
     /**
