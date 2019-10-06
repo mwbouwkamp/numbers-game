@@ -6,6 +6,7 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import nl.limakajo.numbers.animators.AnimatorThread;
 import nl.limakajo.numbers.scenes.SceneManager;
 
 
@@ -17,12 +18,14 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
     private MainThread thread;
     private final SceneManager sceneManager;
+    private final AnimatorThread animatorThread;
 
-    public GamePanel(Context context) {
+    public GamePanel(Context context, AnimatorThread animatorThread) {
         super(context);
         getHolder().addCallback(this);
 
-        sceneManager = new SceneManager();
+        this.animatorThread = animatorThread;
+        sceneManager = new SceneManager(animatorThread);
         setFocusable(true);
     }
 

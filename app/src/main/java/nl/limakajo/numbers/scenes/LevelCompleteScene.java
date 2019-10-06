@@ -4,6 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.view.MotionEvent;
 
+import nl.limakajo.numbers.animators.AnimatorThread;
 import nl.limakajo.numbers.layouts.LayoutElementsKeys;
 import nl.limakajo.numbers.layouts.LevelCompleteLayout;
 import nl.limakajo.numbers.main.MainActivity;
@@ -19,20 +20,24 @@ import nl.limakajo.numberslib.utils.GameConstants;
 public class LevelCompleteScene implements SceneInterface {
 
     private final SceneManager sceneManager;
+    private final AnimatorThread animatorThread;
     private LevelCompleteLayout levelCompleteLayout;
     private long animationStartTime;
     private int numStarsToAdd;
     private boolean animating;
     private boolean initiating;
 
-    LevelCompleteScene(SceneManager sceneManager) {
+    LevelCompleteScene(SceneManager sceneManager, AnimatorThread animatorThread) {
         this.sceneManager = sceneManager;
         this.animating = false;
         this.levelCompleteLayout = new LevelCompleteLayout();
+        this.animatorThread = animatorThread;
     }
 
     @Override
     public void init() {
+        this.animatorThread.removeAll();
+
         animating = true;
         int userTime = MainActivity.getGame().getLevel().getUserTime();
         int averageTime = MainActivity.getGame().getLevel().getAverageTime();
@@ -117,7 +122,7 @@ public class LevelCompleteScene implements SceneInterface {
     @Override
     public void receiveTouch(MotionEvent event) {
         if (!animating) {
-            sceneManager.setScene(new GameplayScene(sceneManager));
+            sceneManager.setScene(new GameplayScene(sceneManager, animatorThread));
         }
     }
 

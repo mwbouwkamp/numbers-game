@@ -5,6 +5,8 @@ import android.view.MotionEvent;
 
 import java.util.HashMap;
 
+import nl.limakajo.numbers.animators.AnimatorThread;
+
 import static java.lang.Thread.sleep;
 import static nl.limakajo.numbers.utils.GameUtils.GameState.*;
 
@@ -15,9 +17,12 @@ import static nl.limakajo.numbers.utils.GameUtils.GameState.*;
 public class SceneManager {
     private SceneInterface scene;
     private boolean activeSceneInitiating;
+    private final AnimatorThread animatorThread;
 
-    public SceneManager() {
-        scene = new MenuScene(this);
+
+    public SceneManager(AnimatorThread animatorThread) {
+        this.animatorThread = animatorThread;
+        scene = new MenuScene(this, animatorThread);
         startScene();
     }
 

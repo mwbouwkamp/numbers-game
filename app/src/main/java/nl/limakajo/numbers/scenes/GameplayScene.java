@@ -19,7 +19,7 @@ import nl.limakajo.numbers.gameObjects.TilePool;
 import nl.limakajo.numbers.utils.Attributes;
 import nl.limakajo.numbers.utils.DatabaseUtils;
 import nl.limakajo.numbers.utils.GameUtils;
-import nl.limakajo.numbers.animators.animatorThread;
+import nl.limakajo.numbers.animators.AnimatorThread;
 import nl.limakajo.numberslib.numbersGame.Level;
 import nl.limakajo.numberslib.utils.GameConstants;
 
@@ -47,14 +47,12 @@ public class GameplayScene implements SceneInterface {
     private GamePlayLayout gamePlayLayout;
 
     private final SceneManager sceneManager;
-    private final animatorThread animatorThread;
+    private final AnimatorThread animatorThread;
 
-    GameplayScene(SceneManager sceneManager) {
+    GameplayScene(SceneManager sceneManager, AnimatorThread animatorThread) {
         this.sceneManager = sceneManager;
+        this.animatorThread = animatorThread;
         this.gamePlayLayout = new GamePlayLayout();
-        this.animatorThread = new animatorThread();
-        this.animatorThread.start();
-        this.animatorThread.setRunning(true);
     }
 
     /**
@@ -63,6 +61,8 @@ public class GameplayScene implements SceneInterface {
      * Starts GameThread, initializes variables and sets the initial GameState
      */
     public void init() {
+        this.animatorThread.removeAll();
+
         startTime = System.currentTimeMillis();
 
         //Make sure that player loses a life, even when games gets to end before completing a level or running out of time
@@ -108,12 +108,12 @@ public class GameplayScene implements SceneInterface {
     public void update() {
         gamePlayLayout.getTextBox(LayoutElementsKeys.FOOTER_TEXT).setText(statusBarText);
         if (System.currentTimeMillis() - startTime > GameConstants.TIMER){
-            sceneManager.setScene(new GameOverScene(sceneManager));
+            sceneManager.setScene(new GameOverScene(sceneManager, animatorThread));
         }
         for (Tile tile: tilePool.getGameObjects()) {
             if (tile.getNumber() == MainActivity.getGame().getLevel().getGoal()) {
                 MainActivity.getGame().getLevel().setUserTime((int)(System.currentTimeMillis() - startTime));
-                sceneManager.setScene(new LevelCompleteScene(sceneManager));
+                sceneManager.setScene(new LevelCompleteScene(sceneManager, animatorThread));
             }
         }
         tilePool.update();

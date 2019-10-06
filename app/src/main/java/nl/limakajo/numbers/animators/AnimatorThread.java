@@ -5,12 +5,12 @@ import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.List;
 
-public class animatorThread extends Thread {
+public class AnimatorThread extends Thread {
 
     private List<Animator> animators;
     boolean running;
 
-    public animatorThread() {
+    public AnimatorThread() {
         this.animators = new ArrayList<>();
     }
 
@@ -42,6 +42,10 @@ public class animatorThread extends Thread {
 
     public void addAll(List<Animator> animators) {
         this.animators.addAll(animators);
+    }
+
+    public void removeAll() {
+        this.animators = new ArrayList<>();
     }
 
     public void setRunning(boolean running) {
