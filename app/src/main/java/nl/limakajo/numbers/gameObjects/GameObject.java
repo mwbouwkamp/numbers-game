@@ -21,7 +21,5 @@ public abstract class GameObject {
         return scale;
     }
 
-    public abstract void update();
-
     public abstract void draw(Canvas canvas);
 }

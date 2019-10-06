@@ -1,7 +1,6 @@
 package nl.limakajo.numbers.gameObjects;
 
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 
@@ -15,9 +14,8 @@ import nl.limakajo.numbers.utils.PaintComparator;
  *
  * @author mwbouwkamp
  */
-public class Wave extends GameObject {
+public class Wave extends GameObject implements CanAnimatePaint, CanAnimateScale {
 
-	private float radius;
 	private ScaleAnimator scaleAnimator;
 	private PaintAnimator paintAnimator;
 	
@@ -30,14 +28,13 @@ public class Wave extends GameObject {
 		this.position = position;
 		this.paint = new Paint(Attributes.WAVE_PAINT_START);
 		this.scale = 1;
-		this.radius = Attributes.TILE_WIDTH / 2;
 		this.scaleAnimator = new ScaleAnimator(Attributes.WAVE_ANIMATION_TIME);
 		this.paintAnimator = new PaintAnimator(Attributes.WAVE_ANIMATION_TIME);
 	}
 	
 	@Override
 	public void draw(Canvas canvas) {
-		canvas.drawCircle(position.x, position.y, radius * scale, this.paint);
+		canvas.drawCircle(position.x, position.y, Attributes.RADIUS * scale, this.paint);
 	}
 
 	@Override
@@ -56,10 +53,6 @@ public class Wave extends GameObject {
 
 	public ScaleAnimator getScaleAnimator() {
 		return scaleAnimator;
-	}
-
-	public PaintAnimator getPaintAnimator() {
-		return paintAnimator;
 	}
 
 	public void setScaleAnimator(ScaleAnimator scaleAnimator) {

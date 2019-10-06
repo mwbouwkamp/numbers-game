@@ -7,6 +7,7 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.util.Size;
 
+import nl.limakajo.numbers.animators.PaintAnimator;
 import nl.limakajo.numbers.utils.Attributes;
 import nl.limakajo.numbers.utils.FontScaler;
 import nl.limakajo.numbers.utils.PaintComparator;
@@ -16,11 +17,12 @@ import nl.limakajo.numbers.utils.PaintComparator;
  *
  * @author M.W.Bouwkamp
  */
-public class TextBox extends LayoutObject {
+public class TextBox extends LayoutObject implements CanAnimatePaint {
 
     private String text;
     private final Attributes.TextAllignment alignment;
     private Point textPosition;
+    PaintAnimator paintAnimator;
 
     /**
      * Constructs a TextBox
@@ -35,6 +37,7 @@ public class TextBox extends LayoutObject {
         super(position, size, paint);
         this.alignment = alignment;
         setText(text);
+        this.paintAnimator = new PaintAnimator(0);
     }
 
     /**
@@ -102,5 +105,11 @@ public class TextBox extends LayoutObject {
         return alignment;
     }
 
+    @Override
+    public void update() {
+        if (paintAnimator.isAnimating() || new PaintComparator().compare(paint, paintAnimator.getCurrentPaint()) == -1) {
+            paint = paintAnimator.getCurrentPaint();
+        }
+    }
 }
 

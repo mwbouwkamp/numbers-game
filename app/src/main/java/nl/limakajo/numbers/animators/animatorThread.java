@@ -5,12 +5,12 @@ import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.List;
 
-public class GameplayAnimatorThread extends Thread {
+public class animatorThread extends Thread {
 
     private List<Animator> animators;
     boolean running;
 
-    public GameplayAnimatorThread() {
+    public animatorThread() {
         this.animators = new ArrayList<>();
     }
 

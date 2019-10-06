@@ -11,8 +11,9 @@ import android.util.Size;
  *
  * @author M.W.Bouwkamp
  */
-public class LayoutObject extends GameObject {
-    Size size;
+public abstract class LayoutObject extends GameObject {
+
+    protected Size size;
 
     /**
      * Constructs a LayoutObject
@@ -25,14 +26,6 @@ public class LayoutObject extends GameObject {
         this.position = position;
         this.size = size;
         this.paint = new Paint(paint);
-    }
-
-    @Override
-    public void draw(Canvas canvas) {
-    }
-
-    @Override
-    public void update() {
     }
 
 

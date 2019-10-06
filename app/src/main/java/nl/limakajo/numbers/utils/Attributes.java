@@ -77,6 +77,7 @@ public class Attributes {
             6   * (TILE_WIDTH) + 8 * MARGE};
     public static final int TILE_YCOORD = 3 * MARGE + GOAL_HEIGHT + TILE_WIDTH /2;
     public static final long TILE_ANIMATION_TIME = 750;
+
     public enum TextAllignment {
         XCENTERED_YTOP,
         XLEFT_YCENTERED,
@@ -85,6 +86,7 @@ public class Attributes {
     }
 
     //Wave Attributes
+    public static final float RADIUS = Attributes.TILE_WIDTH / 2;
     public static final int WAVE_RED = 200;
     public static final int WAVE_GREEN = 200;
     public static final int WAVE_BLUE = 200;

@@ -14,7 +14,7 @@ import nl.limakajo.numberslib.utils.GameConstants;
  *
  * @author M.W.Bouwkamp
  */
-public class Tile extends GameObject {
+public class Tile extends GameObject implements CanAnimatePosition {
 
 	private final int number;
 	private final Tile[] composition;

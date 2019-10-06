@@ -22,6 +22,10 @@ public abstract class Animator<T> {
         startingTime = System.nanoTime();
     }
 
+    public void setAnimationTime(long animationTime) {
+        this.animationTime = animationTime;
+    }
+
     public boolean isAnimating() {
         return animating;
     }

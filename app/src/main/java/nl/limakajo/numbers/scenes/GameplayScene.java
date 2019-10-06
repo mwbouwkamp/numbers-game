@@ -19,7 +19,7 @@ import nl.limakajo.numbers.gameObjects.TilePool;
 import nl.limakajo.numbers.utils.Attributes;
 import nl.limakajo.numbers.utils.DatabaseUtils;
 import nl.limakajo.numbers.utils.GameUtils;
-import nl.limakajo.numbers.animators.GameplayAnimatorThread;
+import nl.limakajo.numbers.animators.animatorThread;
 import nl.limakajo.numberslib.numbersGame.Level;
 import nl.limakajo.numberslib.utils.GameConstants;
 
@@ -47,14 +47,14 @@ public class GameplayScene implements SceneInterface {
     private GamePlayLayout gamePlayLayout;
 
     private final SceneManager sceneManager;
-    private final GameplayAnimatorThread gameplayAnimatorThread;
+    private final animatorThread animatorThread;
 
     GameplayScene(SceneManager sceneManager) {
         this.sceneManager = sceneManager;
         this.gamePlayLayout = new GamePlayLayout();
-        this.gameplayAnimatorThread = new GameplayAnimatorThread();
-        this.gameplayAnimatorThread.start();
-        this.gameplayAnimatorThread.setRunning(true);
+        this.animatorThread = new animatorThread();
+        this.animatorThread.start();
+        this.animatorThread.setRunning(true);
     }
 
     /**
@@ -96,7 +96,7 @@ public class GameplayScene implements SceneInterface {
         tilePool = new TilePool();
         for (int i = 0; i < GameConstants.NUMTILES; i++) {
             Tile tileToAdd = new Tile(MainActivity.getGame().getLevel().getHand()[i]);
-            gameplayAnimatorThread.add(tileToAdd.addToShelf(tilePool));
+            animatorThread.add(tileToAdd.addToShelf(tilePool));
         }
         gamePlayLayout.getTextBox(LayoutElementsKeys.GOAL_TEXT).setText(Integer.toString(MainActivity.getGame().getLevel().getGoal()));
         gamePlayLayout.getTextBox(LayoutElementsKeys.NUM_STARS_TEXT).setText("A" + Integer.toString(MainActivity.getPlayer().getNumStars()));
@@ -155,7 +155,7 @@ public class GameplayScene implements SceneInterface {
         } else if (tile.inArea(gamePlayLayout.getScreenArea(LayoutElementsKeys.HEADER_AREA))) {
             Tile[] tilesAfterCrunching = tile.crunch();
             for (Tile tileAfterCrunching: tilesAfterCrunching) {
-                gameplayAnimatorThread.add(tileAfterCrunching.addToShelf(tilePool));
+                animatorThread.add(tileAfterCrunching.addToShelf(tilePool));
             }
             numPlus = 0;
             numMin = 0;
@@ -163,7 +163,7 @@ public class GameplayScene implements SceneInterface {
             numDiv = 0;
             return null;
         } else {
-            gameplayAnimatorThread.add(tile.addToShelf(tilePool));
+            animatorThread.add(tile.addToShelf(tilePool));
             return null;
         }
     }
@@ -239,7 +239,7 @@ public class GameplayScene implements SceneInterface {
         }
         for (Tile tile: tilePool.getGameObjects()) {
             if (tile.isClicked(clickPosition)) {
-                gameplayAnimatorThread.remove(tile.getPositionAnimator());
+                animatorThread.remove(tile.getPositionAnimator());
                 setClicekdTile(tile);
             }
         }
@@ -262,7 +262,7 @@ public class GameplayScene implements SceneInterface {
                 if (onShelf && !tilePressed.inArea(gamePlayLayout.getScreenArea(LayoutElementsKeys.SHELF_AREA))) {
                     onShelf = false;
                     tilePool.remove(tilePressed);
-                    gameplayAnimatorThread.addAll(tilePool.startAnimating());
+                    animatorThread.addAll(tilePool.startAnimating());
                     if (firstTile == null) {
                         firstTile = tilePressed;
                         tilePool.remove(tilePressed);
@@ -307,7 +307,7 @@ public class GameplayScene implements SceneInterface {
             } else if (numDiv == 2) {
                 calculate('/');
             } else {
-                gameplayAnimatorThread.add(firstTile.addToShelf(tilePool));
+                animatorThread.add(firstTile.addToShelf(tilePool));
                 firstTile = secondTile;
                 secondTile = null;
             }
@@ -325,7 +325,7 @@ public class GameplayScene implements SceneInterface {
         scaleAnimatorToAdd.init(waveToAdd, 10.0f);
         waveToAdd.setScaleAnimator(scaleAnimatorToAdd);
         scaleAnimatorToAdd.startAnimation();
-        gameplayAnimatorThread.add(scaleAnimatorToAdd);
+        animatorThread.add(scaleAnimatorToAdd);
         PaintAnimator paintAnimatorToAdd = new PaintAnimator(Attributes.WAVE_ANIMATION_TIME);
         paintAnimatorToAdd.init(waveToAdd, Attributes.WAVE_PAINT_END);
         List<PaintAnimator.PaintAnimatorParams> paintAnimatorParams = Arrays.asList(
@@ -335,7 +335,7 @@ public class GameplayScene implements SceneInterface {
         paintAnimatorToAdd.setPaintAnimatorParams(paintAnimatorParams);
         waveToAdd.setPaintAnimator(paintAnimatorToAdd);
         paintAnimatorToAdd.startAnimation();
-        gameplayAnimatorThread.add(paintAnimatorToAdd);
+        animatorThread.add(paintAnimatorToAdd);
         wavePool.add(waveToAdd);
     }
 
@@ -355,8 +355,8 @@ public class GameplayScene implements SceneInterface {
                     newValue = firstTile.getNumber() - secondTile.getNumber();
                 } else {
                     statusBarText = "Results in negative integer";
-                    gameplayAnimatorThread.add(firstTile.addToShelf(tilePool));
-                    gameplayAnimatorThread.add(secondTile.addToShelf(tilePool));
+                    animatorThread.add(firstTile.addToShelf(tilePool));
+                    animatorThread.add(secondTile.addToShelf(tilePool));
                     firstTile = null;
                     secondTile = null;
                 }
@@ -369,8 +369,8 @@ public class GameplayScene implements SceneInterface {
                     newValue = firstTile.getNumber() / secondTile.getNumber();
                 } else {
                     statusBarText = "Results in non-integer";
-                    gameplayAnimatorThread.add(firstTile.addToShelf(tilePool));
-                    gameplayAnimatorThread.add(secondTile.addToShelf(tilePool));
+                    animatorThread.add(firstTile.addToShelf(tilePool));
+                    animatorThread.add(secondTile.addToShelf(tilePool));
                     firstTile = null;
                     secondTile = null;
                 }
@@ -379,7 +379,7 @@ public class GameplayScene implements SceneInterface {
         if (newValue > 0) {
             Tile[] compositionNewTile = {firstTile, secondTile};
             Tile toAdd = new Tile(newValue, compositionNewTile, firstTile.getColorIndex() + secondTile.getColorIndex() + 1);
-            gameplayAnimatorThread.add(toAdd.addToShelf(tilePool));
+            animatorThread.add(toAdd.addToShelf(tilePool));
             firstTile = null;
             secondTile = null;
             numPlus = 0;
