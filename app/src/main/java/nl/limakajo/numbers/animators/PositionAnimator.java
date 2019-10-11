@@ -6,8 +6,13 @@ import nl.limakajo.numbers.gameObjects.Animates;
 import nl.limakajo.numbers.gameObjects.AnimatesPosition;
 import nl.limakajo.numbers.gameObjects.GameObject;
 
-public class PositionAnimator extends Animator<AnimatesPosition, Point>{
+public class PositionAnimator extends Animator<Point>{
 
+    /**
+     * Constructs a PositionAnmiator
+     *
+     * @param animationTime     the time it takes to animate
+     */
     public PositionAnimator(long animationTime) {
         this.animationTime = animationTime;
     }

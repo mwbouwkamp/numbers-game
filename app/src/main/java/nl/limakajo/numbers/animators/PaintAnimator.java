@@ -5,8 +5,13 @@ import android.graphics.Paint;
 
 import nl.limakajo.numbers.gameObjects.AnimatesPaint;
 
-public class PaintAnimator extends Animator<AnimatesPaint, Paint> {
+public class PaintAnimator extends Animator<Paint> {
 
+    /**
+     * Constructs a PaintAnimator
+     *
+     * @param animationTime     the time it takes to animate
+     */
     public PaintAnimator(long animationTime) {
         this.animationTime = animationTime;
     }

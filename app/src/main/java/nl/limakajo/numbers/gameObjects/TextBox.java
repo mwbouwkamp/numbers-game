@@ -70,7 +70,7 @@ public class TextBox extends LayoutObject implements AnimatesPaint {
                 break;
             case XLEFT_YCENTERED:
                 paint.setTextAlign(Paint.Align.LEFT);
-                textPosition.x = getArea().left + bounds.width() + Attributes.MARGIN;
+                textPosition.x = getArea().left + Attributes.MARGIN;
                 textPosition.y = getArea().top + getArea().height() / 2 + bounds.height() / 2;
                 break;
             case XRIGHT_YCENTERED:
