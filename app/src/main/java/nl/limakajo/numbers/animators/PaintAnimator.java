@@ -5,9 +5,11 @@ import android.graphics.Paint;
 
 import java.util.List;
 
+import nl.limakajo.numbers.gameObjects.Animates;
+import nl.limakajo.numbers.gameObjects.AnimatesPaint;
 import nl.limakajo.numbers.gameObjects.GameObject;
 
-public class PaintAnimator extends Animator<Paint> {
+public class PaintAnimator extends Animator<AnimatesPaint, Paint> {
 
     public enum PaintAnimatorParams {
         RED,
@@ -27,8 +29,8 @@ public class PaintAnimator extends Animator<Paint> {
     }
 
     @Override
-    public void init(GameObject gameObject, Paint targetScale) {
-        this.startingPaint = gameObject.getPaint();
+    public void init(AnimatesPaint animatesPaint, Paint targetScale) {
+        this.startingPaint = animatesPaint.getPaint();
         this.currentPaint = startingPaint;
         this.targetPaint = targetScale;
     }

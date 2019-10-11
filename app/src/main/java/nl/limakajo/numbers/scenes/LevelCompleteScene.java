@@ -10,6 +10,7 @@ import java.util.List;
 import nl.limakajo.numbers.animators.AnimatorThread;
 import nl.limakajo.numbers.animators.PaintAnimator;
 import nl.limakajo.numbers.gameObjects.Animates;
+import nl.limakajo.numbers.gameObjects.AnimatesPaint;
 import nl.limakajo.numbers.gameObjects.TextBox;
 import nl.limakajo.numbers.layouts.LayoutElementsKeys;
 import nl.limakajo.numbers.layouts.LevelCompleteLayout;
@@ -63,16 +64,16 @@ public class LevelCompleteScene extends Scene {
     }
 
 
-    public void initStarAnimation(TextBox startTextBox, AnimatorThread animatorThread) {
-        PaintAnimator animator = new PaintAnimator(Attributes.STAR_ANIMATION_TIME);
-        animator.init(startTextBox, new Paint(Attributes.STARS_PAINT_STROKE_END));
+    public void initStarAnimation(AnimatesPaint startTextBox, AnimatorThread animatorThread) {
+        PaintAnimator paintAnimator = new PaintAnimator(Attributes.STAR_ANIMATION_TIME);
+        paintAnimator.init(startTextBox, new Paint(Attributes.STARS_PAINT_STROKE_END));
         List<PaintAnimator.PaintAnimatorParams> paintAnimatorParams = Arrays.asList(
                 PaintAnimator.PaintAnimatorParams.ALPHA
         );
-        animator.setPaintAnimatorParams(paintAnimatorParams);
-        startTextBox.setPaintAnimator(animator);
-        animator.startAnimation();
-        animatorThread.add(animator);
+        paintAnimator.setPaintAnimatorParams(paintAnimatorParams);
+        startTextBox.setPaintAnimator(paintAnimator);
+        paintAnimator.startAnimation();
+        animatorThread.add(paintAnimator);
 
     }
     /**
