@@ -1,7 +1,6 @@
 package nl.limakajo.numbers.gameObjects;
 
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
@@ -17,12 +16,12 @@ import nl.limakajo.numbers.utils.PaintComparator;
  *
  * @author M.W.Bouwkamp
  */
-public class TextBox extends LayoutObject implements CanAnimatePaint {
+public class TextBox extends LayoutObject implements AnimatesPaint {
 
     private String text;
     private final Attributes.TextAllignment alignment;
     private Point textPosition;
-    PaintAnimator paintAnimator;
+    private PaintAnimator paintAnimator;
 
     /**
      * Constructs a TextBox
@@ -67,22 +66,22 @@ public class TextBox extends LayoutObject implements CanAnimatePaint {
             case XCENTERED_YTOP:
                 paint.setTextAlign(Paint.Align.CENTER);
                 textPosition.x = getArea().left + getArea().width() / 2;
-                textPosition.y = getArea().top + Attributes.MARGE;
+                textPosition.y = getArea().top + Attributes.MARGIN;
                 break;
             case XLEFT_YCENTERED:
                 paint.setTextAlign(Paint.Align.LEFT);
-                textPosition.x = getArea().left + bounds.width() + Attributes.MARGE;
+                textPosition.x = getArea().left + bounds.width() + Attributes.MARGIN;
                 textPosition.y = getArea().top + getArea().height() / 2 + bounds.height() / 2;
                 break;
             case XRIGHT_YCENTERED:
                 paint.setTextAlign(Paint.Align.RIGHT);
-                textPosition.x = getArea().right - Attributes.MARGE;
+                textPosition.x = getArea().right - Attributes.MARGIN;
                 textPosition.y = getArea().top + getArea().height() / 2 + bounds.height() / 2;
                 break;
             default:
                 paint.setTextAlign(Paint.Align.LEFT);
-                textPosition.x = getArea().left + Attributes.MARGE;
-                textPosition.y = getArea().top + Attributes.MARGE;
+                textPosition.x = getArea().left + Attributes.MARGIN;
+                textPosition.y = getArea().top + Attributes.MARGIN;
         }
     }
 
@@ -92,6 +91,19 @@ public class TextBox extends LayoutObject implements CanAnimatePaint {
             canvas.drawText(text, textPosition.x, textPosition.y, paint);
         }
     }
+
+    @Override
+    public void update() {
+        if (paintAnimator.isAnimating() || new PaintComparator().compare(paint, paintAnimator.getCurrentPaint()) == -1) {
+            paint = paintAnimator.getCurrentPaint();
+        }
+    }
+
+    @Override
+    public void setPaintAnimator(PaintAnimator paintAnimator) {
+        this.paintAnimator = paintAnimator;
+    }
+
 
     /**
      * GETTERS
@@ -105,11 +117,5 @@ public class TextBox extends LayoutObject implements CanAnimatePaint {
         return alignment;
     }
 
-    @Override
-    public void update() {
-        if (paintAnimator.isAnimating() || new PaintComparator().compare(paint, paintAnimator.getCurrentPaint()) == -1) {
-            paint = paintAnimator.getCurrentPaint();
-        }
-    }
 }
 

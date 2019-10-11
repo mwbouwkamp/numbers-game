@@ -14,7 +14,7 @@ import nl.limakajo.numbers.utils.PaintComparator;
  *
  * @author mwbouwkamp
  */
-public class Wave extends GameObject implements CanAnimatePaint, CanAnimateScale {
+public class Wave extends GameObject implements AnimatesPaint, AnimatesScale {
 
 	private ScaleAnimator scaleAnimator;
 	private PaintAnimator paintAnimator;

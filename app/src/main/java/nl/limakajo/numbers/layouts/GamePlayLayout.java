@@ -26,11 +26,11 @@ public class GamePlayLayout extends BasicLayout {
 		//Playable area
         LayoutObject playArea = new ScreenArea (
 				new Point(
-						Attributes.MARGE,
-						Attributes.MARGE),
+						Attributes.MARGIN,
+						Attributes.MARGIN),
 				new Size(
-						MainActivity.getDevice().getWidth() - 2 * Attributes.MARGE,
-						MainActivity.getDevice().getHeight() - 2 * Attributes.MARGE),
+						MainActivity.getDevice().getWidth() - 2 * Attributes.MARGIN,
+						MainActivity.getDevice().getHeight() - 2 * Attributes.MARGIN),
 				Attributes.NO_DRAW);
 
         //Header
@@ -47,10 +47,10 @@ public class GamePlayLayout extends BasicLayout {
                 Attributes.TextAllignment.XYCENTERED,
                 new Point(
                 		layoutObjects.get(LayoutElementsKeys.FULLSCREEN).getArea().left,
-						headerArea.getArea().top + headerArea.getArea().height() / 3 + Attributes.MARGE),
+						headerArea.getArea().top + headerArea.getArea().height() / 3 + Attributes.MARGIN),
 				new Size (
 						layoutObjects.get(LayoutElementsKeys.FULLSCREEN).getArea().width(),
-						headerArea.getArea().height() / 3 - 2 * Attributes.MARGE),
+						headerArea.getArea().height() / 3 - 2 * Attributes.MARGIN),
                 Attributes.TEXTBOX_NORMAL_PAINT);
 		LayoutObject timerArea = new ScreenArea (
 				new Point(
@@ -85,10 +85,10 @@ public class GamePlayLayout extends BasicLayout {
 		LayoutObject shelfArea = new ScreenArea(
 				new Point(
 						playArea.getArea().left,
-						headerArea.getArea().bottom + Attributes.MARGE),
+						headerArea.getArea().bottom + Attributes.MARGIN),
 				new Size(
 						playArea.getArea().width(),
-						(playArea.getArea().width() - Attributes.MARGE) / GameConstants.NUMTILES),
+						(playArea.getArea().width() - Attributes.MARGIN) / GameConstants.NUMTILES),
 				Attributes.NO_DRAW);
 
 		//Footer
@@ -107,18 +107,18 @@ public class GamePlayLayout extends BasicLayout {
 		LayoutObject operatorsArea = new ScreenArea(
                 new Point(
                         playArea.getArea().left,
-                        shelfArea.getArea().bottom + Attributes.MARGE),
+                        shelfArea.getArea().bottom + Attributes.MARGIN),
 				new Size(
                         playArea.getArea().width(),
-                        footerText.getArea().top - shelfArea.getArea().bottom - 2 * Attributes.MARGE),
+                        footerText.getArea().top - shelfArea.getArea().bottom - 2 * Attributes.MARGIN),
                 Attributes.NO_DRAW);
 		LayoutObject plusArea = new ScreenArea(
                 new Point(
                         operatorsArea.getArea().left,
                         operatorsArea.getArea().top),
 				new Size(
-						(operatorsArea.getArea().width() - Attributes.MARGE) / 2,
-						(operatorsArea.getArea().height() - Attributes.MARGE) / 2),
+						(operatorsArea.getArea().width() - Attributes.MARGIN) / 2,
+						(operatorsArea.getArea().height() - Attributes.MARGIN) / 2),
                 Attributes.PLUS_PAINT);
 		LayoutObject plusArea2 = new ScreenArea(
                 new Point(
@@ -130,7 +130,7 @@ public class GamePlayLayout extends BasicLayout {
                 Attributes.PLUS_PAINT_2);
 		LayoutObject minArea = new ScreenArea(
                 new Point(
-                        plusArea.getArea().right + Attributes.MARGE,
+                        plusArea.getArea().right + Attributes.MARGIN,
                         operatorsArea.getArea().top),
 				new Size(
 						plusArea.getArea().width(),
@@ -147,7 +147,7 @@ public class GamePlayLayout extends BasicLayout {
 		LayoutObject multArea = new ScreenArea(
                 new Point(
                         plusArea.getArea().left,
-                        plusArea.getArea().bottom + Attributes.MARGE),
+                        plusArea.getArea().bottom + Attributes.MARGIN),
 				new Size(
 						plusArea.getArea().width(),
 						plusArea.getArea().height()),

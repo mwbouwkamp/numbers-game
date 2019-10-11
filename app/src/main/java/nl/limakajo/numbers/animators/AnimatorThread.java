@@ -56,4 +56,8 @@ public class AnimatorThread extends Thread {
         animators.remove(animator);
     }
 
+    public List<Animator> getAnimators() {
+        return animators;
+    }
+
 }

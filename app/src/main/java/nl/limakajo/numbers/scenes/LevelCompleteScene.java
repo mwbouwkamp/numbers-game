@@ -4,7 +4,13 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.view.MotionEvent;
 
+import java.util.Arrays;
+import java.util.List;
+
 import nl.limakajo.numbers.animators.AnimatorThread;
+import nl.limakajo.numbers.animators.PaintAnimator;
+import nl.limakajo.numbers.gameObjects.Animates;
+import nl.limakajo.numbers.gameObjects.TextBox;
 import nl.limakajo.numbers.layouts.LayoutElementsKeys;
 import nl.limakajo.numbers.layouts.LevelCompleteLayout;
 import nl.limakajo.numbers.main.MainActivity;
@@ -17,19 +23,15 @@ import nl.limakajo.numberslib.utils.GameConstants;
  * @author M.W.Bouwkamp
  */
 
-public class LevelCompleteScene implements SceneInterface {
+public class LevelCompleteScene extends Scene {
 
     private final SceneManager sceneManager;
     private final AnimatorThread animatorThread;
     private LevelCompleteLayout levelCompleteLayout;
-    private long animationStartTime;
     private int numStarsToAdd;
-    private boolean animating;
-    private boolean initiating;
 
     LevelCompleteScene(SceneManager sceneManager, AnimatorThread animatorThread) {
         this.sceneManager = sceneManager;
-        this.animating = false;
         this.levelCompleteLayout = new LevelCompleteLayout();
         this.animatorThread = animatorThread;
     }
@@ -38,7 +40,6 @@ public class LevelCompleteScene implements SceneInterface {
     public void init() {
         this.animatorThread.removeAll();
 
-        animating = true;
         int userTime = MainActivity.getGame().getLevel().getUserTime();
         int averageTime = MainActivity.getGame().getLevel().getAverageTime();
 
@@ -53,18 +54,27 @@ public class LevelCompleteScene implements SceneInterface {
         numStarsToAdd = calculateNumStarsToAdd(userTime, averageTime);
         MainActivity.getPlayer().increaseNumLives(numStarsToAdd);
         MainActivity.getPlayer().increaseNumStars(numStarsToAdd);
-        resetStar(LayoutElementsKeys.STAR1_TEXT);
-        resetStar(LayoutElementsKeys.STAR2_TEXT);
-        resetStar(LayoutElementsKeys.STAR3_TEXT);
-        animationStartTime = System.currentTimeMillis();
-        initiating = false;
+
+        initStarAnimation(levelCompleteLayout.getTextBox(LayoutElementsKeys.STAR1_TEXT), animatorThread);
+        initStarAnimation(levelCompleteLayout.getTextBox(LayoutElementsKeys.STAR2_TEXT), animatorThread);
+        initStarAnimation(levelCompleteLayout.getTextBox(LayoutElementsKeys.STAR3_TEXT), animatorThread);
+
+        setInitiating(false);
     }
 
-    private void resetStar(LayoutElementsKeys starKey) {
-        levelCompleteLayout.getTextBox(starKey).getPaint().setAlpha(Attributes.STARS_DARK_ALPHA);
-        levelCompleteLayout.getTextBox(starKey).getPaint().setStyle(Paint.Style.STROKE);
-    }
 
+    public void initStarAnimation(TextBox startTextBox, AnimatorThread animatorThread) {
+        PaintAnimator animator = new PaintAnimator(Attributes.STAR_ANIMATION_TIME);
+        animator.init(startTextBox, new Paint(Attributes.STARS_PAINT_STROKE_END));
+        List<PaintAnimator.PaintAnimatorParams> paintAnimatorParams = Arrays.asList(
+                PaintAnimator.PaintAnimatorParams.ALPHA
+        );
+        animator.setPaintAnimatorParams(paintAnimatorParams);
+        startTextBox.setPaintAnimator(animator);
+        animator.startAnimation();
+        animatorThread.add(animator);
+
+    }
     /**
      * Calculates the number of stars to add, based on the userTime
      * *: averageTime
@@ -84,29 +94,9 @@ public class LevelCompleteScene implements SceneInterface {
 
     @Override
     public void update() {
-        double relativeTime = (System.currentTimeMillis() - animationStartTime) / (1.0 * Attributes.LEVELCOMPLETE_ANIMATION_TIME);
-        double delay = 1.0 * Attributes.LEVELCOMPLETE_TIME_BETWEEN_ANIMATIONS / Attributes.LEVELCOMPLETE_ANIMATION_TIME;
-        if (relativeTime <= 1) {
-            levelCompleteLayout.getTextBox(LayoutElementsKeys.STAR1_TEXT).getPaint().setAlpha((int) (Attributes.STARS_DARK_ALPHA + (255 - Attributes.STARS_DARK_ALPHA) * relativeTime));
-        }
-        if (relativeTime > 1) {
-            levelCompleteLayout.getTextBox(LayoutElementsKeys.STAR1_TEXT).getPaint().setStyle(Paint.Style.FILL);
-        }
-        if (relativeTime > 1 + delay && relativeTime <= 2 + delay && numStarsToAdd > 1) {
-            levelCompleteLayout.getTextBox(LayoutElementsKeys.STAR2_TEXT).getPaint().setAlpha((int) (Attributes.STARS_DARK_ALPHA + (255 - Attributes.STARS_DARK_ALPHA) * (relativeTime - 1 - delay)));
-        }
-        if (relativeTime > 2 + delay && numStarsToAdd > 1) {
-            levelCompleteLayout.getTextBox(LayoutElementsKeys.STAR2_TEXT).getPaint().setStyle(Paint.Style.FILL);
-        }
-        if (relativeTime > 2 + 2 * delay && relativeTime <= 3 + 2 * delay && numStarsToAdd > 2) {
-            levelCompleteLayout.getTextBox(LayoutElementsKeys.STAR3_TEXT).getPaint().setAlpha((int) (Attributes.STARS_DARK_ALPHA + (255 - Attributes.STARS_DARK_ALPHA) * (relativeTime - 2 - 2 * delay)));
-        }
-        if (relativeTime > 3 + 2 * delay && numStarsToAdd > 2) {
-            levelCompleteLayout.getTextBox(LayoutElementsKeys.STAR3_TEXT).getPaint().setStyle(Paint.Style.FILL);
-        }
-        if (System.currentTimeMillis() - animationStartTime > Attributes.LEVELCOMPLETE_ANIMATION_TIME * 3 + Attributes.LEVELCOMPLETE_TIME_BETWEEN_ANIMATIONS * 2){
-            animating = false;
-        }
+        levelCompleteLayout.getTextBox(LayoutElementsKeys.STAR1_TEXT).update();
+        levelCompleteLayout.getTextBox(LayoutElementsKeys.STAR2_TEXT).update();
+        levelCompleteLayout.getTextBox(LayoutElementsKeys.STAR3_TEXT).update();
     }
 
     @Override
@@ -121,18 +111,7 @@ public class LevelCompleteScene implements SceneInterface {
 
     @Override
     public void receiveTouch(MotionEvent event) {
-        if (!animating) {
-            sceneManager.setScene(new GameplayScene(sceneManager, animatorThread));
-        }
+        sceneManager.setScene(new GameplayScene(sceneManager, animatorThread));
     }
 
-    @Override
-    public boolean getInitiating() {
-        return initiating;
-    }
-
-    @Override
-    public void setInitiating(boolean initiating) {
-        this.initiating = initiating;
-    }
 }

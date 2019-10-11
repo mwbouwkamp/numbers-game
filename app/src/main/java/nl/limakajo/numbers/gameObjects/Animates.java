@@ -1,5 +1,6 @@
 package nl.limakajo.numbers.gameObjects;
 
-public interface CanAnimateScale {
+public interface Animates {
     void update();
+
 }

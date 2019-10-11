@@ -3,19 +3,16 @@ package nl.limakajo.numbers.scenes;
 import android.graphics.Canvas;
 import android.view.MotionEvent;
 
-import java.util.HashMap;
-
 import nl.limakajo.numbers.animators.AnimatorThread;
 
 import static java.lang.Thread.sleep;
-import static nl.limakajo.numbers.utils.GameUtils.GameState.*;
 
 /**
  * @author M.W.Bouwkamp
  */
 
 public class SceneManager {
-    private SceneInterface scene;
+    private Scene scene;
     private boolean activeSceneInitiating;
     private final AnimatorThread animatorThread;
 
@@ -26,14 +23,13 @@ public class SceneManager {
         startScene();
     }
 
-    public void setScene(SceneInterface scene) {
+    public void setScene(Scene scene) {
         this.scene = scene;
         startScene();
     }
 
     public void startScene() {
         activeSceneInitiating = true;
-        scene.setInitiating(true);
         scene.init();
         while (scene.getInitiating()) {
             try {

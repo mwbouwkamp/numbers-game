@@ -1,7 +1,6 @@
 package nl.limakajo.numbers.layouts;
 
 import android.graphics.Point;
-import android.graphics.Rect;
 import android.util.Size;
 
 import nl.limakajo.numbers.gameObjects.LayoutObject;
@@ -32,32 +31,32 @@ public class LogoLayout extends BasicLayout {
                         logoArea.getArea().left,
                         logoArea.getArea().top),
                 new Size(
-                        (logoArea.getArea().width() - Attributes.MARGE) / 2,
-                        (logoArea.getArea().height() - Attributes.MARGE) / 2),
+                        (logoArea.getArea().width() - Attributes.MARGIN) / 2,
+                        (logoArea.getArea().height() - Attributes.MARGIN) / 2),
                 Attributes.PLUS_PAINT);
         LayoutObject redArea = new ScreenArea(
                 new Point(
-                        blueArea.getArea().right + Attributes.MARGE,
+                        blueArea.getArea().right + Attributes.MARGIN,
                         logoArea.getArea().top),
                 new Size(
-                        (logoArea.getArea().width() - Attributes.MARGE) / 2,
-                        (logoArea.getArea().height() - Attributes.MARGE) / 2),
+                        (logoArea.getArea().width() - Attributes.MARGIN) / 2,
+                        (logoArea.getArea().height() - Attributes.MARGIN) / 2),
                 Attributes.MIN_PAINT);
         LayoutObject greenArea = new ScreenArea(
                 new Point(
                         blueArea.getArea().left,
-                        blueArea.getArea().bottom + Attributes.MARGE),
+                        blueArea.getArea().bottom + Attributes.MARGIN),
                 new Size(
-                        (logoArea.getArea().width() - Attributes.MARGE) / 2,
-                        (logoArea.getArea().height() - Attributes.MARGE) / 2),
+                        (logoArea.getArea().width() - Attributes.MARGIN) / 2,
+                        (logoArea.getArea().height() - Attributes.MARGIN) / 2),
                 Attributes.MULT_PAINT);
         LayoutObject yellowArea = new ScreenArea(
                 new Point(
                         redArea.getArea().left,
                         greenArea.getArea().top),
                 new Size(
-                        (logoArea.getArea().width() - Attributes.MARGE) / 2,
-                        (logoArea.getArea().height() - Attributes.MARGE) / 2),
+                        (logoArea.getArea().width() - Attributes.MARGIN) / 2,
+                        (logoArea.getArea().height() - Attributes.MARGIN) / 2),
                 Attributes.DIV_PAINT);
         layoutObjects.put(LayoutElementsKeys.LOGO_AREA, logoArea);
         layoutObjects.put(LayoutElementsKeys.BLUE_AREA, blueArea);

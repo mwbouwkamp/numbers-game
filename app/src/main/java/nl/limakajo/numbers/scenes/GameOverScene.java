@@ -5,7 +5,6 @@ import android.view.MotionEvent;
 
 import nl.limakajo.numbers.animators.AnimatorThread;
 import nl.limakajo.numbers.layouts.GameOverLayout;
-import nl.limakajo.numbers.layouts.LevelCompleteLayout;
 import nl.limakajo.numbers.main.MainActivity;
 import nl.limakajo.numbers.utils.DatabaseUtils;
 import nl.limakajo.numbers.utils.GameUtils;
@@ -14,12 +13,11 @@ import nl.limakajo.numbers.utils.GameUtils;
  * @author M.W.Bouwkamp
  */
 
-public class GameOverScene implements SceneInterface {
+public class GameOverScene extends Scene {
 
     private final SceneManager sceneManager;
     private final AnimatorThread animatorThread;
     private GameOverLayout gameOverLayout;
-    private boolean initiating;
 
     GameOverScene(SceneManager sceneManager, AnimatorThread animatorThread) {
         this.sceneManager = sceneManager;
@@ -29,12 +27,12 @@ public class GameOverScene implements SceneInterface {
 
     @Override
     public void init() {
-        this.animatorThread.removeAll();
+        animatorThread.removeAll();
         //Transfer ACTIVE level to UPLOAD
         DatabaseUtils.updateTableLevelsLevelStatusForSpecificLevel(MainActivity.getContext(), MainActivity.getGame().getLevel(), GameUtils.LevelState.UPLOAD);
         MainActivity.launchDownloadService();
         MainActivity.launchUploadService();
-        initiating = false;
+        setInitiating(false);
     }
 
     @Override
@@ -57,13 +55,4 @@ public class GameOverScene implements SceneInterface {
         sceneManager.setScene(new GameplayScene(sceneManager, animatorThread));
     }
 
-    @Override
-    public boolean getInitiating() {
-        return initiating;
-    }
-
-    @Override
-    public void setInitiating(boolean initiating) {
-        this.initiating = initiating;
-    }
 }

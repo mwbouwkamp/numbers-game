@@ -1,7 +1,6 @@
 package nl.limakajo.numbers.layouts;
 
 import android.graphics.Point;
-import android.graphics.Rect;
 import android.util.Size;
 
 import nl.limakajo.numbers.R;
@@ -39,10 +38,10 @@ public class LevelCompleteLayout extends LogoWithAreaForTextLayout {
         LayoutObject starsArea = new ScreenArea(
                 new Point(
                         layoutObjects.get(LayoutElementsKeys.LOGO_AREA).getArea().left,
-                        levelCompleteText.getArea().bottom + Attributes.MARGE),
+                        levelCompleteText.getArea().bottom + Attributes.MARGIN),
                 new Size(
                         layoutObjects.get(LayoutElementsKeys.LOGO_AREA).getArea().width(),
-                        5 * Attributes.MARGE),
+                        5 * Attributes.MARGIN),
                 Attributes.BG_PAINT);
         LayoutObject star1Text = new TextBox(
                 MainActivity.getContext().getString(R.string.star),
@@ -53,7 +52,7 @@ public class LevelCompleteLayout extends LogoWithAreaForTextLayout {
                 new Size(
                         starsArea.getArea().width() / 3,
                         starsArea.getArea().height()),
-                Attributes.TEXT_BOX_STARS_PAINT);
+                Attributes.STARS_PAINT_STROKE_START);
         LayoutObject star2Text = new TextBox(
                 MainActivity.getContext().getString(R.string.star),
                 Attributes.TextAllignment.XYCENTERED,
@@ -63,7 +62,7 @@ public class LevelCompleteLayout extends LogoWithAreaForTextLayout {
                 new Size(
                         starsArea.getArea().width() / 3,
                         starsArea.getArea().height()),
-                Attributes.TEXT_BOX_STARS_PAINT);
+                Attributes.STARS_PAINT_STROKE_START);
         LayoutObject star3Text = new TextBox(
                 MainActivity.getContext().getString(R.string.star),
                 Attributes.TextAllignment.XYCENTERED,
@@ -73,7 +72,7 @@ public class LevelCompleteLayout extends LogoWithAreaForTextLayout {
                 new Size(
                         starsArea.getArea().width() / 3,
                         starsArea.getArea().height()),
-                Attributes.TEXT_BOX_STARS_PAINT);
+                Attributes.STARS_PAINT_STROKE_START);
         layoutObjects.put(LayoutElementsKeys.LEVELCOMPLETE_TEXT, levelCompleteText);
         layoutObjects.put(LayoutElementsKeys.STARS_AREA, starsArea);
         layoutObjects.put(LayoutElementsKeys.STAR1_TEXT, star1Text);

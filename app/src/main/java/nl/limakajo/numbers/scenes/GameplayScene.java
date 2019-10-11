@@ -30,9 +30,7 @@ import java.util.List;
  * @author M.W.Bouwkamp
  */
 
-public class GameplayScene implements SceneInterface {
-
-    private boolean initiating;
+public class GameplayScene extends Scene {
 
     private Tile tilePressed, firstTile, secondTile;
     private boolean onShelf;
@@ -101,7 +99,7 @@ public class GameplayScene implements SceneInterface {
         gamePlayLayout.getTextBox(LayoutElementsKeys.GOAL_TEXT).setText(Integer.toString(MainActivity.getGame().getLevel().getGoal()));
         gamePlayLayout.getTextBox(LayoutElementsKeys.NUM_STARS_TEXT).setText("A" + Integer.toString(MainActivity.getPlayer().getNumStars()));
         gamePlayLayout.getTextBox(LayoutElementsKeys.NUM_LIVES_TEXT).setText("B" + Integer.toString(MainActivity.getPlayer().getNumLives()));
-        initiating = false;
+        setInitiating(false);
     }
 
     @Override
@@ -170,6 +168,7 @@ public class GameplayScene implements SceneInterface {
 
     @Override
     public void draw(Canvas canvas) {
+        System.out.println("DRAWING GAMEPLAY");
         gamePlayLayout.draw(canvas);
         wavePool.draw(canvas);
         drawTiles(canvas);
@@ -389,13 +388,4 @@ public class GameplayScene implements SceneInterface {
         }
     }
 
-    @Override
-    public boolean getInitiating() {
-        return initiating;
-    }
-
-    @Override
-    public void setInitiating(boolean initiating) {
-        this.initiating = initiating;
-    }
 }
