@@ -22,8 +22,6 @@ public class AnimatorThread extends Thread {
             try {
                 Iterator<Animator> animatorIterator = animators.iterator();
                 while (animatorIterator.hasNext()) {
-
-                    System.out.println("ANIMATOR: " + animators.size());
                     Animator animator = animatorIterator.next();
                     float timePassed = (System.nanoTime() - animator.getStartingTime()) / 1000000;
                     if (timePassed < 0) {

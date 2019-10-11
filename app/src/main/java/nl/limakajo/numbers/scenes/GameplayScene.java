@@ -168,7 +168,6 @@ public class GameplayScene extends Scene {
 
     @Override
     public void draw(Canvas canvas) {
-        System.out.println("DRAWING GAMEPLAY");
         gamePlayLayout.draw(canvas);
         wavePool.draw(canvas);
         drawTiles(canvas);

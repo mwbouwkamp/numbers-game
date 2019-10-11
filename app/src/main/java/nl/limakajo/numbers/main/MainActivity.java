@@ -41,7 +41,6 @@ public class MainActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		System.out.println("onCreate");
 
 		//Setup activity
 		super.onCreate(savedInstanceState);
