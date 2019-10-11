@@ -37,6 +37,7 @@ public class MainActivity extends Activity {
 	private static Game game;
 	private static GamePanel gamePanel;
 	private static NumLivesThread numLivesThread;
+	private static AnimatorThread animatorThread;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -72,8 +73,13 @@ public class MainActivity extends Activity {
         numLivesThread.start();
         numLivesThread.setRunning(true);
 
+        //Start a new tread that handels the animations
+		this.animatorThread = new AnimatorThread();
+		this.animatorThread.start();
+		this.animatorThread.setRunning(true);
+
 		//Start the action
-		gamePanel = new GamePanel(context);
+		gamePanel = new GamePanel(context, animatorThread);
 		setContentView(gamePanel);
 	}
 

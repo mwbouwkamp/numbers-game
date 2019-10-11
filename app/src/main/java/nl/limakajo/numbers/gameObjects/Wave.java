@@ -1,25 +1,23 @@
 package nl.limakajo.numbers.gameObjects;
 
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 
+import nl.limakajo.numbers.animators.PaintAnimator;
+import nl.limakajo.numbers.animators.ScaleAnimator;
 import nl.limakajo.numbers.utils.Attributes;
+import nl.limakajo.numbers.utils.PaintComparator;
 
 /**
  * Class representing a Wave
  *
  * @author mwbouwkamp
  */
-public class Wave implements GameObjectInterface {
+public class Wave extends GameObject implements AnimatesPaint, AnimatesScale {
 
-	private final Point position;
-	private float radius;
-	private final Paint paint;
-	private final long animationStart;
-	private final int animateTime;
-	private volatile boolean animating;
+	private ScaleAnimator scaleAnimator;
+	private PaintAnimator paintAnimator;
 	
 	/**
 	 * Constucts a Wave
@@ -28,33 +26,24 @@ public class Wave implements GameObjectInterface {
 	 */
 	public Wave(Point position) {
 		this.position = position;
-		radius = Attributes.TILE_WIDTH / 2;
-		paint = new Paint();
-		paint.setColor(Color.WHITE);
-		paint.setARGB(Attributes.WAVE_ALPHA_START, Attributes.WAVE_RED, Attributes.WAVE_GREEN, Attributes.WAVE_BLUE);
-		paint.setStyle(Paint.Style.STROKE);
-		paint.setStrokeWidth(Attributes.WAVE_STROKE_START);
-		animateTime = Attributes.WAVE_ANIMATION_TIME;
-		animationStart = System.nanoTime();
-		animating = true;
+		this.paint = new Paint(Attributes.WAVE_PAINT_START);
+		this.scale = 1;
+		this.scaleAnimator = new ScaleAnimator(Attributes.WAVE_ANIMATION_TIME);
+		this.paintAnimator = new PaintAnimator(Attributes.WAVE_ANIMATION_TIME);
 	}
 	
 	@Override
 	public void draw(Canvas canvas) {
-		canvas.drawCircle(position.x, position.y, radius, this.paint);
+		canvas.drawCircle(position.x, position.y, Attributes.RADIUS * scale, this.paint);
 	}
 
 	@Override
 	public void update() {
-		float timePassed  = (System.nanoTime() - animationStart) / 1000000;
-		float factor = timePassed /(float) (animateTime);
-		radius = (int) (500 * factor + Attributes.TILE_WIDTH * (1-factor) / 2);
-		int alpha = (int) (Attributes.WAVE_ALPHA_START * (1 - factor));
-		int stroke = (int) (Attributes.WAVE_STROKE_START + (factor) * (Attributes.WAVE_STROKE_END - Attributes.WAVE_STROKE_START));
-		paint.setStrokeWidth(stroke);
-		paint.setARGB(alpha, Attributes.WAVE_RED, Attributes.WAVE_GREEN, Attributes.WAVE_BLUE);
-		if (timePassed >= animateTime) {
-			animating = false;
+		if (scaleAnimator.isAnimating() || scale != scaleAnimator.getCurrentState()) {
+			scale = scaleAnimator.getCurrentState();
+		}
+		if (paintAnimator.isAnimating() || new PaintComparator().compare(paint, paintAnimator.getCurrentState()) == -1) {
+			paint = paintAnimator.getCurrentState();
 		}
 	}
 
@@ -62,7 +51,15 @@ public class Wave implements GameObjectInterface {
 	 * GETTERS AND SETTERS
 	 */
 
-	public boolean animates() {
-		return animating;
+	public ScaleAnimator getScaleAnimator() {
+		return scaleAnimator;
+	}
+
+	public void setScaleAnimator(ScaleAnimator scaleAnimator) {
+		this.scaleAnimator = scaleAnimator;
+	}
+
+	public void setPaintAnimator(PaintAnimator paintAnimator) {
+		this.paintAnimator = paintAnimator;
 	}
 }

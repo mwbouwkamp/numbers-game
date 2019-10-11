@@ -4,6 +4,9 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.view.MotionEvent;
 
+import nl.limakajo.numbers.main.AnimatorThread;
+import nl.limakajo.numbers.animators.PaintAnimator;
+import nl.limakajo.numbers.gameObjects.AnimatesPaint;
 import nl.limakajo.numbers.layouts.LayoutElementsKeys;
 import nl.limakajo.numbers.layouts.LevelCompleteLayout;
 import nl.limakajo.numbers.main.MainActivity;
@@ -16,24 +19,23 @@ import nl.limakajo.numberslib.utils.GameConstants;
  * @author M.W.Bouwkamp
  */
 
-public class LevelCompleteScene implements SceneInterface {
+public class LevelCompleteScene extends Scene {
 
     private final SceneManager sceneManager;
+    private final AnimatorThread animatorThread;
     private LevelCompleteLayout levelCompleteLayout;
-    private long animationStartTime;
     private int numStarsToAdd;
-    private boolean animating;
-    private boolean initiating;
 
-    LevelCompleteScene(SceneManager sceneManager) {
+    LevelCompleteScene(SceneManager sceneManager, AnimatorThread animatorThread) {
         this.sceneManager = sceneManager;
-        this.animating = false;
         this.levelCompleteLayout = new LevelCompleteLayout();
+        this.animatorThread = animatorThread;
     }
 
     @Override
     public void init() {
-        animating = true;
+        this.animatorThread.removeAll();
+
         int userTime = MainActivity.getGame().getLevel().getUserTime();
         int averageTime = MainActivity.getGame().getLevel().getAverageTime();
 
@@ -48,16 +50,53 @@ public class LevelCompleteScene implements SceneInterface {
         numStarsToAdd = calculateNumStarsToAdd(userTime, averageTime);
         MainActivity.getPlayer().increaseNumLives(numStarsToAdd);
         MainActivity.getPlayer().increaseNumStars(numStarsToAdd);
-        resetStar(LayoutElementsKeys.STAR1_TEXT);
-        resetStar(LayoutElementsKeys.STAR2_TEXT);
-        resetStar(LayoutElementsKeys.STAR3_TEXT);
-        animationStartTime = System.currentTimeMillis();
-        initiating = false;
+
+        if (numStarsToAdd > 0) {
+            initStarAnimation(
+                    levelCompleteLayout.getTextBox(LayoutElementsKeys.STAR1_STROKE_TEXT),
+                    Attributes.STARS_PAINT_STROKE_END,
+                    animatorThread,
+                    0);
+            initStarAnimation(
+                    levelCompleteLayout.getTextBox(LayoutElementsKeys.STAR1_FILL_TEXT),
+                    Attributes.STARS_PAINT_FILL_END,
+                    animatorThread,
+                    0);
+        }
+        if (numStarsToAdd > 1) {
+            initStarAnimation(
+                    levelCompleteLayout.getTextBox(LayoutElementsKeys.STAR2_STROKE_TEXT),
+                    Attributes.STARS_PAINT_STROKE_END,
+                    animatorThread,
+                    Attributes.STAR_ANIMATION_TIME + Attributes.STAR_ANIMATION_DELAY);
+            initStarAnimation(
+                    levelCompleteLayout.getTextBox(LayoutElementsKeys.STAR2_FILL_TEXT),
+                    Attributes.STARS_PAINT_FILL_END,
+                    animatorThread,
+                    Attributes.STAR_ANIMATION_TIME + Attributes.STAR_ANIMATION_DELAY);
+        }
+        if (numStarsToAdd > 2) {
+            initStarAnimation(
+                    levelCompleteLayout.getTextBox(LayoutElementsKeys.STAR3_STROKE_TEXT),
+                    Attributes.STARS_PAINT_STROKE_END,
+                    animatorThread,
+                    2 * (Attributes.STAR_ANIMATION_TIME + Attributes.STAR_ANIMATION_DELAY));
+            initStarAnimation(
+                    levelCompleteLayout.getTextBox(LayoutElementsKeys.STAR3_FILL_TEXT),
+                    Attributes.STARS_PAINT_FILL_END,
+                    animatorThread,
+                    2 * (Attributes.STAR_ANIMATION_TIME + Attributes.STAR_ANIMATION_DELAY));
+        }
+        setInitiating(false);
     }
 
-    private void resetStar(LayoutElementsKeys starKey) {
-        levelCompleteLayout.getTextBox(starKey).getPaint().setAlpha(Attributes.STARS_DARK_ALPHA);
-        levelCompleteLayout.getTextBox(starKey).getPaint().setStyle(Paint.Style.STROKE);
+
+    public void initStarAnimation(AnimatesPaint startTextBox, Paint paintEnd, AnimatorThread animatorThread, long delay) {
+        PaintAnimator paintAnimator = new PaintAnimator(Attributes.STAR_ANIMATION_TIME);
+        paintAnimator.init(startTextBox.getPaint(), paintEnd);
+        startTextBox.setPaintAnimator(paintAnimator);
+        paintAnimator.startAnimation(delay);
+        animatorThread.add(paintAnimator);
     }
 
     /**
@@ -79,29 +118,9 @@ public class LevelCompleteScene implements SceneInterface {
 
     @Override
     public void update() {
-        double relativeTime = (System.currentTimeMillis() - animationStartTime) / (1.0 * Attributes.LEVELCOMPLETE_ANIMATION_TIME);
-        double delay = 1.0 * Attributes.LEVELCOMPLETE_TIME_BETWEEN_ANIMATIONS / Attributes.LEVELCOMPLETE_ANIMATION_TIME;
-        if (relativeTime <= 1) {
-            levelCompleteLayout.getTextBox(LayoutElementsKeys.STAR1_TEXT).getPaint().setAlpha((int) (Attributes.STARS_DARK_ALPHA + (255 - Attributes.STARS_DARK_ALPHA) * relativeTime));
-        }
-        if (relativeTime > 1) {
-            levelCompleteLayout.getTextBox(LayoutElementsKeys.STAR1_TEXT).getPaint().setStyle(Paint.Style.FILL);
-        }
-        if (relativeTime > 1 + delay && relativeTime <= 2 + delay && numStarsToAdd > 1) {
-            levelCompleteLayout.getTextBox(LayoutElementsKeys.STAR2_TEXT).getPaint().setAlpha((int) (Attributes.STARS_DARK_ALPHA + (255 - Attributes.STARS_DARK_ALPHA) * (relativeTime - 1 - delay)));
-        }
-        if (relativeTime > 2 + delay && numStarsToAdd > 1) {
-            levelCompleteLayout.getTextBox(LayoutElementsKeys.STAR2_TEXT).getPaint().setStyle(Paint.Style.FILL);
-        }
-        if (relativeTime > 2 + 2 * delay && relativeTime <= 3 + 2 * delay && numStarsToAdd > 2) {
-            levelCompleteLayout.getTextBox(LayoutElementsKeys.STAR3_TEXT).getPaint().setAlpha((int) (Attributes.STARS_DARK_ALPHA + (255 - Attributes.STARS_DARK_ALPHA) * (relativeTime - 2 - 2 * delay)));
-        }
-        if (relativeTime > 3 + 2 * delay && numStarsToAdd > 2) {
-            levelCompleteLayout.getTextBox(LayoutElementsKeys.STAR3_TEXT).getPaint().setStyle(Paint.Style.FILL);
-        }
-        if (System.currentTimeMillis() - animationStartTime > Attributes.LEVELCOMPLETE_ANIMATION_TIME * 3 + Attributes.LEVELCOMPLETE_TIME_BETWEEN_ANIMATIONS * 2){
-            animating = false;
-        }
+        levelCompleteLayout.getTextBox(LayoutElementsKeys.STAR1_STROKE_TEXT).update();
+        levelCompleteLayout.getTextBox(LayoutElementsKeys.STAR2_STROKE_TEXT).update();
+        levelCompleteLayout.getTextBox(LayoutElementsKeys.STAR3_STROKE_TEXT).update();
     }
 
     @Override
@@ -116,18 +135,7 @@ public class LevelCompleteScene implements SceneInterface {
 
     @Override
     public void receiveTouch(MotionEvent event) {
-        if (!animating) {
-            sceneManager.setScene(new GameplayScene(sceneManager));
-        }
+        sceneManager.setScene(new GameplayScene(sceneManager, animatorThread));
     }
 
-    @Override
-    public boolean getInitiating() {
-        return initiating;
-    }
-
-    @Override
-    public void setInitiating(boolean initiating) {
-        this.initiating = initiating;
-    }
 }

@@ -1,8 +1,8 @@
 package nl.limakajo.numbers.layouts;
 
-import android.graphics.Rect;
+import android.graphics.Point;
+import android.util.Size;
 
-import nl.limakajo.numbers.R;
 import nl.limakajo.numbers.gameObjects.LayoutObject;
 import nl.limakajo.numbers.gameObjects.ScreenArea;
 import nl.limakajo.numbers.utils.Attributes;
@@ -20,12 +20,13 @@ public class LogoWithAreaForTextLayout extends LogoLayout {
     public LogoWithAreaForTextLayout() {
         //ScreenAreay for main text of screen
         LayoutObject mainTextArea = new ScreenArea(
-                new Rect(
+                new Point(
                         (int) (layoutObjects.get(LayoutElementsKeys.FULLSCREEN).getArea().left),
-                        layoutObjects.get(LayoutElementsKeys.LOGO_AREA).getArea().bottom + 3 * Attributes.MARGE,
-                        (int) (layoutObjects.get(LayoutElementsKeys.FULLSCREEN).getArea().right),
+                        layoutObjects.get(LayoutElementsKeys.LOGO_AREA).getArea().bottom + 3 * Attributes.MARGIN),
+                new Size(
+                        (int) (layoutObjects.get(LayoutElementsKeys.FULLSCREEN).getArea().width()),
                         //TODO: height is now hardcoded
-                        layoutObjects.get(LayoutElementsKeys.LOGO_AREA).getArea().bottom + 3 * Attributes.MARGE + 100),
+                        100),
                 Attributes.NO_DRAW);
         layoutObjects.put(LayoutElementsKeys.MAINTEXT_AREA, mainTextArea);
     }

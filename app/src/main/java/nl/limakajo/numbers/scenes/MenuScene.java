@@ -1,33 +1,31 @@
 package nl.limakajo.numbers.scenes;
 
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.view.MotionEvent;
 
+import nl.limakajo.numbers.main.AnimatorThread;
 import nl.limakajo.numbers.layouts.MenuLayout;
-
-import static nl.limakajo.numbers.utils.GameUtils.GameState.GAME_STATE;
 
 /**
  * @author M.W.Bouwkamp
  */
 
-public class MenuScene implements SceneInterface {
+public class MenuScene extends Scene {
 
     private final SceneManager sceneManager;
+    private final AnimatorThread animatorThread;
     private MenuLayout menuLayout;
-    private boolean initiating;
 
-    MenuScene(SceneManager sceneManager) {
+    MenuScene(SceneManager sceneManager, AnimatorThread animatorThread) {
         this.sceneManager = sceneManager;
         menuLayout = new MenuLayout();
+        this.animatorThread = animatorThread;
     }
 
     @Override
     public void init() {
-        initiating = false;
-
+        this.animatorThread.removeAll();
+        setInitiating(false);
     }
 
     @Override
@@ -47,17 +45,6 @@ public class MenuScene implements SceneInterface {
 
     @Override
     public void receiveTouch(MotionEvent event) {
-        sceneManager.setScene(new GameplayScene(sceneManager));
-
-    }
-
-    @Override
-    public boolean getInitiating() {
-        return initiating;
-    }
-
-    @Override
-    public void setInitiating(boolean initiating) {
-        this.initiating = initiating;
+        sceneManager.setScene(new GameplayScene(sceneManager, animatorThread));
     }
 }

@@ -1,7 +1,9 @@
 package nl.limakajo.numbers.layouts;
 
 import android.graphics.Canvas;
+import android.graphics.Point;
 import android.graphics.Rect;
+import android.util.Size;
 
 import java.util.EnumMap;
 
@@ -10,6 +12,7 @@ import nl.limakajo.numbers.gameObjects.ScreenArea;
 import nl.limakajo.numbers.gameObjects.TextBox;
 import nl.limakajo.numbers.main.MainActivity;
 import nl.limakajo.numbers.utils.Attributes;
+import nl.limakajo.numberslib.main.Main;
 
 /**
  * Class that represents the BasicLayout
@@ -27,9 +30,10 @@ public class BasicLayout implements LayoutInterface {
 
         //Fullscreen
         LayoutObject fullscreen = new ScreenArea (
-                new Rect(
+                new Point(
                         0,
-                        0,
+                        0),
+                new Size(
                         MainActivity.getDevice().getWidth(),
                         MainActivity.getDevice().getHeight()),
                 Attributes.BG_PAINT);
