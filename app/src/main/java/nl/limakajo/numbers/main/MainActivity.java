@@ -11,7 +11,6 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import nl.limakajo.numbers.R;
-import nl.limakajo.numbers.animators.AnimatorThread;
 import nl.limakajo.numbers.numbersGame.Device;
 import nl.limakajo.numbers.numbersGame.Game;
 import nl.limakajo.numbers.numbersGame.Player;

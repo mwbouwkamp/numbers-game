@@ -41,9 +41,12 @@ public enum LayoutElementsKeys {
     FOOTER_TEXT,
     //Level complete
     STARS_AREA,
-    STAR1_TEXT,
-    STAR2_TEXT,
-    STAR3_TEXT,
+    STAR1_STROKE_TEXT,
+    STAR1_FILL_TEXT,
+    STAR2_STROKE_TEXT,
+    STAR2_FILL_TEXT,
+    STAR3_STROKE_TEXT,
+    STAR3_FILL_TEXT,
     LEVELCOMPLETE_TEXT,
     //Game over
     GAMEOVER_TEXT,

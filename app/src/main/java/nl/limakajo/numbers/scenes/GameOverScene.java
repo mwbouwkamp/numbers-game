@@ -3,7 +3,7 @@ package nl.limakajo.numbers.scenes;
 import android.graphics.Canvas;
 import android.view.MotionEvent;
 
-import nl.limakajo.numbers.animators.AnimatorThread;
+import nl.limakajo.numbers.main.AnimatorThread;
 import nl.limakajo.numbers.layouts.GameOverLayout;
 import nl.limakajo.numbers.main.MainActivity;
 import nl.limakajo.numbers.utils.DatabaseUtils;

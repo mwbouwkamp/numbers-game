@@ -4,14 +4,9 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.view.MotionEvent;
 
-import java.util.Arrays;
-import java.util.List;
-
-import nl.limakajo.numbers.animators.AnimatorThread;
+import nl.limakajo.numbers.main.AnimatorThread;
 import nl.limakajo.numbers.animators.PaintAnimator;
-import nl.limakajo.numbers.gameObjects.Animates;
 import nl.limakajo.numbers.gameObjects.AnimatesPaint;
-import nl.limakajo.numbers.gameObjects.TextBox;
 import nl.limakajo.numbers.layouts.LayoutElementsKeys;
 import nl.limakajo.numbers.layouts.LevelCompleteLayout;
 import nl.limakajo.numbers.main.MainActivity;
@@ -56,26 +51,54 @@ public class LevelCompleteScene extends Scene {
         MainActivity.getPlayer().increaseNumLives(numStarsToAdd);
         MainActivity.getPlayer().increaseNumStars(numStarsToAdd);
 
-        initStarAnimation(levelCompleteLayout.getTextBox(LayoutElementsKeys.STAR1_TEXT), animatorThread);
-        initStarAnimation(levelCompleteLayout.getTextBox(LayoutElementsKeys.STAR2_TEXT), animatorThread);
-        initStarAnimation(levelCompleteLayout.getTextBox(LayoutElementsKeys.STAR3_TEXT), animatorThread);
-
+        if (numStarsToAdd > 0) {
+            initStarAnimation(
+                    levelCompleteLayout.getTextBox(LayoutElementsKeys.STAR1_STROKE_TEXT),
+                    Attributes.STARS_PAINT_STROKE_END,
+                    animatorThread,
+                    0);
+            initStarAnimation(
+                    levelCompleteLayout.getTextBox(LayoutElementsKeys.STAR1_FILL_TEXT),
+                    Attributes.STARS_PAINT_FILL_END,
+                    animatorThread,
+                    0);
+        }
+        if (numStarsToAdd > 1) {
+            initStarAnimation(
+                    levelCompleteLayout.getTextBox(LayoutElementsKeys.STAR2_STROKE_TEXT),
+                    Attributes.STARS_PAINT_STROKE_END,
+                    animatorThread,
+                    Attributes.STAR_ANIMATION_TIME + Attributes.STAR_ANIMATION_DELAY);
+            initStarAnimation(
+                    levelCompleteLayout.getTextBox(LayoutElementsKeys.STAR2_FILL_TEXT),
+                    Attributes.STARS_PAINT_FILL_END,
+                    animatorThread,
+                    Attributes.STAR_ANIMATION_TIME + Attributes.STAR_ANIMATION_DELAY);
+        }
+        if (numStarsToAdd > 2) {
+            initStarAnimation(
+                    levelCompleteLayout.getTextBox(LayoutElementsKeys.STAR3_STROKE_TEXT),
+                    Attributes.STARS_PAINT_STROKE_END,
+                    animatorThread,
+                    2 * (Attributes.STAR_ANIMATION_TIME + Attributes.STAR_ANIMATION_DELAY));
+            initStarAnimation(
+                    levelCompleteLayout.getTextBox(LayoutElementsKeys.STAR3_FILL_TEXT),
+                    Attributes.STARS_PAINT_FILL_END,
+                    animatorThread,
+                    2 * (Attributes.STAR_ANIMATION_TIME + Attributes.STAR_ANIMATION_DELAY));
+        }
         setInitiating(false);
     }
 
 
-    public void initStarAnimation(AnimatesPaint startTextBox, AnimatorThread animatorThread) {
+    public void initStarAnimation(AnimatesPaint startTextBox, Paint paintEnd, AnimatorThread animatorThread, long delay) {
         PaintAnimator paintAnimator = new PaintAnimator(Attributes.STAR_ANIMATION_TIME);
-        paintAnimator.init(startTextBox, new Paint(Attributes.STARS_PAINT_STROKE_END));
-        List<PaintAnimator.PaintAnimatorParams> paintAnimatorParams = Arrays.asList(
-                PaintAnimator.PaintAnimatorParams.ALPHA
-        );
-        paintAnimator.setPaintAnimatorParams(paintAnimatorParams);
+        paintAnimator.init(startTextBox.getPaint(), paintEnd);
         startTextBox.setPaintAnimator(paintAnimator);
-        paintAnimator.startAnimation();
+        paintAnimator.startAnimation(delay);
         animatorThread.add(paintAnimator);
-
     }
+
     /**
      * Calculates the number of stars to add, based on the userTime
      * *: averageTime
@@ -95,9 +118,9 @@ public class LevelCompleteScene extends Scene {
 
     @Override
     public void update() {
-        levelCompleteLayout.getTextBox(LayoutElementsKeys.STAR1_TEXT).update();
-        levelCompleteLayout.getTextBox(LayoutElementsKeys.STAR2_TEXT).update();
-        levelCompleteLayout.getTextBox(LayoutElementsKeys.STAR3_TEXT).update();
+        levelCompleteLayout.getTextBox(LayoutElementsKeys.STAR1_STROKE_TEXT).update();
+        levelCompleteLayout.getTextBox(LayoutElementsKeys.STAR2_STROKE_TEXT).update();
+        levelCompleteLayout.getTextBox(LayoutElementsKeys.STAR3_STROKE_TEXT).update();
     }
 
     @Override

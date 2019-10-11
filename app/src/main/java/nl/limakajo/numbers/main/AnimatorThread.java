@@ -1,9 +1,11 @@
-package nl.limakajo.numbers.animators;
+package nl.limakajo.numbers.main;
 
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.List;
+
+import nl.limakajo.numbers.animators.Animator;
 
 public class AnimatorThread extends Thread {
 
@@ -20,11 +22,16 @@ public class AnimatorThread extends Thread {
             try {
                 Iterator<Animator> animatorIterator = animators.iterator();
                 while (animatorIterator.hasNext()) {
+
+                    System.out.println("ANIMATOR: " + animators.size());
                     Animator animator = animatorIterator.next();
                     float timePassed = (System.nanoTime() - animator.getStartingTime()) / 1000000;
-                    float factor = 1 - timePassed / (float) (animator.animationTime);
+                    if (timePassed < 0) {
+                        timePassed = 0;
+                    }
+                    float factor = 1 - timePassed / (float) (animator.getAnimationTime());
                     animator.update(factor);
-                    if (timePassed >= animator.animationTime) {
+                    if (timePassed >= animator.getAnimationTime()) {
                         animator.setToTarget();
                         animator.stopAnimating();
                         animatorIterator.remove();

@@ -8,8 +8,6 @@ import android.graphics.Shader;
 import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 
-import javax.annotation.Nonnegative;
-
 import nl.limakajo.numbers.R;
 import nl.limakajo.numbers.main.MainActivity;
 
@@ -100,11 +98,14 @@ public class Attributes {
 
     //Stars Attributes
     public static final int STARS_ALPHA_START = 40;
-    public static final Paint STARS_PAINT_STROKE_START = getStarsPaintStrokeStart();
     public static final int STARS_ALPHA_END = 255;
+    public static final Paint STARS_PAINT_STROKE_START = getStarsPaintStrokeStart();
     public static final Paint STARS_PAINT_STROKE_END = getStarsPaintStrokeEnd();
+    public static final Paint STARS_PAINT_FILL_START = getStarsPaintFillStart();
+    public static final Paint STARS_PAINT_FILL_END = getStarsPaintFillEnd();
     public static final long STAR_ANIMATION_TIME = 1000;
-//    public static final long STAR_ANIMATION_DELAY = 900;
+    public static final long STAR_ANIMATION_DELAY = 900;
+    public static final long STAR_FILL_ANIMATION_DELAY = 800;
 
 
     @NonNull
@@ -159,7 +160,7 @@ public class Attributes {
     }
 
     @NonNull
-    private static Paint getStarsBasicPaint() {
+    private static Paint getStarsBasicStrokePaint() {
         Paint paint = getStrokePaint();
         paint.setTypeface(Attributes.TYPEFACE_NUMBERSGAME);
         paint.setColor(Attributes.STARS_COLOR);
@@ -167,8 +168,16 @@ public class Attributes {
     }
 
     @NonNull
+    private static Paint getStarsBasicFillPaint() {
+        Paint paint = getFillPaint();
+        paint.setTypeface(Attributes.TYPEFACE_NUMBERSGAME);
+        paint.setColor(Attributes.STARS_COLOR);
+        return paint;
+    }
+
+    @NonNull
     private static Paint getStarsPaintStrokeStart() {
-        Paint paint = getStarsBasicPaint();
+        Paint paint = getStarsBasicStrokePaint();
         paint.setAlpha(STARS_ALPHA_START);
         return paint;
     }
@@ -176,7 +185,22 @@ public class Attributes {
 
     @NonNull
     private static Paint getStarsPaintStrokeEnd() {
-        Paint paint = getStarsBasicPaint();
+        Paint paint = getStarsBasicStrokePaint();
+        paint.setAlpha(STARS_ALPHA_END);
+        return paint;
+    }
+
+    @NonNull
+    private static Paint getStarsPaintFillStart() {
+        Paint paint = getStarsBasicFillPaint();
+        paint.setAlpha(STARS_ALPHA_START);
+        return paint;
+    }
+
+
+    @NonNull
+    private static Paint getStarsPaintFillEnd() {
+        Paint paint = getStarsBasicFillPaint();
         paint.setAlpha(STARS_ALPHA_END);
         return paint;
     }

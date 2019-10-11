@@ -95,7 +95,7 @@ public class TextBox extends LayoutObject implements AnimatesPaint {
     @Override
     public void update() {
         if (paintAnimator.isAnimating()) {
-            paint = paintAnimator.getCurrentPaint();
+            paint = paintAnimator.getCurrentState();
         }
     }
 

@@ -19,7 +19,7 @@ import nl.limakajo.numbers.gameObjects.TilePool;
 import nl.limakajo.numbers.utils.Attributes;
 import nl.limakajo.numbers.utils.DatabaseUtils;
 import nl.limakajo.numbers.utils.GameUtils;
-import nl.limakajo.numbers.animators.AnimatorThread;
+import nl.limakajo.numbers.main.AnimatorThread;
 import nl.limakajo.numberslib.numbersGame.Level;
 import nl.limakajo.numberslib.utils.GameConstants;
 
@@ -321,17 +321,12 @@ public class GameplayScene extends Scene {
     private void createWave(Point position) {
         Wave waveToAdd = new Wave(position);
         ScaleAnimator scaleAnimatorToAdd = new ScaleAnimator(Attributes.WAVE_ANIMATION_TIME);
-        scaleAnimatorToAdd.init(waveToAdd, 10.0f);
+        scaleAnimatorToAdd.init(waveToAdd.getScale(), 10.0f);
         waveToAdd.setScaleAnimator(scaleAnimatorToAdd);
         scaleAnimatorToAdd.startAnimation();
         animatorThread.add(scaleAnimatorToAdd);
         PaintAnimator paintAnimatorToAdd = new PaintAnimator(Attributes.WAVE_ANIMATION_TIME);
-        paintAnimatorToAdd.init(waveToAdd, Attributes.WAVE_PAINT_END);
-        List<PaintAnimator.PaintAnimatorParams> paintAnimatorParams = Arrays.asList(
-                PaintAnimator.PaintAnimatorParams.ALPHA,
-                PaintAnimator.PaintAnimatorParams.STROKE_WIDTH
-        );
-        paintAnimatorToAdd.setPaintAnimatorParams(paintAnimatorParams);
+        paintAnimatorToAdd.init(waveToAdd.getPaint(), Attributes.WAVE_PAINT_END);
         waveToAdd.setPaintAnimator(paintAnimatorToAdd);
         paintAnimatorToAdd.startAnimation();
         animatorThread.add(paintAnimatorToAdd);

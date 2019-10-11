@@ -39,11 +39,11 @@ public class Wave extends GameObject implements AnimatesPaint, AnimatesScale {
 
 	@Override
 	public void update() {
-		if (scaleAnimator.isAnimating() || scale != scaleAnimator.getCurrentScale()) {
-			scale = scaleAnimator.getCurrentScale();
+		if (scaleAnimator.isAnimating() || scale != scaleAnimator.getCurrentState()) {
+			scale = scaleAnimator.getCurrentState();
 		}
-		if (paintAnimator.isAnimating() || new PaintComparator().compare(paint, paintAnimator.getCurrentPaint()) == -1) {
-			paint = paintAnimator.getCurrentPaint();
+		if (paintAnimator.isAnimating() || new PaintComparator().compare(paint, paintAnimator.getCurrentState()) == -1) {
+			paint = paintAnimator.getCurrentState();
 		}
 	}
 
