@@ -7,7 +7,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 import nl.limakajo.numbers.animators.Animator;
+import nl.limakajo.numbers.animators.PositionAnimationStarter;
 import nl.limakajo.numbers.animators.PositionAnimator;
+import nl.limakajo.numbers.main.AnimatorThread;
 import nl.limakajo.numbers.utils.Attributes;
 
 
@@ -30,21 +32,16 @@ public class TilePool extends GameObjectPool<Tile> {
      *
      * @return      List of Animators for the required animations
      */
-    public List<Animator> startAnimating() {
-        List<Animator> positionAnimators = new LinkedList<>();
+    public void startAnimating(AnimatorThread animatorThread) {
         int i = 0;
         for (Tile tile: gameObjectPool) {
             Point targetPosition = new Point(Attributes.TILE_XCOORDS[i], Attributes.TILE_YCOORD);
             if (!tile.getPosition().equals(targetPosition)) {
-                PositionAnimator positionAnimatorToAdd = new PositionAnimator(Attributes.TILE_ANIMATION_TIME);
-                positionAnimatorToAdd.init(tile.getPosition(), targetPosition);
-                positionAnimatorToAdd.startAnimation();
-                positionAnimators.add(positionAnimatorToAdd);
-                tile.setPositionAnimator(positionAnimatorToAdd);
+                new PositionAnimationStarter().startAnimation(
+                        tile, animatorThread, tile.getPosition(), targetPosition, Attributes.TILE_ANIMATION_TIME, 0);
             }
             i++;
         }
-        return positionAnimators;
     }
 
     @Override

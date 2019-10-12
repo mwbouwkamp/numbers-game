@@ -7,7 +7,11 @@ import android.graphics.Point;
 import android.graphics.RectF;
 import android.view.MotionEvent;
 
+import org.xml.sax.helpers.AttributesImpl;
+
+import nl.limakajo.numbers.animators.PaintAnimationStarter;
 import nl.limakajo.numbers.animators.PaintAnimator;
+import nl.limakajo.numbers.animators.ScaleAnimationStarter;
 import nl.limakajo.numbers.animators.ScaleAnimator;
 import nl.limakajo.numbers.gameObjects.Tile;
 import nl.limakajo.numbers.gameObjects.Wave;
@@ -22,9 +26,6 @@ import nl.limakajo.numbers.utils.GameUtils;
 import nl.limakajo.numbers.main.AnimatorThread;
 import nl.limakajo.numberslib.numbersGame.Level;
 import nl.limakajo.numberslib.utils.GameConstants;
-
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * @author M.W.Bouwkamp
@@ -260,7 +261,7 @@ public class GameplayScene extends Scene {
                 if (onShelf && !tilePressed.inArea(gamePlayLayout.getScreenArea(LayoutElementsKeys.SHELF_AREA))) {
                     onShelf = false;
                     tilePool.remove(tilePressed);
-                    animatorThread.addAll(tilePool.startAnimating());
+                    tilePool.startAnimating(animatorThread);
                     if (firstTile == null) {
                         firstTile = tilePressed;
                         tilePool.remove(tilePressed);
@@ -319,16 +320,22 @@ public class GameplayScene extends Scene {
      */
     private void createWave(Point position) {
         Wave waveToAdd = new Wave(position);
-        ScaleAnimator scaleAnimatorToAdd = new ScaleAnimator(Attributes.WAVE_ANIMATION_TIME);
-        scaleAnimatorToAdd.init(waveToAdd.getScale(), 10.0f);
-        waveToAdd.setScaleAnimator(scaleAnimatorToAdd);
-        scaleAnimatorToAdd.startAnimation();
-        animatorThread.add(scaleAnimatorToAdd);
-        PaintAnimator paintAnimatorToAdd = new PaintAnimator(Attributes.WAVE_ANIMATION_TIME);
-        paintAnimatorToAdd.init(waveToAdd.getPaint(), Attributes.WAVE_PAINT_END);
-        waveToAdd.setPaintAnimator(paintAnimatorToAdd);
-        paintAnimatorToAdd.startAnimation();
-        animatorThread.add(paintAnimatorToAdd);
+        new ScaleAnimationStarter().startAnimation(
+                waveToAdd,
+                animatorThread,
+                waveToAdd.getScale(),
+                10.0f,
+                Attributes.WAVE_ANIMATION_TIME,
+                0
+        );
+        new PaintAnimationStarter().startAnimation(
+                waveToAdd,
+                animatorThread,
+                Attributes.WAVE_PAINT_START,
+                Attributes.WAVE_PAINT_END,
+                Attributes.WAVE_ANIMATION_TIME,
+                0
+        );
         wavePool.add(waveToAdd);
     }
 

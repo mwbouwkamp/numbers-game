@@ -5,9 +5,10 @@ import android.graphics.Paint;
 import android.graphics.Point;
 
 public abstract class GameObject {
-    protected Point position = new Point();
-    protected Paint paint = new Paint();
-    protected float scale = 1;
+    protected Point position;
+    protected Paint paint;
+    protected float scale;
+
 
     public Point getPosition() {
         return position;

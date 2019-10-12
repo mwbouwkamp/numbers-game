@@ -4,6 +4,9 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.view.MotionEvent;
 
+import org.xml.sax.helpers.AttributesImpl;
+
+import nl.limakajo.numbers.animators.PaintAnimationStarter;
 import nl.limakajo.numbers.main.AnimatorThread;
 import nl.limakajo.numbers.animators.PaintAnimator;
 import nl.limakajo.numbers.gameObjects.AnimatesPaint;
@@ -52,52 +55,56 @@ public class LevelCompleteScene extends Scene {
         MainActivity.getPlayer().increaseNumStars(numStarsToAdd);
 
         if (numStarsToAdd > 0) {
-            initStarAnimation(
+            new PaintAnimationStarter().startAnimation(
                     levelCompleteLayout.getTextBox(LayoutElementsKeys.STAR1_STROKE_TEXT),
+                    animatorThread,
+                    Attributes.STARS_PAINT_STROKE_START,
                     Attributes.STARS_PAINT_STROKE_END,
-                    animatorThread,
+                    Attributes.STAR_ANIMATION_TIME,
                     0);
-            initStarAnimation(
+            new PaintAnimationStarter().startAnimation(
                     levelCompleteLayout.getTextBox(LayoutElementsKeys.STAR1_FILL_TEXT),
-                    Attributes.STARS_PAINT_FILL_END,
                     animatorThread,
+                    Attributes.STARS_PAINT_FILL_START,
+                    Attributes.STARS_PAINT_FILL_END,
+                    Attributes.STAR_ANIMATION_TIME,
                     0);
         }
         if (numStarsToAdd > 1) {
-            initStarAnimation(
+            new PaintAnimationStarter().startAnimation(
                     levelCompleteLayout.getTextBox(LayoutElementsKeys.STAR2_STROKE_TEXT),
+                    animatorThread,
+                    Attributes.STARS_PAINT_STROKE_START,
                     Attributes.STARS_PAINT_STROKE_END,
-                    animatorThread,
+                    Attributes.STAR_ANIMATION_TIME,
                     Attributes.STAR_ANIMATION_TIME + Attributes.STAR_ANIMATION_DELAY);
-            initStarAnimation(
+            new PaintAnimationStarter().startAnimation(
                     levelCompleteLayout.getTextBox(LayoutElementsKeys.STAR2_FILL_TEXT),
-                    Attributes.STARS_PAINT_FILL_END,
                     animatorThread,
+                    Attributes.STARS_PAINT_FILL_START,
+                    Attributes.STARS_PAINT_FILL_END,
+                    Attributes.STAR_ANIMATION_TIME,
                     Attributes.STAR_ANIMATION_TIME + Attributes.STAR_ANIMATION_DELAY);
         }
         if (numStarsToAdd > 2) {
-            initStarAnimation(
+            new PaintAnimationStarter().startAnimation(
                     levelCompleteLayout.getTextBox(LayoutElementsKeys.STAR3_STROKE_TEXT),
+                    animatorThread,
+                    Attributes.STARS_PAINT_STROKE_START,
                     Attributes.STARS_PAINT_STROKE_END,
-                    animatorThread,
+                    Attributes.STAR_ANIMATION_TIME,
                     2 * (Attributes.STAR_ANIMATION_TIME + Attributes.STAR_ANIMATION_DELAY));
-            initStarAnimation(
+            new PaintAnimationStarter().startAnimation(
                     levelCompleteLayout.getTextBox(LayoutElementsKeys.STAR3_FILL_TEXT),
-                    Attributes.STARS_PAINT_FILL_END,
                     animatorThread,
+                    Attributes.STARS_PAINT_FILL_START,
+                    Attributes.STARS_PAINT_FILL_END,
+                    Attributes.STAR_ANIMATION_TIME,
                     2 * (Attributes.STAR_ANIMATION_TIME + Attributes.STAR_ANIMATION_DELAY));
         }
         setInitiating(false);
     }
 
-
-    public void initStarAnimation(AnimatesPaint startTextBox, Paint paintEnd, AnimatorThread animatorThread, long delay) {
-        PaintAnimator paintAnimator = new PaintAnimator(Attributes.STAR_ANIMATION_TIME);
-        paintAnimator.init(startTextBox.getPaint(), paintEnd);
-        startTextBox.setPaintAnimator(paintAnimator);
-        paintAnimator.startAnimation(delay);
-        animatorThread.add(paintAnimator);
-    }
 
     /**
      * Calculates the number of stars to add, based on the userTime

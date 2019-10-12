@@ -184,6 +184,11 @@ public class Tile extends GameObject implements AnimatesPosition {
 		return new Rect(position.x - Attributes.TILE_WIDTH / 2, position.y - Attributes.TILE_WIDTH / 2, position.x + Attributes.TILE_WIDTH / 2, position.y + Attributes.TILE_WIDTH /2);
 	}
 
+	@Override
+	public void setPositionAnimator(PositionAnimator positionAnimator) {
+		this.positionAnimator = positionAnimator;
+	}
+
 	public Point getPosition() {
 		return this.position;
 	}
@@ -192,7 +197,7 @@ public class Tile extends GameObject implements AnimatesPosition {
 		return this.positionAnimator;
 	}
 
-	public void setPositionAnimator(PositionAnimator positionAnimator) {
+	public void setAnimator(PositionAnimator positionAnimator) {
 		this.positionAnimator = positionAnimator;
 	}
 }

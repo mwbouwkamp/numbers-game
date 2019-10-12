@@ -27,7 +27,6 @@ public class Wave extends GameObject implements AnimatesPaint, AnimatesScale {
 	public Wave(Point position) {
 		this.position = position;
 		this.paint = new Paint(Attributes.WAVE_PAINT_START);
-		this.scale = 1;
 		this.scaleAnimator = new ScaleAnimator(Attributes.WAVE_ANIMATION_TIME);
 		this.paintAnimator = new PaintAnimator(Attributes.WAVE_ANIMATION_TIME);
 	}
@@ -55,11 +54,13 @@ public class Wave extends GameObject implements AnimatesPaint, AnimatesScale {
 		return scaleAnimator;
 	}
 
-	public void setScaleAnimator(ScaleAnimator scaleAnimator) {
-		this.scaleAnimator = scaleAnimator;
-	}
-
+	@Override
 	public void setPaintAnimator(PaintAnimator paintAnimator) {
 		this.paintAnimator = paintAnimator;
+	}
+
+	@Override
+	public void setScaleAnimator(ScaleAnimator scaleAnimator) {
+		this.scaleAnimator = scaleAnimator;
 	}
 }
