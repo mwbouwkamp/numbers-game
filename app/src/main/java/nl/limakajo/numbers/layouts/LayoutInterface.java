@@ -10,5 +10,5 @@ import android.graphics.Canvas;
  * @author M.W.Bouwkamp
  */
 public interface LayoutInterface {
-    public void draw(Canvas canvas);
+    void draw(Canvas canvas);
 }
