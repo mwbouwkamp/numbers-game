@@ -21,7 +21,6 @@ public class FontScaler {
     public FontScaler(String text, Paint startingPaint, Rect rectToFit) {
         Rect bounds = new Rect();
         startingPaint.getTextBounds(text, 0, text.length(), bounds);
-        float initialTextSize = startingPaint.getTextSize();
         xTextSize = startingPaint.getTextSize() * rectToFit.width() / bounds.width();
         if (xTextSize < 10 || xTextSize > Float.MAX_VALUE) {
             xTextSize = 10;

@@ -1,7 +1,5 @@
 package nl.limakajo.numbers.animators;
 
-import nl.limakajo.numbers.gameObjects.AnimatesScale;
-
 public class ScaleAnimator extends Animator<Float> {
 
     /**

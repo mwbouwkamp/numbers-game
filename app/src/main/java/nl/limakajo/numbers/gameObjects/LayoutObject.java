@@ -1,6 +1,5 @@
 package nl.limakajo.numbers.gameObjects;
 
-import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
@@ -13,7 +12,7 @@ import android.util.Size;
  */
 public abstract class LayoutObject extends GameObject {
 
-    protected Size size;
+    protected final Size size;
 
     /**
      * Constructs a LayoutObject
@@ -36,7 +35,4 @@ public abstract class LayoutObject extends GameObject {
         return new Rect(position.x, position.y, position.x + size.getWidth(), position.y + size.getHeight());
     }
 
-    public Paint getPaint() {
-        return paint;
-    }
 }

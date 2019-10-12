@@ -3,9 +3,6 @@ package nl.limakajo.numbers.main;
 import android.graphics.Canvas;
 import android.view.SurfaceHolder;
 
-import nl.limakajo.numbers.utils.DatabaseUtils;
-import nl.limakajo.numbers.utils.GameUtils;
-
 /**
  * @author M.W.Bouwkamp
  */
@@ -15,7 +12,6 @@ public class MainThread extends Thread {
     private final SurfaceHolder surfaceHolder;
     private final GamePanel gamePanel;
     private boolean running;
-    private static Canvas canvas;
 
     MainThread(SurfaceHolder surfaceHolder, GamePanel gamePanel) {
         this.surfaceHolder = surfaceHolder;
@@ -33,8 +29,7 @@ public class MainThread extends Thread {
 
         while (running) {
             startTime = System.nanoTime();
-            canvas = null;
-
+            Canvas canvas = null;
             try {
                 canvas = this.surfaceHolder.lockCanvas();
                 synchronized (surfaceHolder) {

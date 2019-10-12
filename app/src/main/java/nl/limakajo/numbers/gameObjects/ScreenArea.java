@@ -3,7 +3,6 @@ package nl.limakajo.numbers.gameObjects;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
-import android.graphics.Rect;
 import android.util.Size;
 
 import nl.limakajo.numbers.utils.Attributes;

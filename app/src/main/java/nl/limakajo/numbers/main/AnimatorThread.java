@@ -10,7 +10,7 @@ import nl.limakajo.numbers.animators.Animator;
 public class AnimatorThread extends Thread {
 
     private List<Animator> animators;
-    boolean running;
+    private boolean running;
 
     public AnimatorThread() {
         this.animators = new ArrayList<>();
@@ -45,10 +45,6 @@ public class AnimatorThread extends Thread {
         animators.add(animator);
     }
 
-    public void addAll(List<Animator> animators) {
-        this.animators.addAll(animators);
-    }
-
     public void removeAll() {
         this.animators = new ArrayList<>();
     }
@@ -59,10 +55,6 @@ public class AnimatorThread extends Thread {
 
     public void remove(Animator animator) {
         animators.remove(animator);
-    }
-
-    public List<Animator> getAnimators() {
-        return animators;
     }
 
 }

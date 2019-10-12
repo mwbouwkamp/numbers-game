@@ -6,9 +6,7 @@ import android.graphics.Point;
 import java.util.LinkedList;
 import java.util.List;
 
-import nl.limakajo.numbers.animators.Animator;
 import nl.limakajo.numbers.animators.PositionAnimationStarter;
-import nl.limakajo.numbers.animators.PositionAnimator;
 import nl.limakajo.numbers.main.AnimatorThread;
 import nl.limakajo.numbers.utils.Attributes;
 
@@ -24,7 +22,7 @@ public class TilePool extends GameObjectPool<Tile> {
      * Constructs a TilePool
      */
     public TilePool() {
-        gameObjectPool = new LinkedList<Tile>();
+        gameObjectPool = new LinkedList<>();
     }
 
     /**

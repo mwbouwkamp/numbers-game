@@ -55,6 +55,8 @@ public class Attributes {
     public static final Paint DIV_PAINT_2 = getDiv2Paint();
     public static final Paint NO_DRAW = new Paint();
 
+    public static final float RELATIVE_SIZE_TEXTBOX = 0.6f;
+
     //Tile Attributes
     public static final int[] TILE_COLORS = {
             RESOURCES.getColor(R.color.colorTileOne),
@@ -64,7 +66,7 @@ public class Attributes {
             RESOURCES.getColor(R.color.colorTileFive),
             RESOURCES.getColor(R.color.colorTileSix),
     };
-    public static final int TILE_WIDTH = (int) ((MainActivity.getDevice().getWidth() - 9 * MARGIN) / 6);
+    public static final int TILE_WIDTH = (MainActivity.getDevice().getWidth() - 9 * MARGIN) / 6;
     public static final int[] TILE_XCOORDS = new int[] {
             (int) (0.5 * (TILE_WIDTH) + 2 * MARGIN),
             (int) (1.5 * (TILE_WIDTH) + 3 * MARGIN),

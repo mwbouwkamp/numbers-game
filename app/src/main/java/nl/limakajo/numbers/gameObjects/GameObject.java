@@ -10,14 +10,6 @@ public abstract class GameObject {
     protected float scale;
 
 
-    public Point getPosition() {
-        return position;
-    }
-
-    public Paint getPaint() {
-        return paint;
-    }
-
     public float getScale() {
         return scale;
     }

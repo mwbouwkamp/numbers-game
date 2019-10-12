@@ -2,10 +2,6 @@ package nl.limakajo.numbers.animators;
 
 import android.graphics.Point;
 
-import nl.limakajo.numbers.gameObjects.Animates;
-import nl.limakajo.numbers.gameObjects.AnimatesPosition;
-import nl.limakajo.numbers.gameObjects.GameObject;
-
 public class PositionAnimator extends Animator<Point>{
 
     /**

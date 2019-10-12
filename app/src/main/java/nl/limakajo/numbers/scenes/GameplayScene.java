@@ -7,12 +7,8 @@ import android.graphics.Point;
 import android.graphics.RectF;
 import android.view.MotionEvent;
 
-import org.xml.sax.helpers.AttributesImpl;
-
 import nl.limakajo.numbers.animators.PaintAnimationStarter;
-import nl.limakajo.numbers.animators.PaintAnimator;
 import nl.limakajo.numbers.animators.ScaleAnimationStarter;
-import nl.limakajo.numbers.animators.ScaleAnimator;
 import nl.limakajo.numbers.gameObjects.Tile;
 import nl.limakajo.numbers.gameObjects.Wave;
 import nl.limakajo.numbers.gameObjects.WavePool;
@@ -43,7 +39,7 @@ public class GameplayScene extends Scene {
     private WavePool wavePool;
     private TilePool tilePool;
 
-    private GamePlayLayout gamePlayLayout;
+    private final GamePlayLayout gamePlayLayout;
 
     private final SceneManager sceneManager;
     private final AnimatorThread animatorThread;
@@ -98,8 +94,8 @@ public class GameplayScene extends Scene {
             animatorThread.add(tileToAdd.addToShelf(tilePool));
         }
         gamePlayLayout.getTextBox(LayoutElementsKeys.GOAL_TEXT).setText(Integer.toString(MainActivity.getGame().getLevel().getGoal()));
-        gamePlayLayout.getTextBox(LayoutElementsKeys.NUM_STARS_TEXT).setText("A" + Integer.toString(MainActivity.getPlayer().getNumStars()));
-        gamePlayLayout.getTextBox(LayoutElementsKeys.NUM_LIVES_TEXT).setText("B" + Integer.toString(MainActivity.getPlayer().getNumLives()));
+        gamePlayLayout.getTextBox(LayoutElementsKeys.NUM_STARS_TEXT).setText("A" + MainActivity.getPlayer().getNumStars());
+        gamePlayLayout.getTextBox(LayoutElementsKeys.NUM_LIVES_TEXT).setText("B" + MainActivity.getPlayer().getNumLives());
         setInitiating(false);
     }
 

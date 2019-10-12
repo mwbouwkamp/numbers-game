@@ -1,9 +1,7 @@
 package nl.limakajo.numbers.animators;
 
-import android.graphics.Paint;
 import android.graphics.Point;
 
-import nl.limakajo.numbers.gameObjects.AnimatesPaint;
 import nl.limakajo.numbers.gameObjects.AnimatesPosition;
 import nl.limakajo.numbers.main.AnimatorThread;
 

@@ -3,8 +3,6 @@ package nl.limakajo.numbers.animators;
 import android.graphics.Color;
 import android.graphics.Paint;
 
-import nl.limakajo.numbers.gameObjects.AnimatesPaint;
-
 public class PaintAnimator extends Animator<Paint> {
 
     /**

@@ -1,15 +1,10 @@
 package nl.limakajo.numbers.scenes;
 
 import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.view.MotionEvent;
-
-import org.xml.sax.helpers.AttributesImpl;
 
 import nl.limakajo.numbers.animators.PaintAnimationStarter;
 import nl.limakajo.numbers.main.AnimatorThread;
-import nl.limakajo.numbers.animators.PaintAnimator;
-import nl.limakajo.numbers.gameObjects.AnimatesPaint;
 import nl.limakajo.numbers.layouts.LayoutElementsKeys;
 import nl.limakajo.numbers.layouts.LevelCompleteLayout;
 import nl.limakajo.numbers.main.MainActivity;
@@ -26,8 +21,7 @@ public class LevelCompleteScene extends Scene {
 
     private final SceneManager sceneManager;
     private final AnimatorThread animatorThread;
-    private LevelCompleteLayout levelCompleteLayout;
-    private int numStarsToAdd;
+    private final LevelCompleteLayout levelCompleteLayout;
 
     LevelCompleteScene(SceneManager sceneManager, AnimatorThread animatorThread) {
         this.sceneManager = sceneManager;
@@ -49,8 +43,8 @@ public class LevelCompleteScene extends Scene {
         MainActivity.launchDownloadService();
         MainActivity.launchUploadService();
 
-        levelCompleteLayout.getTextBox(LayoutElementsKeys.LEVELCOMPLETE_TEXT).setText(Integer.toString(userTime) + " | " + Integer.toString(averageTime));
-        numStarsToAdd = calculateNumStarsToAdd(userTime, averageTime);
+        levelCompleteLayout.getTextBox(LayoutElementsKeys.LEVELCOMPLETE_TEXT).setText(userTime + " | " + averageTime);
+        int numStarsToAdd = calculateNumStarsToAdd(userTime, averageTime);
         MainActivity.getPlayer().increaseNumLives(numStarsToAdd);
         MainActivity.getPlayer().increaseNumStars(numStarsToAdd);
 

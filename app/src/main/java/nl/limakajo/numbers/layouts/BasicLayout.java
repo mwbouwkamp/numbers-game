@@ -2,7 +2,6 @@ package nl.limakajo.numbers.layouts;
 
 import android.graphics.Canvas;
 import android.graphics.Point;
-import android.graphics.Rect;
 import android.util.Size;
 
 import java.util.EnumMap;
@@ -12,7 +11,6 @@ import nl.limakajo.numbers.gameObjects.ScreenArea;
 import nl.limakajo.numbers.gameObjects.TextBox;
 import nl.limakajo.numbers.main.MainActivity;
 import nl.limakajo.numbers.utils.Attributes;
-import nl.limakajo.numberslib.main.Main;
 
 /**
  * Class that represents the BasicLayout
@@ -21,7 +19,7 @@ import nl.limakajo.numberslib.main.Main;
  */
 public class BasicLayout implements LayoutInterface {
 
-    protected EnumMap<LayoutElementsKeys, LayoutObject> layoutObjects = new EnumMap<LayoutElementsKeys, LayoutObject>(LayoutElementsKeys.class);
+    protected final EnumMap<LayoutElementsKeys, LayoutObject> layoutObjects = new EnumMap<>(LayoutElementsKeys.class);
 
     /**
      * Constructs a BasicLayout

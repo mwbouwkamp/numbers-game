@@ -35,9 +35,6 @@ public class MainActivity extends Activity {
 	private static Player player;
 	private static Device device;
 	private static Game game;
-	private static GamePanel gamePanel;
-	private static NumLivesThread numLivesThread;
-	private static AnimatorThread animatorThread;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -68,17 +65,17 @@ public class MainActivity extends Activity {
 		loadSharedPreferences();
 
         //Start a new thread that keeps the preference file up to date with respect to number of lives of player
-        numLivesThread = new NumLivesThread(this, player);
+		NumLivesThread numLivesThread = new NumLivesThread(this, player);
         numLivesThread.start();
         numLivesThread.setRunning(true);
 
         //Start a new tread that handels the animations
-		this.animatorThread = new AnimatorThread();
-		this.animatorThread.start();
-		this.animatorThread.setRunning(true);
+		AnimatorThread animatorThread = new AnimatorThread();
+		animatorThread.start();
+		animatorThread.setRunning(true);
 
 		//Start the action
-		gamePanel = new GamePanel(context, animatorThread);
+		GamePanel gamePanel = new GamePanel(context, animatorThread);
 		setContentView(gamePanel);
 	}
 

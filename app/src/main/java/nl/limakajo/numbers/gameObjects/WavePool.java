@@ -11,7 +11,7 @@ public class WavePool extends GameObjectPool<Wave>{
      * Constructs a WavePool
      */
     public WavePool() {
-        gameObjectPool = new LinkedList<Wave>();
+        gameObjectPool = new LinkedList<>();
     }
 
 

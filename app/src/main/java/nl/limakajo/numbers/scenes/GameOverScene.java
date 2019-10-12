@@ -17,7 +17,7 @@ public class GameOverScene extends Scene {
 
     private final SceneManager sceneManager;
     private final AnimatorThread animatorThread;
-    private GameOverLayout gameOverLayout;
+    private final GameOverLayout gameOverLayout;
 
     GameOverScene(SceneManager sceneManager, AnimatorThread animatorThread) {
         this.sceneManager = sceneManager;

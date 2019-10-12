@@ -1,7 +1,5 @@
 package nl.limakajo.numbers.animators;
 
-import nl.limakajo.numbers.gameObjects.Animates;
-
 public abstract class Animator<T> {
 
     protected T startingState;
@@ -9,8 +7,8 @@ public abstract class Animator<T> {
     protected T targetState;
 
     protected long animationTime;
-    protected long startingTime;
-    protected boolean animating;
+    private long startingTime;
+    private boolean animating;
 
     /**
      * Abstract function for updating the currentState

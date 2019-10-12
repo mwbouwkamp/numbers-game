@@ -176,7 +176,7 @@ public class GamePlayLayout extends BasicLayout {
 						plusArea.getArea().width(),
 						plusArea.getArea().height() / 11),
                 Attributes.DIV_PAINT_2);
-		Rect plusTextRect = getRelativeRect(plusArea.getArea(), 0.6f);
+		Rect plusTextRect = getRelativeRect(plusArea.getArea(), Attributes.RELATIVE_SIZE_TEXTBOX);
 		LayoutObject plusText = new TextBox(
 				MainActivity.getContext().getString(R.string.gameplay_plus_sign),
 				Attributes.TextAllignment.XYCENTERED,
@@ -187,7 +187,7 @@ public class GamePlayLayout extends BasicLayout {
 						plusTextRect.width(),
 						plusTextRect.height()),
 				Attributes.TEXT_BOX_OPERATOR_PAINT);
-		Rect minTextRect = getRelativeRect(minArea.getArea(), 0.6f);
+		Rect minTextRect = getRelativeRect(minArea.getArea(), Attributes.RELATIVE_SIZE_TEXTBOX);
 		LayoutObject minText = new TextBox(
                 MainActivity.getContext().getString(R.string.gameplay_min_sign),
                 Attributes.TextAllignment.XYCENTERED,
@@ -198,7 +198,7 @@ public class GamePlayLayout extends BasicLayout {
 						minTextRect.width(),
 						minTextRect.height()),
                 Attributes.TEXT_BOX_OPERATOR_PAINT);
-		Rect multTextRect = getRelativeRect(multArea.getArea(), 0.6f);
+		Rect multTextRect = getRelativeRect(multArea.getArea(), Attributes.RELATIVE_SIZE_TEXTBOX);
 		LayoutObject multText = new TextBox(
                 MainActivity.getContext().getString(R.string.gameplay_mult_sign),
                 Attributes.TextAllignment.XYCENTERED,
@@ -209,7 +209,7 @@ public class GamePlayLayout extends BasicLayout {
 						multTextRect.width(),
 						multTextRect.height()),
                 Attributes.TEXT_BOX_OPERATOR_PAINT);
-		Rect divTextRect = getRelativeRect(divArea.getArea(), 0.6f);
+		Rect divTextRect = getRelativeRect(divArea.getArea(), Attributes.RELATIVE_SIZE_TEXTBOX);
 		LayoutObject divText = new TextBox(
                 MainActivity.getContext().getString(R.string.gameplay_div_sign),
                 Attributes.TextAllignment.XYCENTERED,
@@ -245,11 +245,10 @@ public class GamePlayLayout extends BasicLayout {
 	}
 
 	private Rect getRelativeRect(Rect rect, float factor) {
-		Rect toReturn = new Rect(
+		return new Rect(
 				(int) (rect.left + (1 - factor) / 2 * rect.width()),
 				(int) (rect.top + (1 - factor) / 2 * rect.height()),
 				(int) (rect.right - (1 - factor) / 2 * rect.width()),
 				(int) (rect.bottom - (1 - factor) / 2 * rect.height()));
-		return toReturn;
 	}
 }

@@ -14,7 +14,7 @@ public class MenuScene extends Scene {
 
     private final SceneManager sceneManager;
     private final AnimatorThread animatorThread;
-    private MenuLayout menuLayout;
+    private final MenuLayout menuLayout;
 
     MenuScene(SceneManager sceneManager, AnimatorThread animatorThread) {
         this.sceneManager = sceneManager;

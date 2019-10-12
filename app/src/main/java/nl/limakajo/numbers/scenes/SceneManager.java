@@ -14,11 +14,9 @@ import static java.lang.Thread.sleep;
 public class SceneManager {
     private Scene scene;
     private boolean activeSceneInitiating;
-    private final AnimatorThread animatorThread;
 
 
     public SceneManager(AnimatorThread animatorThread) {
-        this.animatorThread = animatorThread;
         scene = new MenuScene(this, animatorThread);
         startScene();
     }

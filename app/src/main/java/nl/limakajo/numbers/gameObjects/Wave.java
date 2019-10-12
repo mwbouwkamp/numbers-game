@@ -60,6 +60,11 @@ public class Wave extends GameObject implements AnimatesPaint, AnimatesScale {
 	}
 
 	@Override
+	public Paint getPaint() {
+		return paint;
+	}
+
+	@Override
 	public void setScaleAnimator(ScaleAnimator scaleAnimator) {
 		this.scaleAnimator = scaleAnimator;
 	}
