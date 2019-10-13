@@ -71,8 +71,8 @@ public class Tile extends GameObject implements AnimatesPosition {
 	 * @param screenArea the area to check
 	 * @return true if tile is in screenArea
 	 */
-	public boolean inArea(ScreenArea screenArea) {
-		return screenArea.getArea().contains(getBounds(position));
+	public boolean inArea(LayoutObject screenArea) {
+		return screenArea.getArea().contains(position.x, position.y);
 	}
 	
 	/**

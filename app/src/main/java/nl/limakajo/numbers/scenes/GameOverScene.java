@@ -3,9 +3,12 @@ package nl.limakajo.numbers.scenes;
 import android.graphics.Canvas;
 import android.view.MotionEvent;
 
+import nl.limakajo.numbers.animators.PaintAnimationStarter;
+import nl.limakajo.numbers.layouts.LayoutElementsKeys;
 import nl.limakajo.numbers.main.AnimatorThread;
 import nl.limakajo.numbers.layouts.GameOverLayout;
 import nl.limakajo.numbers.main.MainActivity;
+import nl.limakajo.numbers.utils.Attributes;
 import nl.limakajo.numbers.utils.DatabaseUtils;
 import nl.limakajo.numbers.utils.GameUtils;
 

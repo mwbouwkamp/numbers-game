@@ -88,11 +88,7 @@ public class GameplayScene extends Scene {
         DatabaseUtils.updateTableLevelsLevelStatusForSpecificCurrentStatus(MainActivity.getContext(), GameUtils.LevelState.ACTIVE, GameUtils.LevelState.UPLOAD);
         DatabaseUtils.updateTableLevelsLevelStatusForSpecificLevel(MainActivity.getContext(), newLevel, GameUtils.LevelState.ACTIVE);
 
-        tilePool = new TilePool();
-        for (int i = 0; i < GameConstants.NUMTILES; i++) {
-            Tile tileToAdd = new Tile(MainActivity.getGame().getLevel().getHand()[i]);
-            animatorThread.add(tileToAdd.addToShelf(tilePool));
-        }
+        createTilePool();
         gamePlayLayout.getTextBox(LayoutElementsKeys.GOAL_TEXT).setText(Integer.toString(MainActivity.getGame().getLevel().getGoal()));
         gamePlayLayout.getTextBox(LayoutElementsKeys.NUM_STARS_TEXT).setText("A" + MainActivity.getPlayer().getNumStars());
         gamePlayLayout.getTextBox(LayoutElementsKeys.NUM_LIVES_TEXT).setText("B" + MainActivity.getPlayer().getNumLives());
@@ -243,6 +239,9 @@ public class GameplayScene extends Scene {
     private void setClicekdTile(Tile tileClicked) {
         tilePressed = tileClicked;
         tileStart = new Point(tilePressed.getPosition());
+        if (null != tilePressed.getPositionAnimator()) {
+            tilePressed.getPositionAnimator().stopAnimating();
+        }
         statusBarText = tilePressed.toString();
     }
 
@@ -253,18 +252,14 @@ public class GameplayScene extends Scene {
      */
     private void runningTouchDragged(MotionEvent event) {
         if (tilePressed != null) {
-            if (tilePressed != firstTile) {
-                if (onShelf && !tilePressed.inArea(gamePlayLayout.getScreenArea(LayoutElementsKeys.SHELF_AREA))) {
-                    onShelf = false;
-                    tilePool.remove(tilePressed);
-                    tilePool.startAnimating(animatorThread);
-                    if (firstTile == null) {
-                        firstTile = tilePressed;
-                        tilePool.remove(tilePressed);
-                    } else {
-                        secondTile = tilePressed;
-                        tilePool.remove(tilePressed);
-                    }
+            if (onShelf && !tilePressed.inArea(gamePlayLayout.getScreenArea(LayoutElementsKeys.SHELF_AREA))) {
+                onShelf = false;
+                tilePool.remove(tilePressed);
+                tilePool.startAnimating(animatorThread);
+                if (firstTile == null) {
+                    firstTile = tilePressed;
+                } else {
+                    secondTile = tilePressed;
                 }
             }
             tilePressed.setPosition(new Point(tileStart.x + (int) event.getX() - clickPosition.x, tileStart.y + (int) event.getY() - clickPosition.y));
@@ -277,6 +272,14 @@ public class GameplayScene extends Scene {
      * @param event event
      */
     private void runningTouchUp(MotionEvent event) {
+        if (gamePlayLayout.getScreenArea(LayoutElementsKeys.NUM_LIVES_TEXT).getArea().contains(clickPosition.x, clickPosition.y)) {
+            sceneManager.setScene(new GameOverScene(sceneManager, animatorThread));
+            return;
+        }
+        if (gamePlayLayout.getScreenArea(LayoutElementsKeys.NUM_STARS_TEXT).getArea().contains(clickPosition.x, clickPosition.y)) {
+            createTilePool();
+            return;
+        }
         statusBarText = "";
         if (tilePressed != null) {
             createWave(tilePressed.getPosition());
@@ -289,10 +292,8 @@ public class GameplayScene extends Scene {
                 secondTile = consequenceTilePosition(secondTile);
             }
         }
-        tilePressed = null;
         onShelf = true;
         if (secondTile != null) {
-            //Convert into a switch
             if (numPlus == 2) {
                 calculate('+');
             } else if (numMin == 2) {
@@ -302,10 +303,21 @@ public class GameplayScene extends Scene {
             } else if (numDiv == 2) {
                 calculate('/');
             } else {
-                animatorThread.add(firstTile.addToShelf(tilePool));
-                firstTile = secondTile;
-                secondTile = null;
+                if (!tilePressed.inArea(gamePlayLayout.getScreenArea(LayoutElementsKeys.HEADER_AREA))) {
+                    animatorThread.add(firstTile.addToShelf(tilePool));
+                    firstTile = secondTile;
+                    secondTile = null;
+                }
             }
+        }
+        tilePressed = null;
+    }
+
+    private void createTilePool() {
+        tilePool = new TilePool();
+        for (int i = 0; i < GameConstants.NUMTILES; i++) {
+            Tile tileToAdd = new Tile(MainActivity.getGame().getLevel().getHand()[i]);
+            animatorThread.add(tileToAdd.addToShelf(tilePool));
         }
     }
 

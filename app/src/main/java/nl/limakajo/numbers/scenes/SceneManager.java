@@ -15,18 +15,17 @@ public class SceneManager {
     private Scene scene;
     private boolean activeSceneInitiating;
 
-
     public SceneManager(AnimatorThread animatorThread) {
         scene = new MenuScene(this, animatorThread);
-        startScene();
+        init();
     }
 
     public void setScene(Scene scene) {
         this.scene = scene;
-        startScene();
+        init();
     }
 
-    public void startScene() {
+    public void init() {
         activeSceneInitiating = true;
         scene.init();
         while (scene.getInitiating()) {

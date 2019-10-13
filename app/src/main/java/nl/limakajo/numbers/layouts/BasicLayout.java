@@ -54,8 +54,8 @@ public class BasicLayout implements LayoutInterface {
      * @param layoutElement     the ScreenArea to return indicated by LayoutElementsKey
      * @return                  ScreenArea
      */
-    public ScreenArea getScreenArea(LayoutElementsKeys layoutElement) {
-        return (ScreenArea) layoutObjects.get(layoutElement);
+    public LayoutObject getScreenArea(LayoutElementsKeys layoutElement) {
+        return layoutObjects.get(layoutElement);
     }
 
     @Override
