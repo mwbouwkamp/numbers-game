@@ -21,4 +21,7 @@ public class PositionAnimator extends Animator<Point>{
 
     }
 
+    public void setCurrentposition(Point position) {
+        this.currentState = position;
+    }
 }

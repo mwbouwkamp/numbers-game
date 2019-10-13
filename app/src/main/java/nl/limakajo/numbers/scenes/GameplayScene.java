@@ -8,6 +8,7 @@ import android.graphics.RectF;
 import android.view.MotionEvent;
 
 import nl.limakajo.numbers.animators.PaintAnimationStarter;
+import nl.limakajo.numbers.animators.PositionAnimationStarter;
 import nl.limakajo.numbers.animators.ScaleAnimationStarter;
 import nl.limakajo.numbers.gameObjects.Tile;
 import nl.limakajo.numbers.gameObjects.Wave;
@@ -148,10 +149,6 @@ public class GameplayScene extends Scene {
             for (Tile tileAfterCrunching: tilesAfterCrunching) {
                 animatorThread.add(tileAfterCrunching.addToShelf(tilePool));
             }
-            numPlus = 0;
-            numMin = 0;
-            numMult = 0;
-            numDiv = 0;
             return null;
         } else {
             animatorThread.add(tile.addToShelf(tilePool));
@@ -223,14 +220,11 @@ public class GameplayScene extends Scene {
     private void runningTouchDown(MotionEvent event) {
         clickPosition.x = (int) event.getX();
         clickPosition.y = (int) event.getY();
-        if (firstTile != null) {
-            if (firstTile.isClicked(clickPosition)) {
-                setClicekdTile(firstTile);
-            }
+        if (firstTile != null && firstTile.isClicked(clickPosition)) {
+            setClicekdTile(firstTile);
         }
         for (Tile tile: tilePool.getGameObjects()) {
             if (tile.isClicked(clickPosition)) {
-                animatorThread.remove(tile.getPositionAnimator());
                 setClicekdTile(tile);
             }
         }
@@ -241,6 +235,7 @@ public class GameplayScene extends Scene {
         tileStart = new Point(tilePressed.getPosition());
         if (null != tilePressed.getPositionAnimator()) {
             tilePressed.getPositionAnimator().stopAnimating();
+            animatorThread.remove(tileClicked.getPositionAnimator());
         }
         statusBarText = tilePressed.toString();
     }
@@ -262,7 +257,10 @@ public class GameplayScene extends Scene {
                     secondTile = tilePressed;
                 }
             }
-            tilePressed.setPosition(new Point(tileStart.x + (int) event.getX() - clickPosition.x, tileStart.y + (int) event.getY() - clickPosition.y));
+            tilePressed.setPosition(new Point((int) event.getX(), (int) event.getY()));
+            if (null != tilePressed.getPositionAnimator()){
+                tilePressed.getPositionAnimator().setCurrentposition(tilePressed.getPosition());
+            }
         }
     }
 
@@ -283,16 +281,22 @@ public class GameplayScene extends Scene {
         statusBarText = "";
         if (tilePressed != null) {
             createWave(tilePressed.getPosition());
-            if (firstTile == null && secondTile == null) {
-                //TODO: Make this logic work again!
-//                tilePressed.setPosition(tilePressed.getOriginalPosition());
-            } else if (secondTile == null) {
-                firstTile = consequenceTilePosition(firstTile);
+            if (onShelf) {
+                new PositionAnimationStarter().startAnimation(
+                        tilePressed,
+                        animatorThread,
+                        tilePressed.getPosition(),
+                        tileStart,
+                        Attributes.TILE_ANIMATION_TIME, 0);
             } else {
-                secondTile = consequenceTilePosition(secondTile);
+                onShelf = true;
+                if (secondTile == null) {
+                    firstTile = consequenceTilePosition(firstTile);
+                } else {
+                    secondTile = consequenceTilePosition(secondTile);
+                }
             }
         }
-        onShelf = true;
         if (secondTile != null) {
             if (numPlus == 2) {
                 calculate('+');
@@ -315,6 +319,8 @@ public class GameplayScene extends Scene {
 
     private void createTilePool() {
         tilePool = new TilePool();
+        firstTile = null;
+        secondTile = null;
         for (int i = 0; i < GameConstants.NUMTILES; i++) {
             Tile tileToAdd = new Tile(MainActivity.getGame().getLevel().getHand()[i]);
             animatorThread.add(tileToAdd.addToShelf(tilePool));
