@@ -3,6 +3,7 @@ package nl.limakajo.numbers.scenes;
 import android.graphics.Canvas;
 import android.view.MotionEvent;
 
+import nl.limakajo.numbers.animators.Animator;
 import nl.limakajo.numbers.animators.PaintAnimationStarter;
 import nl.limakajo.numbers.main.AnimatorThread;
 import nl.limakajo.numbers.layouts.LayoutElementsKeys;
@@ -96,6 +97,7 @@ public class LevelCompleteScene extends Scene {
                     Attributes.STAR_ANIMATION_TIME,
                     2 * (Attributes.STAR_ANIMATION_TIME + Attributes.STAR_ANIMATION_DELAY));
         }
+        boolean animating = true;
         setInitiating(false);
     }
 
@@ -136,7 +138,9 @@ public class LevelCompleteScene extends Scene {
 
     @Override
     public void receiveTouch(MotionEvent event) {
-        sceneManager.setScene(new GameplayScene(sceneManager, animatorThread));
+        if (!animatorThread.isAnimating()) {
+            sceneManager.setScene(new GameplayScene(sceneManager, animatorThread));
+        }
     }
 
 }

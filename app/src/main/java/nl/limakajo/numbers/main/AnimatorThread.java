@@ -57,4 +57,13 @@ public class AnimatorThread extends Thread {
         animators.remove(animator);
     }
 
+    public boolean isAnimating() {
+        for (Animator animator: animators) {
+            if (animator.isAnimating()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
