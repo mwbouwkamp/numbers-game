@@ -30,7 +30,7 @@ public class Attributes {
 
     //	Layout Attributes
     public static final int BG_COLOR = RESOURCES.getColor(R.color.colorBackground);
-    private static final int FONT_COLOR = RESOURCES.getColor(R.color.colorGoal);
+    private static final int FONT_COLOR = RESOURCES.getColor(R.color.colorBasicText);
     private static final int PLUS_COLOR = RESOURCES.getColor(R.color.colorPlus);
     private static final int PLUS_COLOR_2 = RESOURCES.getColor(R.color.colorPlus2);
     private static final int MIN_COLOR = RESOURCES.getColor(R.color.colorMin);

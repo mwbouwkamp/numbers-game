@@ -10,14 +10,12 @@
     <string name="star">A</string>
 
     <!-- Strings to be displayed in MenuLayout -->
-    <string name="menu_start_text">NUMBERS</string>
+    <string name="nmbrs_text">NMBRS</string>
 
     <!-- Strings to be displayed in GameplayLayout -->
     <string name="gameplay_plus_sign">+</string>
     <string name="gameplay_min_sign">-</string>
     <string name="gameplay_mult_sign">*</string>
     <string name="gameplay_div_sign">/</string>
-
-
 
 </resources>

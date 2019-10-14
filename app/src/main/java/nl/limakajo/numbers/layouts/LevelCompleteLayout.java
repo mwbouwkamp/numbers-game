@@ -38,7 +38,7 @@ public class LevelCompleteLayout extends LogoWithAreaForTextLayout {
         LayoutObject starsArea = new ScreenArea(
                 new Point(
                         layoutObjects.get(LayoutElementsKeys.LOGO_AREA).getArea().left,
-                        levelCompleteText.getArea().bottom + Attributes.MARGIN),
+                        levelCompleteText.getArea().bottom + 3 * Attributes.MARGIN),
                 new Size(
                         layoutObjects.get(LayoutElementsKeys.LOGO_AREA).getArea().width(),
                         5 * Attributes.MARGIN),

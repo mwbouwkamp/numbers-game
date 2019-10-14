@@ -8,9 +8,6 @@
 
     //Board
     <color name="colorBackground">#262525</color>
-    <color name="colorGoal">#96afff</color> <!-- THIS ONE NEEDS TO BE PICKED AND MAY BE OBSOLETE -->
-    <color name="colorFooter">#888888</color> <!-- THIS ONE NEEDS TO BE PICKED AND MAY BE OBSOLETE -->
-    <color name="colorShelf">#141428</color> <!-- THIS ONE NEEDS TO BE PICKED AND MAY BE OBSOLETE -->
     <color name="colorPlus">#1B5F7C</color>
     <color name="colorPlus2">#2C6D89</color>
     <color name="colorMin">#9E3D3C</color>
@@ -19,15 +16,24 @@
     <color name="colorMult2">#548254</color>
     <color name="colorDiv">#BFA84C</color>
     <color name="colorDiv2">#CCB766</color>
-    <color name="colorGameOver">#220000</color> <!-- THIS ONE NEEDS TO BE PICKED AND MAY BE OBSOLETE -->
-    <color name="colorLevelComplete">#88FFAA</color> <!-- THIS ONE NEEDS TO BE PICKED AND MAY BE OBSOLETE -->
+
+    //Text
+    <color name="colorBasicText">#AABBCC</color>
 
     //Tiles
-    <color name="colorTileOne">#8080FF</color>
-    <color name="colorTileTwo">#6565EE</color>
-    <color name="colorTileThree">#5050DD</color>
-    <color name="colorTileFour">#3535CC</color>
-    <color name="colorTileFive">#2020BB</color>
-    <color name="colorTileSix">#0505AA</color>
+<!--    <color name="colorTileOne">#8080FF</color>-->
+<!--    <color name="colorTileTwo">#6565EE</color>-->
+<!--    <color name="colorTileThree">#5050DD</color>-->
+<!--    <color name="colorTileFour">#3535CC</color>-->
+<!--    <color name="colorTileFive">#2020BB</color>-->
+<!--    <color name="colorTileSix">#0505AA</color>-->
+
+
+    <color name="colorTileOne">#AABBCC</color>
+    <color name="colorTileTwo">#778899</color>
+    <color name="colorTileThree">#778899</color>
+    <color name="colorTileFour">#778899</color>
+    <color name="colorTileFive">#778899</color>
+    <color name="colorTileSix">#778899</color>
 
 </resources>

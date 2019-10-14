@@ -22,7 +22,7 @@ public class MenuLayout extends LogoWithAreaForTextLayout {
     public MenuLayout() {
         //Menu Text
         LayoutObject menuText = new TextBox(
-                MainActivity.getContext().getString(R.string.menu_start_text),
+                MainActivity.getContext().getString(R.string.nmbrs_text),
                 Attributes.TextAllignment.XYCENTERED,
                 new Point(
                         layoutObjects.get(LayoutElementsKeys.MAINTEXT_AREA).getArea().left,

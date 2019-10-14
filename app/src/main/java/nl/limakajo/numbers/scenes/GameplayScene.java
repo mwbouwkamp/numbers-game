@@ -289,14 +289,20 @@ public class GameplayScene extends Scene {
                         tileStart,
                         Attributes.TILE_ANIMATION_TIME, 0);
             } else {
-                onShelf = true;
                 if (secondTile == null) {
+                    if (firstTile == tilePressed) {
+                        numPlus = 0;
+                        numMin = 0;
+                        numMult = 0;
+                        numDiv = 0;
+                    }
                     firstTile = consequenceTilePosition(firstTile);
                 } else {
                     secondTile = consequenceTilePosition(secondTile);
                 }
             }
         }
+        onShelf = true;
         if (secondTile != null) {
             if (numPlus == 2) {
                 calculate('+');

@@ -22,7 +22,7 @@ public class LogoWithAreaForTextLayout extends LogoLayout {
         LayoutObject mainTextArea = new ScreenArea(
                 new Point(
                         layoutObjects.get(LayoutElementsKeys.FULLSCREEN).getArea().left,
-                        layoutObjects.get(LayoutElementsKeys.LOGO_AREA).getArea().bottom + 3 * Attributes.MARGIN),
+                        layoutObjects.get(LayoutElementsKeys.LOGO_AREA).getArea().bottom + 5 * Attributes.MARGIN),
                 new Size(
                         layoutObjects.get(LayoutElementsKeys.FULLSCREEN).getArea().width(),
                         //TODO: height is now hardcoded
