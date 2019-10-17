@@ -289,37 +289,35 @@ public class GameplayScene extends Scene {
                         tileStart,
                         Attributes.TILE_ANIMATION_TIME, 0);
             } else {
-                if (secondTile == null) {
-                    if (firstTile == tilePressed) {
-                        numPlus = 0;
-                        numMin = 0;
-                        numMult = 0;
-                        numDiv = 0;
-                    }
+                if (firstTile == tilePressed) {
+                    numPlus = 0;
+                    numMin = 0;
+                    numMult = 0;
+                    numDiv = 0;
                     firstTile = consequenceTilePosition(firstTile);
-                } else {
-                    secondTile = consequenceTilePosition(secondTile);
                 }
+                else if (secondTile == tilePressed) {
+                    secondTile = consequenceTilePosition(secondTile);
+                    if (numPlus == 2) {
+                        calculate('+');
+                    } else if (numMin == 2) {
+                        calculate('-');
+                    } else if (numMult == 2) {
+                        calculate('*');
+                    } else if (numDiv == 2) {
+                        calculate('/');
+                    } else {
+                        if (!tilePressed.inArea(gamePlayLayout.getScreenArea(LayoutElementsKeys.HEADER_AREA))) {
+                            animatorThread.add(firstTile.addToShelf(tilePool));
+                            firstTile = secondTile;
+                            secondTile = null;
+                        }
+                    }
+                }
+
             }
         }
         onShelf = true;
-        if (secondTile != null) {
-            if (numPlus == 2) {
-                calculate('+');
-            } else if (numMin == 2) {
-                calculate('-');
-            } else if (numMult == 2) {
-                calculate('*');
-            } else if (numDiv == 2) {
-                calculate('/');
-            } else {
-                if (!tilePressed.inArea(gamePlayLayout.getScreenArea(LayoutElementsKeys.HEADER_AREA))) {
-                    animatorThread.add(firstTile.addToShelf(tilePool));
-                    firstTile = secondTile;
-                    secondTile = null;
-                }
-            }
-        }
         tilePressed = null;
     }
 
