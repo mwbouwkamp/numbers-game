@@ -314,7 +314,6 @@ public class GameplayScene extends Scene {
                         }
                     }
                 }
-
             }
         }
         onShelf = true;
