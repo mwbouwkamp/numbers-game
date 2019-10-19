@@ -10,6 +10,7 @@ import java.util.LinkedList;
 import nl.limakajo.numbers.localData.NumbersContract;
 import nl.limakajo.numbers.main.MainActivity;
 import nl.limakajo.numberslib.numbersGame.Level;
+import nl.limakajo.numberslib.utils.GameConstants;
 
 /**
  * Class that holds all database operations
@@ -89,8 +90,10 @@ public class DatabaseUtils {
     }
 
     /**
-     * Returns a level that has not yet been played for which averageTime is closest to the userAverageTime
-     * Difference is calculated by: Math.abs(level.getAverageTime() - userAverageTime))
+     * Returns a level that has not yet been played for which averageTime matches the level of the user
+     * based on its userAverageTime. This is determined as follows:
+     *
+     * Minimize: Math.abs(level.getAverageTime() - (GameConstants.TIMEPENALTY - userAverageTime)))
      *
      * @param context   application context
      * @return          level that has not yet been played for which averageTime is closest to userAverageTime
@@ -101,7 +104,7 @@ public class DatabaseUtils {
         int userAverageTime = MainActivity.getPlayer().getUserAverageTime();
         int timeDifferenceSelectedLevel = Integer.MAX_VALUE;
         for (Level level: levels) {
-            if (Math.abs(level.getAverageTime() - userAverageTime) < timeDifferenceSelectedLevel) {
+            if (Math.abs(level.getAverageTime() - (GameConstants.TIMEPENALTY - userAverageTime)) < timeDifferenceSelectedLevel) {
                 toReturn = level;
                 timeDifferenceSelectedLevel = Math.abs(toReturn.getAverageTime() - userAverageTime);
             }
