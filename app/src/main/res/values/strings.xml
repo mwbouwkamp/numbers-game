@@ -17,5 +17,6 @@
     <string name="gameplay_min_sign">-</string>
     <string name="gameplay_mult_sign">*</string>
     <string name="gameplay_div_sign">/</string>
+    <string name="help_text">HELP</string>
 
 </resources>

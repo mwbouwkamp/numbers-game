@@ -41,6 +41,8 @@ public class Attributes {
     private static final int DIV_COLOR_2 = RESOURCES.getColor(R.color.colorDiv2);
     private static final int STARS_COLOR = RESOURCES.getColor(R.color.colorDiv);
 
+    public static final int INSTRUCTIONS_ALPHA = 200;
+
     public static final Paint BG_PAINT = getBackGroundPaint();
     public static final Paint TEXTBOX_NORMAL_PAINT = getTextBoxNormalFontPaint();
     public static final Paint TEXTBOX_NUMLIVES_PAINT = getTextBoxNumbersGameFontPaint();
@@ -53,6 +55,7 @@ public class Attributes {
     public static final Paint MULT_PAINT_2 = getMult2Paint();
     public static final Paint DIV_PAINT = getDivPaint();
     public static final Paint DIV_PAINT_2 = getDiv2Paint();
+    public static final Paint INSTRUCTIONS_PAINT = getTextBoxFilledTransparant();
     public static final Paint NO_DRAW = new Paint();
 
     public static final float RELATIVE_SIZE_TEXTBOX = 0.6f;
@@ -76,7 +79,7 @@ public class Attributes {
             (int) (5.5 * (TILE_WIDTH) + 7 * MARGIN),
             6   * (TILE_WIDTH) + 8 * MARGIN};
     public static final int TILE_YCOORD = 3 * MARGIN + GOAL_HEIGHT + TILE_WIDTH /2;
-    public static final long TILE_ANIMATION_TIME = 750;
+    public static final long TILE_ANIMATION_TIME = 650;
 
     public enum TextAllignment {
         XCENTERED_YTOP,
@@ -133,6 +136,13 @@ public class Attributes {
     private static Paint getStrokePaint() {
         Paint paint = getBasicPaint();
         paint.setStyle(Paint.Style.STROKE);
+        return paint;
+    }
+
+    @NonNull
+    private static Paint getTextBoxFilledTransparant() {
+        Paint paint = getFillPaint();
+        paint.setAlpha(INSTRUCTIONS_ALPHA);
         return paint;
     }
 

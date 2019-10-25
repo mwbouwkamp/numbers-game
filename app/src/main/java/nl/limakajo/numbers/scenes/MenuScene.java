@@ -3,6 +3,7 @@ package nl.limakajo.numbers.scenes;
 import android.graphics.Canvas;
 import android.view.MotionEvent;
 
+import nl.limakajo.numbers.layouts.LayoutElementsKeys;
 import nl.limakajo.numbers.main.AnimatorThread;
 import nl.limakajo.numbers.layouts.MenuLayout;
 
@@ -45,6 +46,11 @@ public class MenuScene extends Scene {
 
     @Override
     public void receiveTouch(MotionEvent event) {
-        sceneManager.setScene(new GameplayScene(sceneManager, animatorThread));
+        if (menuLayout.getTextBox(LayoutElementsKeys.HELP_TEXT).getArea().contains((int) event.getX(), (int) event.getY())) {
+            sceneManager.setScene(new InstructionsScene(sceneManager, animatorThread));
+        }
+        else {
+            sceneManager.setScene(new GameplayScene(sceneManager, animatorThread));
+        }
     }
 }
