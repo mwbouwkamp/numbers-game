@@ -34,5 +34,21 @@ public class MenuLayout extends LogoWithAreaForTextLayout {
                 ),
                 Attributes.TEXTBOX_NORMAL_PAINT);
         layoutObjects.put(LayoutElementsKeys.MENU_TEXT, menuText);
+        //Help Text
+        //TODO: Also include a ScreenArea in addition to the new textBox
+        LayoutObject helpText = new TextBox(
+                MainActivity.getContext().getString(R.string.help_text),
+                Attributes.TextAllignment.XYCENTERED,
+                new Point(
+                        menuText.getArea().left,
+                        menuText.getArea().bottom + 3 * Attributes.MARGIN
+                ),
+                new Size(
+                        layoutObjects.get(LayoutElementsKeys.MAINTEXT_AREA).getArea().width(),
+                        layoutObjects.get(LayoutElementsKeys.MAINTEXT_AREA).getArea().height()
+                ),
+                Attributes.TEXTBOX_NORMAL_PAINT);
+        layoutObjects.put(LayoutElementsKeys.MENU_TEXT, menuText);
+        layoutObjects.put(LayoutElementsKeys.HELP_TEXT, helpText);
     }
 }

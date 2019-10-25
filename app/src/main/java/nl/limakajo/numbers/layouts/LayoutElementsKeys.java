@@ -17,6 +17,7 @@ public enum LayoutElementsKeys {
     MAINTEXT_AREA,
     //Menu
     MENU_TEXT,
+    HELP_TEXT,
     //Game play
     PLAY_AREA,
     HEADER_AREA,
@@ -50,5 +51,8 @@ public enum LayoutElementsKeys {
     LEVELCOMPLETE_TEXT,
     //Game over
     GAMEOVER_TEXT,
+    //Instructions
+    INSTUCTIONS_AREA,
+    INSTUCTIONS_TEXT
 
-}
+    }
