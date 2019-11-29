@@ -34,7 +34,6 @@ public class GameplayScene extends Scene {
     private boolean onShelf;
     private Point clickPosition;
     private Point tileStart;
-    private int numPlus, numMin, numMult, numDiv;
     private String statusBarText;
     private long startTime;
     private WavePool wavePool;
@@ -44,11 +43,13 @@ public class GameplayScene extends Scene {
 
     private final SceneManager sceneManager;
     private final AnimatorThread animatorThread;
+    private final Calculator calculator;
 
     GameplayScene(SceneManager sceneManager, AnimatorThread animatorThread) {
         this.sceneManager = sceneManager;
         this.animatorThread = animatorThread;
         this.gamePlayLayout = new GamePlayLayout();
+        this.calculator = new Calculator();
     }
 
     /**
@@ -71,10 +72,7 @@ public class GameplayScene extends Scene {
         secondTile = null;
         onShelf = true;
         clickPosition = new Point(0, 0);
-        numPlus = 0;
-        numMin = 0;
-        numMult = 0;
-        numDiv = 0;
+        calculator.reset();
         statusBarText = "";
 
         //Construct a level and update the ScreenLayout goal accordingly
@@ -121,28 +119,16 @@ public class GameplayScene extends Scene {
      */
     private Tile consequenceTilePosition(Tile tile) {
         if (tile.inArea(gamePlayLayout.getScreenArea(LayoutElementsKeys.PLUS_AREA))) {
-            numPlus++;
-            numMin = 0;
-            numMult = 0;
-            numDiv = 0;
+            calculator.addPlus();
             return tile;
         } else if (tile.inArea(gamePlayLayout.getScreenArea(LayoutElementsKeys.MIN_AREA))) {
-            numMin++;
-            numPlus = 0;
-            numMult = 0;
-            numDiv = 0;
+            calculator.addMin();
             return tile;
         } else if (tile.inArea(gamePlayLayout.getScreenArea(LayoutElementsKeys.MULT_AREA))) {
-            numMult++;
-            numPlus = 0;
-            numMin = 0;
-            numDiv = 0;
+            calculator.addMult();
             return tile;
         } else if (tile.inArea(gamePlayLayout.getScreenArea(LayoutElementsKeys.DIV_AREA))) {
-            numDiv++;
-            numPlus = 0;
-            numMin = 0;
-            numMult = 0;
+            calculator.addDiv();
             return tile;
         } else if (tile.inArea(gamePlayLayout.getScreenArea(LayoutElementsKeys.HEADER_AREA))) {
             Tile[] tilesAfterCrunching = tile.crunch();
@@ -290,21 +276,18 @@ public class GameplayScene extends Scene {
                         Attributes.TILE_ANIMATION_TIME, 0);
             } else {
                 if (firstTile == tilePressed) {
-                    numPlus = 0;
-                    numMin = 0;
-                    numMult = 0;
-                    numDiv = 0;
+                    calculator.reset();
                     firstTile = consequenceTilePosition(firstTile);
                 }
                 else if (secondTile == tilePressed) {
                     secondTile = consequenceTilePosition(secondTile);
-                    if (numPlus == 2) {
+                    if (calculator.executePlus()) {
                         calculate('+');
-                    } else if (numMin == 2) {
+                    } else if (calculator.executeMin()) {
                         calculate('-');
-                    } else if (numMult == 2) {
+                    } else if (calculator.executeMult()) {
                         calculate('*');
-                    } else if (numDiv == 2) {
+                    } else if (calculator.executeDiv()) {
                         calculate('/');
                     } else {
                         if (!tilePressed.inArea(gamePlayLayout.getScreenArea(LayoutElementsKeys.HEADER_AREA))) {
@@ -371,11 +354,7 @@ public class GameplayScene extends Scene {
                 if (firstTile.getNumber() >= secondTile.getNumber()) {
                     newValue = firstTile.getNumber() - secondTile.getNumber();
                 } else {
-                    statusBarText = "Results in negative integer";
-                    animatorThread.add(firstTile.addToShelf(tilePool));
-                    animatorThread.add(secondTile.addToShelf(tilePool));
-                    firstTile = null;
-                    secondTile = null;
+                    unsuccessfullOperation("Results in negative integer");
                 }
                 break;
             case '*':
@@ -385,11 +364,7 @@ public class GameplayScene extends Scene {
                 if (firstTile.getNumber() % secondTile.getNumber() == 0) {
                     newValue = firstTile.getNumber() / secondTile.getNumber();
                 } else {
-                    statusBarText = "Results in non-integer";
-                    animatorThread.add(firstTile.addToShelf(tilePool));
-                    animatorThread.add(secondTile.addToShelf(tilePool));
-                    firstTile = null;
-                    secondTile = null;
+                    unsuccessfullOperation("Results in non-integer");
                 }
                 break;
         }
@@ -399,11 +374,16 @@ public class GameplayScene extends Scene {
             animatorThread.add(toAdd.addToShelf(tilePool));
             firstTile = null;
             secondTile = null;
-            numPlus = 0;
-            numMin = 0;
-            numMult = 0;
-            numDiv = 0;
+            calculator.reset();
         }
+    }
+
+    private void unsuccessfullOperation(String statusBarText) {
+        this.statusBarText = statusBarText;
+        animatorThread.add(firstTile.addToShelf(tilePool));
+        animatorThread.add(secondTile.addToShelf(tilePool));
+        firstTile = null;
+        secondTile = null;
     }
 
 }
