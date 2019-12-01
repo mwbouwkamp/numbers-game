@@ -46,6 +46,17 @@ public class GameplayScene extends Scene {
     private final AnimatorThread animatorThread;
     private final Calculator calculator;
 
+    private enum TouchUpScenarios {
+        RESET,
+        GIVE_UP,
+        NO_TILE_PRESSED,
+        ON_SHELF,
+        IN_CRUNCH,
+        FIRST_TILE_PRESSED,
+        SECOND_TILE_PRESSED,
+        NULL
+    }
+
     GameplayScene(SceneManager sceneManager, AnimatorThread animatorThread) {
         this.sceneManager = sceneManager;
         this.animatorThread = animatorThread;
@@ -225,29 +236,27 @@ public class GameplayScene extends Scene {
      * @param event event
      */
     private void runningTouchUp(MotionEvent event) {
-        if (gamePlayLayout.getScreenArea(NUM_LIVES_TEXT).getArea().contains(clickPosition.x, clickPosition.y)) {
-            sceneManager.setScene(new GameOverScene(sceneManager, animatorThread));
-            return;
-        }
-        if (gamePlayLayout.getScreenArea(NUM_STARS_TEXT).getArea().contains(clickPosition.x, clickPosition.y)) {
-            createTilePool();
-            return;
-        }
+        TouchUpScenarios touchUpScenarios = getTouchUpScenario();
         statusBarText = "";
-        if (tilePressed != null) {
-            createWave(tilePressed.getPosition());
-            if (onShelf) {
+        switch (touchUpScenarios) {
+            case GIVE_UP:
+                sceneManager.setScene(new GameOverScene(sceneManager, animatorThread));
+                break;
+            case RESET:
+                createTilePool();
+                break;
+            case NO_TILE_PRESSED:
+                break;
+            case ON_SHELF:
                 new PositionAnimationStarter().startAnimation(
                         tilePressed,
                         animatorThread,
                         tilePressed.getPosition(),
                         tileStart,
                         Attributes.TILE_ANIMATION_TIME, 0);
-                onShelf = true;
                 tilePressed = null;
-                return;
-            }
-            if (tilePressed.inArea(gamePlayLayout.getScreenArea(HEADER_AREA))) {
+                break;
+            case IN_CRUNCH:
                 Tile[] tiles = tilePressed.crunch();
                 for (Tile tile: tiles) {
                     animatorThread.add(tile.addToShelf(tilePool));
@@ -258,18 +267,18 @@ public class GameplayScene extends Scene {
                 else if (tilePressed == secondTile) {
                     secondTile = null;
                 }
-                onShelf = true;
-                tilePressed = null;
-                return;
-            }
-            calculator.calculate(tilePressed.getNumber(), tilePressed.inWhichOperatorArea(gamePlayLayout));
-            if (tilePressed == firstTile) {
+                break;
+            case FIRST_TILE_PRESSED:
+                createWave(tilePressed.getPosition());
+                calculator.calculate(tilePressed.getNumber(), tilePressed.inWhichOperatorArea(gamePlayLayout));
                 if (calculator.calculatorInactive()) {
                     animatorThread.add(firstTile.addToShelf(tilePool));
                     firstTile = null;
                 }
-            }
-            else if (tilePressed == secondTile) {
+                break;
+            case SECOND_TILE_PRESSED:
+                createWave(tilePressed.getPosition());
+                calculator.calculate(tilePressed.getNumber(), tilePressed.inWhichOperatorArea(gamePlayLayout));
                 if (calculator.calculatorInactive()) {
                     animatorThread.add(firstTile.addToShelf(tilePool));
                     animatorThread.add(secondTile.addToShelf(tilePool));
@@ -282,17 +291,44 @@ public class GameplayScene extends Scene {
                     secondTile = null;
                 }
                 else if (calculator.calculatorFinished()) {
-                        Tile[] compositionNewTile = {firstTile, secondTile};
-                        Tile toAdd = new Tile(calculator.getValue(), compositionNewTile, firstTile.getColorIndex() + secondTile.getColorIndex() + 1);
-                        animatorThread.add(toAdd.addToShelf(tilePool));
-                        firstTile = null;
-                        secondTile = null;
-                        calculator.reset();
+                    Tile[] compositionNewTile = {firstTile, secondTile};
+                    Tile toAdd = new Tile(calculator.getValue(), compositionNewTile, firstTile.getColorIndex() + secondTile.getColorIndex() + 1);
+                    animatorThread.add(toAdd.addToShelf(tilePool));
+                    firstTile = null;
+                    secondTile = null;
+                    calculator.reset();
                 }
-            }
+                break;
+            default:
+                break;
         }
         onShelf = true;
         tilePressed = null;
+    }
+
+    private TouchUpScenarios getTouchUpScenario() {
+        if (gamePlayLayout.getScreenArea(NUM_LIVES_TEXT).getArea().contains(clickPosition.x, clickPosition.y)) {
+            return TouchUpScenarios.GIVE_UP;
+        }
+        else if (gamePlayLayout.getScreenArea(NUM_STARS_TEXT).getArea().contains(clickPosition.x, clickPosition.y)) {
+            return TouchUpScenarios.RESET;
+        }
+        else if (null == tilePressed) {
+            return TouchUpScenarios.NO_TILE_PRESSED;
+        }
+        else if (onShelf) {
+            return TouchUpScenarios.ON_SHELF;
+        }
+        else if (tilePressed.inArea(gamePlayLayout.getScreenArea(HEADER_AREA))) {
+            return TouchUpScenarios.IN_CRUNCH;
+        }
+        else if (tilePressed == firstTile) {
+            return TouchUpScenarios.FIRST_TILE_PRESSED;
+        }
+        else if (tilePressed == secondTile) {
+            return TouchUpScenarios.SECOND_TILE_PRESSED;
+        }
+        return TouchUpScenarios.NULL;
     }
 
     private void createTilePool() {
