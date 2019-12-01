@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.RectF;
+import android.support.annotation.NonNull;
 import android.view.MotionEvent;
 
 import nl.limakajo.numbers.animators.PaintAnimationStarter;
@@ -76,22 +77,9 @@ public class GameplayScene extends Scene {
         //Make sure that player loses a life, even when games gets to end before completing a level or running out of time
         MainActivity.getPlayer().decreaseNumLives();
 
-        //Initialize variables
-        wavePool = new WavePool();
-        tilePressed = null;
-        firstTile = null;
-        secondTile = null;
-        onShelf = true;
-        calculator.reset();
-        statusBarText = "";
-
-        //Construct a level and update the ScreenLayout goal accordingly
-        Level newLevel = DatabaseUtils.getLevelWithAverageTimeCloseToUserAverageTime(MainActivity.getContext());
-        newLevel.setUserTime(GameConstants.TIMEPENALTY);
-        MainActivity.getGame().setLevel(newLevel);
-
-        //Update level usertime to TIMEPENALTY
-        DatabaseUtils.updateTableLevelsUserTimeForSpecificLevel(MainActivity.getContext(), newLevel);
+        initializeVariables();
+        Level newLevel = constructLevel();
+        setUsertimeToPenalty(newLevel);
 
         //Update status of levels, so that old ACTIVE levels become ready for uploading (UPLOAD) and newLevel becomes the new ACTIVE level
         DatabaseUtils.updateTableLevelsLevelStatusForSpecificCurrentStatus(MainActivity.getContext(), GameUtils.LevelState.ACTIVE, GameUtils.LevelState.UPLOAD);
@@ -102,6 +90,31 @@ public class GameplayScene extends Scene {
         gamePlayLayout.getTextBox(NUM_STARS_TEXT).setText("A" + MainActivity.getPlayer().getNumStars());
         gamePlayLayout.getTextBox(NUM_LIVES_TEXT).setText("B" + MainActivity.getPlayer().getNumLives());
         setInitiating(false);
+    }
+
+    private void setUsertimeToPenalty(Level newLevel) {
+        DatabaseUtils.updateTableLevelsUserTimeForSpecificLevel(MainActivity.getContext(), newLevel);
+    }
+
+    @NonNull
+    private Level constructLevel() {
+        Level newLevel = DatabaseUtils.getLevelWithAverageTimeCloseToUserAverageTime(MainActivity.getContext());
+        newLevel.setUserTime(GameConstants.TIMEPENALTY);
+        MainActivity.getGame().setLevel(newLevel);
+        return newLevel;
+    }
+
+    /**
+     * Initialize all variables
+     */
+    private void initializeVariables() {
+        wavePool = new WavePool();
+        tilePressed = null;
+        firstTile = null;
+        secondTile = null;
+        onShelf = true;
+        calculator.reset();
+        statusBarText = "";
     }
 
     @Override
