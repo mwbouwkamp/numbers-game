@@ -14,7 +14,6 @@ import nl.limakajo.numbers.gameObjects.Tile;
 import nl.limakajo.numbers.gameObjects.Wave;
 import nl.limakajo.numbers.gameObjects.WavePool;
 import nl.limakajo.numbers.layouts.GamePlayLayout;
-import nl.limakajo.numbers.layouts.LayoutElementsKeys;
 import nl.limakajo.numbers.main.MainActivity;
 import nl.limakajo.numbers.gameObjects.TilePool;
 import nl.limakajo.numbers.utils.Attributes;
@@ -23,6 +22,8 @@ import nl.limakajo.numbers.utils.GameUtils;
 import nl.limakajo.numbers.main.AnimatorThread;
 import nl.limakajo.numberslib.numbersGame.Level;
 import nl.limakajo.numberslib.utils.GameConstants;
+
+import static nl.limakajo.numbers.layouts.LayoutElementsKeys.*;
 
 /**
  * @author M.W.Bouwkamp
@@ -88,15 +89,15 @@ public class GameplayScene extends Scene {
         DatabaseUtils.updateTableLevelsLevelStatusForSpecificLevel(MainActivity.getContext(), newLevel, GameUtils.LevelState.ACTIVE);
 
         createTilePool();
-        gamePlayLayout.getTextBox(LayoutElementsKeys.GOAL_TEXT).setText(Integer.toString(MainActivity.getGame().getLevel().getGoal()));
-        gamePlayLayout.getTextBox(LayoutElementsKeys.NUM_STARS_TEXT).setText("A" + MainActivity.getPlayer().getNumStars());
-        gamePlayLayout.getTextBox(LayoutElementsKeys.NUM_LIVES_TEXT).setText("B" + MainActivity.getPlayer().getNumLives());
+        gamePlayLayout.getTextBox(GOAL_TEXT).setText(Integer.toString(MainActivity.getGame().getLevel().getGoal()));
+        gamePlayLayout.getTextBox(NUM_STARS_TEXT).setText("A" + MainActivity.getPlayer().getNumStars());
+        gamePlayLayout.getTextBox(NUM_LIVES_TEXT).setText("B" + MainActivity.getPlayer().getNumLives());
         setInitiating(false);
     }
 
     @Override
     public void update() {
-        gamePlayLayout.getTextBox(LayoutElementsKeys.FOOTER_TEXT).setText(statusBarText);
+        gamePlayLayout.getTextBox(FOOTER_TEXT).setText(statusBarText);
         if (System.currentTimeMillis() - startTime > GameConstants.TIMER){
             sceneManager.setScene(new GameOverScene(sceneManager, animatorThread));
         }
@@ -108,38 +109,6 @@ public class GameplayScene extends Scene {
         }
         tilePool.update();
         wavePool.update();
-    }
-
-
-    /**
-     * Takes track of the relevance of the position of a Tile in play
-     *
-     * @param tile the Tile in play
-     * @return Tile or null depending on outcome. The Tile itself is returns if the Tile is on an operator ScreenArea or null if the Tile is returned to the tilePool
-     */
-    private Tile consequenceTilePosition(Tile tile) {
-        if (tile.inArea(gamePlayLayout.getScreenArea(LayoutElementsKeys.PLUS_AREA))) {
-            calculator.addPlus();
-            return tile;
-        } else if (tile.inArea(gamePlayLayout.getScreenArea(LayoutElementsKeys.MIN_AREA))) {
-            calculator.addMin();
-            return tile;
-        } else if (tile.inArea(gamePlayLayout.getScreenArea(LayoutElementsKeys.MULT_AREA))) {
-            calculator.addMult();
-            return tile;
-        } else if (tile.inArea(gamePlayLayout.getScreenArea(LayoutElementsKeys.DIV_AREA))) {
-            calculator.addDiv();
-            return tile;
-        } else if (tile.inArea(gamePlayLayout.getScreenArea(LayoutElementsKeys.HEADER_AREA))) {
-            Tile[] tilesAfterCrunching = tile.crunch();
-            for (Tile tileAfterCrunching: tilesAfterCrunching) {
-                animatorThread.add(tileAfterCrunching.addToShelf(tilePool));
-            }
-            return null;
-        } else {
-            animatorThread.add(tile.addToShelf(tilePool));
-            return null;
-        }
     }
 
     @Override
@@ -175,7 +144,7 @@ public class GameplayScene extends Scene {
         double timeFraction = (System.currentTimeMillis() - startTime) / (double) GameConstants.TIMER;
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(16);
-        RectF rect = new RectF(gamePlayLayout.getScreenArea(LayoutElementsKeys.TIMER_AREA).getArea());
+        RectF rect = new RectF(gamePlayLayout.getScreenArea(TIMER_AREA).getArea());
         paint.setColor(Color.rgb(80, 80, 80));
         canvas. drawArc(rect, 0, 360, false, paint);
         paint.setColor(Color.rgb((int) (255 * timeFraction), (int) (255 * (1 - timeFraction)), 0));
@@ -233,7 +202,7 @@ public class GameplayScene extends Scene {
      */
     private void runningTouchDragged(MotionEvent event) {
         if (tilePressed != null) {
-            if (onShelf && !tilePressed.inArea(gamePlayLayout.getScreenArea(LayoutElementsKeys.SHELF_AREA))) {
+            if (onShelf && !tilePressed.inArea(gamePlayLayout.getScreenArea(SHELF_AREA))) {
                 onShelf = false;
                 tilePool.remove(tilePressed);
                 tilePool.startAnimating(animatorThread);
@@ -256,11 +225,11 @@ public class GameplayScene extends Scene {
      * @param event event
      */
     private void runningTouchUp(MotionEvent event) {
-        if (gamePlayLayout.getScreenArea(LayoutElementsKeys.NUM_LIVES_TEXT).getArea().contains(clickPosition.x, clickPosition.y)) {
+        if (gamePlayLayout.getScreenArea(NUM_LIVES_TEXT).getArea().contains(clickPosition.x, clickPosition.y)) {
             sceneManager.setScene(new GameOverScene(sceneManager, animatorThread));
             return;
         }
-        if (gamePlayLayout.getScreenArea(LayoutElementsKeys.NUM_STARS_TEXT).getArea().contains(clickPosition.x, clickPosition.y)) {
+        if (gamePlayLayout.getScreenArea(NUM_STARS_TEXT).getArea().contains(clickPosition.x, clickPosition.y)) {
             createTilePool();
             return;
         }
@@ -274,28 +243,51 @@ public class GameplayScene extends Scene {
                         tilePressed.getPosition(),
                         tileStart,
                         Attributes.TILE_ANIMATION_TIME, 0);
-            } else {
-                if (firstTile == tilePressed) {
-                    calculator.reset();
-                    firstTile = consequenceTilePosition(firstTile);
+                onShelf = true;
+                tilePressed = null;
+                return;
+            }
+            if (tilePressed.inArea(gamePlayLayout.getScreenArea(HEADER_AREA))) {
+                Tile[] tiles = tilePressed.crunch();
+                for (Tile tile: tiles) {
+                    animatorThread.add(tile.addToShelf(tilePool));
                 }
-                else if (secondTile == tilePressed) {
-                    secondTile = consequenceTilePosition(secondTile);
-                    if (calculator.executePlus()) {
-                        calculate('+');
-                    } else if (calculator.executeMin()) {
-                        calculate('-');
-                    } else if (calculator.executeMult()) {
-                        calculate('*');
-                    } else if (calculator.executeDiv()) {
-                        calculate('/');
-                    } else {
-                        if (!tilePressed.inArea(gamePlayLayout.getScreenArea(LayoutElementsKeys.HEADER_AREA))) {
-                            animatorThread.add(firstTile.addToShelf(tilePool));
-                            firstTile = secondTile;
-                            secondTile = null;
-                        }
-                    }
+                if (tilePressed == firstTile) {
+                    firstTile = null;
+                }
+                else if (tilePressed == secondTile) {
+                    secondTile = null;
+                }
+                onShelf = true;
+                tilePressed = null;
+                return;
+            }
+            calculator.calculate(tilePressed.getNumber(), tilePressed.inWhichOperatorArea(gamePlayLayout));
+            if (tilePressed == firstTile) {
+                if (calculator.calculatorInactive()) {
+                    animatorThread.add(firstTile.addToShelf(tilePool));
+                    firstTile = null;
+                }
+            }
+            else if (tilePressed == secondTile) {
+                if (calculator.calculatorInactive()) {
+                    animatorThread.add(firstTile.addToShelf(tilePool));
+                    animatorThread.add(secondTile.addToShelf(tilePool));
+                    firstTile = null;
+                    secondTile = null;
+                }
+                else if (calculator.calculatorInProgress()) {
+                    animatorThread.add(firstTile.addToShelf(tilePool));
+                    firstTile = secondTile;
+                    secondTile = null;
+                }
+                else if (calculator.calculatorFinished()) {
+                        Tile[] compositionNewTile = {firstTile, secondTile};
+                        Tile toAdd = new Tile(calculator.getValue(), compositionNewTile, firstTile.getColorIndex() + secondTile.getColorIndex() + 1);
+                        animatorThread.add(toAdd.addToShelf(tilePool));
+                        firstTile = null;
+                        secondTile = null;
+                        calculator.reset();
                 }
             }
         }
@@ -338,52 +330,4 @@ public class GameplayScene extends Scene {
         );
         wavePool.add(waveToAdd);
     }
-
-    /**
-     * Performs the actual calculations, making new Tiles based on the operation or returns Tiles to the tilePool when the operation is not valid
-     *
-     * @param operator operator
-     */
-    private void calculate(char operator) {
-        int newValue = 0;
-        switch (operator) {
-            case '+':
-                newValue = firstTile.getNumber() + secondTile.getNumber();
-                break;
-            case '-':
-                if (firstTile.getNumber() >= secondTile.getNumber()) {
-                    newValue = firstTile.getNumber() - secondTile.getNumber();
-                } else {
-                    unsuccessfullOperation("Results in negative integer");
-                }
-                break;
-            case '*':
-                newValue = firstTile.getNumber() * secondTile.getNumber();
-                break;
-            case '/':
-                if (firstTile.getNumber() % secondTile.getNumber() == 0) {
-                    newValue = firstTile.getNumber() / secondTile.getNumber();
-                } else {
-                    unsuccessfullOperation("Results in non-integer");
-                }
-                break;
-        }
-        if (newValue > 0) {
-            Tile[] compositionNewTile = {firstTile, secondTile};
-            Tile toAdd = new Tile(newValue, compositionNewTile, firstTile.getColorIndex() + secondTile.getColorIndex() + 1);
-            animatorThread.add(toAdd.addToShelf(tilePool));
-            firstTile = null;
-            secondTile = null;
-            calculator.reset();
-        }
-    }
-
-    private void unsuccessfullOperation(String statusBarText) {
-        this.statusBarText = statusBarText;
-        animatorThread.add(firstTile.addToShelf(tilePool));
-        animatorThread.add(secondTile.addToShelf(tilePool));
-        firstTile = null;
-        secondTile = null;
-    }
-
 }

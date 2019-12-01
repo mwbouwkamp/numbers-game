@@ -6,6 +6,9 @@ import android.graphics.Point;
 import android.graphics.Rect;
 
 import nl.limakajo.numbers.animators.PositionAnimator;
+import nl.limakajo.numbers.layouts.GamePlayLayout;
+import nl.limakajo.numbers.layouts.LayoutElementsKeys;
+import nl.limakajo.numbers.layouts.LayoutInterface;
 import nl.limakajo.numbers.utils.Attributes;
 import nl.limakajo.numberslib.utils.GameConstants;
 
@@ -74,7 +77,32 @@ public class Tile extends GameObject implements AnimatesPosition {
 	public boolean inArea(LayoutObject screenArea) {
 		return screenArea.getArea().contains(position.x, position.y);
 	}
-	
+
+	/**
+	 * Checks in which ScreenArea the tile resides (if any)
+	 *
+	 * @param gamePlayLayout 	the Layout to check
+	 * @return					the LayoutElementKeys corresponding to the ScreenAreay in which the Tile resides, or null if Tile is not in a ScreenArea
+	 */
+	public LayoutElementsKeys inWhichOperatorArea(GamePlayLayout gamePlayLayout) {
+		if (inArea(gamePlayLayout.getScreenArea(LayoutElementsKeys.PLUS_AREA))) {
+			return LayoutElementsKeys.PLUS_AREA;
+		}
+		if (inArea(gamePlayLayout.getScreenArea(LayoutElementsKeys.MIN_AREA))) {
+			return LayoutElementsKeys.MIN_AREA;
+		}
+		if (inArea(gamePlayLayout.getScreenArea(LayoutElementsKeys.MULT_AREA))) {
+			return LayoutElementsKeys.MULT_AREA;
+		}
+		if (inArea(gamePlayLayout.getScreenArea(LayoutElementsKeys.DIV_AREA))) {
+			return LayoutElementsKeys.DIV_AREA;
+		}
+		if (inArea(gamePlayLayout.getScreenArea(LayoutElementsKeys.HEADER_AREA))) {
+			return LayoutElementsKeys.HEADER_AREA;
+		}
+		return null;
+	}
+
 	/**
 	 * Returns true if the Tile was pressed
 	 * Calculated using the distance between the coordinates pressed and the center of the tile
@@ -197,7 +225,4 @@ public class Tile extends GameObject implements AnimatesPosition {
 		return this.positionAnimator;
 	}
 
-	public void setAnimator(PositionAnimator positionAnimator) {
-		this.positionAnimator = positionAnimator;
-	}
 }
