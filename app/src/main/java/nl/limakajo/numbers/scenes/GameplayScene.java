@@ -33,7 +33,6 @@ public class GameplayScene extends Scene {
 
     private Tile tilePressed, firstTile, secondTile;
     private boolean onShelf;
-    private Point clickPosition;
     private Point tileStart;
     private String statusBarText;
     private long startTime;
@@ -83,7 +82,6 @@ public class GameplayScene extends Scene {
         firstTile = null;
         secondTile = null;
         onShelf = true;
-        clickPosition = new Point(0, 0);
         calculator.reset();
         statusBarText = "";
 
@@ -109,17 +107,31 @@ public class GameplayScene extends Scene {
     @Override
     public void update() {
         gamePlayLayout.getTextBox(FOOTER_TEXT).setText(statusBarText);
-        if (System.currentTimeMillis() - startTime > GameConstants.TIMER){
-            sceneManager.setScene(new GameOverScene(sceneManager, animatorThread));
-        }
+        checkForGameOver();
+        checkForLevelComplete();
+        tilePool.update();
+        wavePool.update();
+    }
+
+    /**
+     * adds a new LevelCompleteScene to the SceneManager when the goal has been reached
+     */
+    private void checkForLevelComplete() {
         for (Tile tile: tilePool.getGameObjects()) {
             if (tile.getNumber() == MainActivity.getGame().getLevel().getGoal()) {
                 MainActivity.getGame().getLevel().setUserTime((int)(System.currentTimeMillis() - startTime));
                 sceneManager.setScene(new LevelCompleteScene(sceneManager, animatorThread));
             }
         }
-        tilePool.update();
-        wavePool.update();
+    }
+
+    /**
+     * adds a new GameOverScene to the SceneManager when the time is up
+     */
+    private void checkForGameOver() {
+        if (System.currentTimeMillis() - startTime > GameConstants.TIMER){
+            sceneManager.setScene(new GameOverScene(sceneManager, animatorThread));
+        }
     }
 
     @Override
@@ -178,19 +190,18 @@ public class GameplayScene extends Scene {
             runningTouchUp(event);
         }
     }
+
     /**
      * Orchestrates what to do when the screen is touched in the running GameState
      *
      * @param event event
      */
     private void runningTouchDown(MotionEvent event) {
-        clickPosition.x = (int) event.getX();
-        clickPosition.y = (int) event.getY();
-        if (firstTile != null && firstTile.isClicked(clickPosition)) {
+        if (firstTile != null && firstTile.isClicked(new Point((int) event.getX(), (int) event.getY()))) {
             setClicekdTile(firstTile);
         }
         for (Tile tile: tilePool.getGameObjects()) {
-            if (tile.isClicked(clickPosition)) {
+            if (tile.isClicked(new Point((int) event.getX(), (int) event.getY()))) {
                 setClicekdTile(tile);
             }
         }
@@ -236,7 +247,7 @@ public class GameplayScene extends Scene {
      * @param event event
      */
     private void runningTouchUp(MotionEvent event) {
-        TouchUpScenarios touchUpScenarios = getTouchUpScenario();
+        TouchUpScenarios touchUpScenarios = getTouchUpScenario(event);
         statusBarText = "";
         switch (touchUpScenarios) {
             case GIVE_UP:
@@ -306,11 +317,11 @@ public class GameplayScene extends Scene {
         tilePressed = null;
     }
 
-    private TouchUpScenarios getTouchUpScenario() {
-        if (gamePlayLayout.getScreenArea(NUM_LIVES_TEXT).getArea().contains(clickPosition.x, clickPosition.y)) {
+    private TouchUpScenarios getTouchUpScenario(MotionEvent event) {
+        if (gamePlayLayout.getScreenArea(NUM_LIVES_TEXT).getArea().contains((int) event.getX(), (int) event.getY())) {
             return TouchUpScenarios.GIVE_UP;
         }
-        else if (gamePlayLayout.getScreenArea(NUM_STARS_TEXT).getArea().contains(clickPosition.x, clickPosition.y)) {
+        else if (gamePlayLayout.getScreenArea(NUM_STARS_TEXT).getArea().contains((int) event.getX(), (int) event.getY())) {
             return TouchUpScenarios.RESET;
         }
         else if (null == tilePressed) {
