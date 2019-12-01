@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.RectF;
+import android.support.annotation.NonNull;
 import android.view.MotionEvent;
 
 import nl.limakajo.numbers.animators.PaintAnimationStarter;
@@ -14,7 +15,6 @@ import nl.limakajo.numbers.gameObjects.Tile;
 import nl.limakajo.numbers.gameObjects.Wave;
 import nl.limakajo.numbers.gameObjects.WavePool;
 import nl.limakajo.numbers.layouts.GamePlayLayout;
-import nl.limakajo.numbers.layouts.LayoutElementsKeys;
 import nl.limakajo.numbers.main.MainActivity;
 import nl.limakajo.numbers.gameObjects.TilePool;
 import nl.limakajo.numbers.utils.Attributes;
@@ -24,6 +24,8 @@ import nl.limakajo.numbers.main.AnimatorThread;
 import nl.limakajo.numberslib.numbersGame.Level;
 import nl.limakajo.numberslib.utils.GameConstants;
 
+import static nl.limakajo.numbers.layouts.LayoutElementsKeys.*;
+
 /**
  * @author M.W.Bouwkamp
  */
@@ -32,9 +34,7 @@ public class GameplayScene extends Scene {
 
     private Tile tilePressed, firstTile, secondTile;
     private boolean onShelf;
-    private Point clickPosition;
     private Point tileStart;
-    private int numPlus, numMin, numMult, numDiv;
     private String statusBarText;
     private long startTime;
     private WavePool wavePool;
@@ -44,11 +44,24 @@ public class GameplayScene extends Scene {
 
     private final SceneManager sceneManager;
     private final AnimatorThread animatorThread;
+    private final Calculator calculator;
+
+    private enum TouchUpScenarios {
+        RESET,
+        GIVE_UP,
+        NO_TILE_PRESSED,
+        ON_SHELF,
+        IN_CRUNCH,
+        FIRST_TILE_PRESSED,
+        SECOND_TILE_PRESSED,
+        NULL
+    }
 
     GameplayScene(SceneManager sceneManager, AnimatorThread animatorThread) {
         this.sceneManager = sceneManager;
         this.animatorThread = animatorThread;
         this.gamePlayLayout = new GamePlayLayout();
+        this.calculator = new Calculator();
     }
 
     /**
@@ -64,95 +77,73 @@ public class GameplayScene extends Scene {
         //Make sure that player loses a life, even when games gets to end before completing a level or running out of time
         MainActivity.getPlayer().decreaseNumLives();
 
-        //Initialize variables
-        wavePool = new WavePool();
-        tilePressed = null;
-        firstTile = null;
-        secondTile = null;
-        onShelf = true;
-        clickPosition = new Point(0, 0);
-        numPlus = 0;
-        numMin = 0;
-        numMult = 0;
-        numDiv = 0;
-        statusBarText = "";
-
-        //Construct a level and update the ScreenLayout goal accordingly
-        Level newLevel = DatabaseUtils.getLevelWithAverageTimeCloseToUserAverageTime(MainActivity.getContext());
-        newLevel.setUserTime(GameConstants.TIMEPENALTY);
-        MainActivity.getGame().setLevel(newLevel);
-
-        //Update level usertime to TIMEPENALTY
-        DatabaseUtils.updateTableLevelsUserTimeForSpecificLevel(MainActivity.getContext(), newLevel);
+        initializeVariables();
+        Level newLevel = constructLevel();
+        setUsertimeToPenalty(newLevel);
 
         //Update status of levels, so that old ACTIVE levels become ready for uploading (UPLOAD) and newLevel becomes the new ACTIVE level
         DatabaseUtils.updateTableLevelsLevelStatusForSpecificCurrentStatus(MainActivity.getContext(), GameUtils.LevelState.ACTIVE, GameUtils.LevelState.UPLOAD);
         DatabaseUtils.updateTableLevelsLevelStatusForSpecificLevel(MainActivity.getContext(), newLevel, GameUtils.LevelState.ACTIVE);
 
         createTilePool();
-        gamePlayLayout.getTextBox(LayoutElementsKeys.GOAL_TEXT).setText(Integer.toString(MainActivity.getGame().getLevel().getGoal()));
-        gamePlayLayout.getTextBox(LayoutElementsKeys.NUM_STARS_TEXT).setText("A" + MainActivity.getPlayer().getNumStars());
-        gamePlayLayout.getTextBox(LayoutElementsKeys.NUM_LIVES_TEXT).setText("B" + MainActivity.getPlayer().getNumLives());
+        gamePlayLayout.getTextBox(GOAL_TEXT).setText(Integer.toString(MainActivity.getGame().getLevel().getGoal()));
+        gamePlayLayout.getTextBox(NUM_STARS_TEXT).setText("A" + MainActivity.getPlayer().getNumStars());
+        gamePlayLayout.getTextBox(NUM_LIVES_TEXT).setText("B" + MainActivity.getPlayer().getNumLives());
         setInitiating(false);
+    }
+
+    private void setUsertimeToPenalty(Level newLevel) {
+        DatabaseUtils.updateTableLevelsUserTimeForSpecificLevel(MainActivity.getContext(), newLevel);
+    }
+
+    @NonNull
+    private Level constructLevel() {
+        Level newLevel = DatabaseUtils.getLevelWithAverageTimeCloseToUserAverageTime(MainActivity.getContext());
+        newLevel.setUserTime(GameConstants.TIMEPENALTY);
+        MainActivity.getGame().setLevel(newLevel);
+        return newLevel;
+    }
+
+    /**
+     * Initialize all variables
+     */
+    private void initializeVariables() {
+        wavePool = new WavePool();
+        tilePressed = null;
+        firstTile = null;
+        secondTile = null;
+        onShelf = true;
+        calculator.reset();
+        statusBarText = "";
     }
 
     @Override
     public void update() {
-        gamePlayLayout.getTextBox(LayoutElementsKeys.FOOTER_TEXT).setText(statusBarText);
-        if (System.currentTimeMillis() - startTime > GameConstants.TIMER){
-            sceneManager.setScene(new GameOverScene(sceneManager, animatorThread));
-        }
+        gamePlayLayout.getTextBox(FOOTER_TEXT).setText(statusBarText);
+        checkForGameOver();
+        checkForLevelComplete();
+        tilePool.update();
+        wavePool.update();
+    }
+
+    /**
+     * adds a new LevelCompleteScene to the SceneManager when the goal has been reached
+     */
+    private void checkForLevelComplete() {
         for (Tile tile: tilePool.getGameObjects()) {
             if (tile.getNumber() == MainActivity.getGame().getLevel().getGoal()) {
                 MainActivity.getGame().getLevel().setUserTime((int)(System.currentTimeMillis() - startTime));
                 sceneManager.setScene(new LevelCompleteScene(sceneManager, animatorThread));
             }
         }
-        tilePool.update();
-        wavePool.update();
     }
 
-
     /**
-     * Takes track of the relevance of the position of a Tile in play
-     *
-     * @param tile the Tile in play
-     * @return Tile or null depending on outcome. The Tile itself is returns if the Tile is on an operator ScreenArea or null if the Tile is returned to the tilePool
+     * adds a new GameOverScene to the SceneManager when the time is up
      */
-    private Tile consequenceTilePosition(Tile tile) {
-        if (tile.inArea(gamePlayLayout.getScreenArea(LayoutElementsKeys.PLUS_AREA))) {
-            numPlus++;
-            numMin = 0;
-            numMult = 0;
-            numDiv = 0;
-            return tile;
-        } else if (tile.inArea(gamePlayLayout.getScreenArea(LayoutElementsKeys.MIN_AREA))) {
-            numMin++;
-            numPlus = 0;
-            numMult = 0;
-            numDiv = 0;
-            return tile;
-        } else if (tile.inArea(gamePlayLayout.getScreenArea(LayoutElementsKeys.MULT_AREA))) {
-            numMult++;
-            numPlus = 0;
-            numMin = 0;
-            numDiv = 0;
-            return tile;
-        } else if (tile.inArea(gamePlayLayout.getScreenArea(LayoutElementsKeys.DIV_AREA))) {
-            numDiv++;
-            numPlus = 0;
-            numMin = 0;
-            numMult = 0;
-            return tile;
-        } else if (tile.inArea(gamePlayLayout.getScreenArea(LayoutElementsKeys.HEADER_AREA))) {
-            Tile[] tilesAfterCrunching = tile.crunch();
-            for (Tile tileAfterCrunching: tilesAfterCrunching) {
-                animatorThread.add(tileAfterCrunching.addToShelf(tilePool));
-            }
-            return null;
-        } else {
-            animatorThread.add(tile.addToShelf(tilePool));
-            return null;
+    private void checkForGameOver() {
+        if (System.currentTimeMillis() - startTime > GameConstants.TIMER){
+            sceneManager.setScene(new GameOverScene(sceneManager, animatorThread));
         }
     }
 
@@ -189,7 +180,7 @@ public class GameplayScene extends Scene {
         double timeFraction = (System.currentTimeMillis() - startTime) / (double) GameConstants.TIMER;
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(16);
-        RectF rect = new RectF(gamePlayLayout.getScreenArea(LayoutElementsKeys.TIMER_AREA).getArea());
+        RectF rect = new RectF(gamePlayLayout.getScreenArea(TIMER_AREA).getArea());
         paint.setColor(Color.rgb(80, 80, 80));
         canvas. drawArc(rect, 0, 360, false, paint);
         paint.setColor(Color.rgb((int) (255 * timeFraction), (int) (255 * (1 - timeFraction)), 0));
@@ -212,19 +203,18 @@ public class GameplayScene extends Scene {
             runningTouchUp(event);
         }
     }
+
     /**
      * Orchestrates what to do when the screen is touched in the running GameState
      *
      * @param event event
      */
     private void runningTouchDown(MotionEvent event) {
-        clickPosition.x = (int) event.getX();
-        clickPosition.y = (int) event.getY();
-        if (firstTile != null && firstTile.isClicked(clickPosition)) {
+        if (firstTile != null && firstTile.isClicked(new Point((int) event.getX(), (int) event.getY()))) {
             setClicekdTile(firstTile);
         }
         for (Tile tile: tilePool.getGameObjects()) {
-            if (tile.isClicked(clickPosition)) {
+            if (tile.isClicked(new Point((int) event.getX(), (int) event.getY()))) {
                 setClicekdTile(tile);
             }
         }
@@ -247,7 +237,7 @@ public class GameplayScene extends Scene {
      */
     private void runningTouchDragged(MotionEvent event) {
         if (tilePressed != null) {
-            if (onShelf && !tilePressed.inArea(gamePlayLayout.getScreenArea(LayoutElementsKeys.SHELF_AREA))) {
+            if (onShelf && !tilePressed.inArea(gamePlayLayout.getScreenArea(SHELF_AREA))) {
                 onShelf = false;
                 tilePool.remove(tilePressed);
                 tilePool.startAnimating(animatorThread);
@@ -270,54 +260,99 @@ public class GameplayScene extends Scene {
      * @param event event
      */
     private void runningTouchUp(MotionEvent event) {
-        if (gamePlayLayout.getScreenArea(LayoutElementsKeys.NUM_LIVES_TEXT).getArea().contains(clickPosition.x, clickPosition.y)) {
-            sceneManager.setScene(new GameOverScene(sceneManager, animatorThread));
-            return;
-        }
-        if (gamePlayLayout.getScreenArea(LayoutElementsKeys.NUM_STARS_TEXT).getArea().contains(clickPosition.x, clickPosition.y)) {
-            createTilePool();
-            return;
-        }
+        TouchUpScenarios touchUpScenarios = getTouchUpScenario(event);
         statusBarText = "";
-        if (tilePressed != null) {
-            createWave(tilePressed.getPosition());
-            if (onShelf) {
+        switch (touchUpScenarios) {
+            case GIVE_UP:
+                sceneManager.setScene(new GameOverScene(sceneManager, animatorThread));
+                break;
+            case RESET:
+                createTilePool();
+                break;
+            case NO_TILE_PRESSED:
+                break;
+            case ON_SHELF:
                 new PositionAnimationStarter().startAnimation(
                         tilePressed,
                         animatorThread,
                         tilePressed.getPosition(),
                         tileStart,
                         Attributes.TILE_ANIMATION_TIME, 0);
-            } else {
-                if (firstTile == tilePressed) {
-                    numPlus = 0;
-                    numMin = 0;
-                    numMult = 0;
-                    numDiv = 0;
-                    firstTile = consequenceTilePosition(firstTile);
+                tilePressed = null;
+                break;
+            case IN_CRUNCH:
+                Tile[] tiles = tilePressed.crunch();
+                for (Tile tile: tiles) {
+                    animatorThread.add(tile.addToShelf(tilePool));
                 }
-                else if (secondTile == tilePressed) {
-                    secondTile = consequenceTilePosition(secondTile);
-                    if (numPlus == 2) {
-                        calculate('+');
-                    } else if (numMin == 2) {
-                        calculate('-');
-                    } else if (numMult == 2) {
-                        calculate('*');
-                    } else if (numDiv == 2) {
-                        calculate('/');
-                    } else {
-                        if (!tilePressed.inArea(gamePlayLayout.getScreenArea(LayoutElementsKeys.HEADER_AREA))) {
-                            animatorThread.add(firstTile.addToShelf(tilePool));
-                            firstTile = secondTile;
-                            secondTile = null;
-                        }
-                    }
+                if (tilePressed == firstTile) {
+                    firstTile = null;
                 }
-            }
+                else if (tilePressed == secondTile) {
+                    secondTile = null;
+                }
+                break;
+            case FIRST_TILE_PRESSED:
+                createWave(tilePressed.getPosition());
+                calculator.calculate(tilePressed.getNumber(), tilePressed.inWhichOperatorArea(gamePlayLayout));
+                if (calculator.calculatorInactive()) {
+                    animatorThread.add(firstTile.addToShelf(tilePool));
+                    firstTile = null;
+                }
+                break;
+            case SECOND_TILE_PRESSED:
+                createWave(tilePressed.getPosition());
+                calculator.calculate(tilePressed.getNumber(), tilePressed.inWhichOperatorArea(gamePlayLayout));
+                if (calculator.calculatorInactive()) {
+                    animatorThread.add(firstTile.addToShelf(tilePool));
+                    animatorThread.add(secondTile.addToShelf(tilePool));
+                    firstTile = null;
+                    secondTile = null;
+                }
+                else if (calculator.calculatorInProgress()) {
+                    animatorThread.add(firstTile.addToShelf(tilePool));
+                    firstTile = secondTile;
+                    secondTile = null;
+                }
+                else if (calculator.calculatorFinished()) {
+                    Tile[] compositionNewTile = {firstTile, secondTile};
+                    Tile toAdd = new Tile(calculator.getValue(), compositionNewTile, firstTile.getColorIndex() + secondTile.getColorIndex() + 1);
+                    animatorThread.add(toAdd.addToShelf(tilePool));
+                    firstTile = null;
+                    secondTile = null;
+                    calculator.reset();
+                }
+                break;
+            default:
+                break;
         }
         onShelf = true;
         tilePressed = null;
+    }
+
+    private TouchUpScenarios getTouchUpScenario(MotionEvent event) {
+        if (gamePlayLayout.getScreenArea(NUM_LIVES_TEXT).getArea().contains((int) event.getX(), (int) event.getY())) {
+            return TouchUpScenarios.GIVE_UP;
+        }
+        else if (gamePlayLayout.getScreenArea(NUM_STARS_TEXT).getArea().contains((int) event.getX(), (int) event.getY())) {
+            return TouchUpScenarios.RESET;
+        }
+        else if (null == tilePressed) {
+            return TouchUpScenarios.NO_TILE_PRESSED;
+        }
+        else if (onShelf) {
+            return TouchUpScenarios.ON_SHELF;
+        }
+        else if (tilePressed.inArea(gamePlayLayout.getScreenArea(HEADER_AREA))) {
+            return TouchUpScenarios.IN_CRUNCH;
+        }
+        else if (tilePressed == firstTile) {
+            return TouchUpScenarios.FIRST_TILE_PRESSED;
+        }
+        else if (tilePressed == secondTile) {
+            return TouchUpScenarios.SECOND_TILE_PRESSED;
+        }
+        return TouchUpScenarios.NULL;
     }
 
     private void createTilePool() {
@@ -355,55 +390,4 @@ public class GameplayScene extends Scene {
         );
         wavePool.add(waveToAdd);
     }
-
-    /**
-     * Performs the actual calculations, making new Tiles based on the operation or returns Tiles to the tilePool when the operation is not valid
-     *
-     * @param operator operator
-     */
-    private void calculate(char operator) {
-        int newValue = 0;
-        switch (operator) {
-            case '+':
-                newValue = firstTile.getNumber() + secondTile.getNumber();
-                break;
-            case '-':
-                if (firstTile.getNumber() >= secondTile.getNumber()) {
-                    newValue = firstTile.getNumber() - secondTile.getNumber();
-                } else {
-                    statusBarText = "Results in negative integer";
-                    animatorThread.add(firstTile.addToShelf(tilePool));
-                    animatorThread.add(secondTile.addToShelf(tilePool));
-                    firstTile = null;
-                    secondTile = null;
-                }
-                break;
-            case '*':
-                newValue = firstTile.getNumber() * secondTile.getNumber();
-                break;
-            case '/':
-                if (firstTile.getNumber() % secondTile.getNumber() == 0) {
-                    newValue = firstTile.getNumber() / secondTile.getNumber();
-                } else {
-                    statusBarText = "Results in non-integer";
-                    animatorThread.add(firstTile.addToShelf(tilePool));
-                    animatorThread.add(secondTile.addToShelf(tilePool));
-                    firstTile = null;
-                    secondTile = null;
-                }
-                break;
-        }
-        if (newValue > 0) {
-            Tile[] compositionNewTile = {firstTile, secondTile};
-            Tile toAdd = new Tile(newValue, compositionNewTile, firstTile.getColorIndex() + secondTile.getColorIndex() + 1);
-            animatorThread.add(toAdd.addToShelf(tilePool));
-            firstTile = null;
-            secondTile = null;
-            numPlus = 0;
-            numMin = 0;
-            numMult = 0;
-            numDiv = 0;
-        }
-    }
-
 }

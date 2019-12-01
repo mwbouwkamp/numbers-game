@@ -58,6 +58,10 @@ public class BasicLayout implements LayoutInterface {
         return layoutObjects.get(layoutElement);
     }
 
+    public EnumMap<LayoutElementsKeys, LayoutObject> getScreenAreas() {
+        return layoutObjects;
+    }
+
     @Override
     public void draw(Canvas canvas) {
         for (LayoutObject layoutObject : layoutObjects.values()) {
